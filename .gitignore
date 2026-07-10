@@ -1,0 +1,50 @@
+# dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# next.js
+.next/
+out/
+
+# production build
+dist/
+build/
+# EXCEPTION: @repo/ui ships prebuilt dist consumed at runtime — must be committed
+# (Vercel's `next build` does not rebuild workspace packages)
+!packages/ui/dist/
+!packages/ui/dist/**
+
+# turborepo
+.turbo/
+
+# env / secrets
+.env
+.env.local
+.env.*.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# vercel
+.vercel
+
+# testing / coverage
+coverage/
+
+# logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# os / editor
+.DS_Store
+*.pem
+.idea/
+.vscode/

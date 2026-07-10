@@ -1,0 +1,33 @@
+{
+	"extends": "@repo/typescript-config/nextjs.json",
+	"compilerOptions": {
+		"typeRoots": [
+			"./types"
+		],
+		"plugins": [
+			{
+				"name": "next"
+			}
+		],
+		"baseUrl": ".",
+		"paths": {
+			"react": [
+				"./node_modules/@types/react"
+			],
+			"react-dom": [
+				"./node_modules/@types/react-dom"
+			]
+		}
+	},
+	"include": [
+		"**/*.ts",
+		"**/*.tsx",
+		"next-env.d.ts",
+		"next.config.mjs",
+		".next/types/**/*.ts",
+		"types"
+	],
+	"exclude": [
+		"node_modules"
+	]
+}

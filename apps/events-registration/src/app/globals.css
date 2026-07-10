@@ -1,0 +1,464 @@
+@import "tailwindcss";
+@import "@repo/tailwind-config";
+@import "@repo/ui/styles.css";
+@plugin "@tailwindcss/typography";
+
+/* ============ ANTARAGNI '26 — DESIGN TOKENS ============
+   Color-grading pass: richer "printed-poster" dark (not digital black),
+   fluorescent-ink neons (a touch matured), warm festival accents. */
+@theme {
+	--color-background: #140d1e; /* midnight ink — rich, not pure black */
+	--color-foreground: #f6f1ea; /* warm paper white (was cold #f4f1fa) */
+	--color-primary: #c7f441; /* fluorescent lime */
+	--color-secondary: #ff6ec7; /* hot pink */
+	--color-accent: #7c3aed; /* electric violet */
+}
+
+:root {
+	--color-background: #140d1e;
+	--color-foreground: #f6f1ea;
+	--color-primary: #c7f441;
+	--color-secondary: #ff6ec7;
+	--color-accent: #7c3aed;
+
+	/* fluorescent-ink neons — identity colors, gently warmed/deepened */
+	--lime: #cdf24d;
+	--pink: #ff6ec7;
+	--violet: #8248f0;
+	--orange: #ff8a3d;
+	--cyan: #56d6f0; /* slightly warmer, less pure-RGB cyan */
+
+	/* warm festival accents — used only for small details/highlights */
+	--sun: #ff6b35; /* sunset orange */
+	--yellow: #ffd166; /* festival yellow */
+	--cream: #fff2d8; /* paper cream */
+	--warm-red: #ef476f;
+
+	--font-sans: var(--font-inter);
+	--font-title: var(--font-rakkas);
+
+	/* solid panel ink — replaces glassmorphism; warm plum, not black */
+	--ink: #1b1228;
+	--ink-2: #221634; /* raised panel */
+	--paper: #f6f1ea;
+}
+
+/* condensed poster face (Anton) for massive headline stacks */
+.font-poster {
+	font-family: var(--font-poster), var(--font-rakkas), sans-serif;
+	letter-spacing: 0.01em;
+}
+
+body {
+	@apply bg-background text-foreground font-sans;
+	overflow-x: hidden;
+}
+
+:where(h1, h2, h3, h4, h5, h6) {
+	@apply font-title;
+}
+
+::selection {
+	background: var(--lime);
+	color: #0a0612;
+}
+
+::-webkit-scrollbar {
+	width: 10px;
+}
+::-webkit-scrollbar-track {
+	background: #0a0612;
+}
+::-webkit-scrollbar-thumb {
+	background: #2c2140;
+	border-radius: 999px;
+	border: 2px solid #0a0612;
+}
+::-webkit-scrollbar-thumb:hover {
+	background: #43325f;
+}
+
+/* custom cursor takes over on fine pointers */
+@media (pointer: fine) {
+	body,
+	a,
+	button,
+	input,
+	select,
+	textarea,
+	label,
+	[role="button"] {
+		cursor: none !important;
+	}
+}
+
+/* ============ UTILITIES ============ */
+
+.text-gradient {
+	background: linear-gradient(92deg, var(--lime) 0%, var(--pink) 48%, var(--violet) 100%);
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+}
+
+.text-gradient-pink {
+	background: linear-gradient(92deg, var(--pink) 0%, var(--orange) 60%, var(--lime) 120%);
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+}
+
+.text-stroke {
+	-webkit-text-stroke: 1.5px rgba(246, 241, 234, 0.4);
+	color: transparent;
+}
+
+.text-stroke-lime {
+	-webkit-text-stroke: 1.5px var(--lime);
+	color: transparent;
+}
+
+/* .glass is DEAD as glassmorphism — every legacy usage now renders as a
+   solid screen-printed ink panel with a hard offset shadow */
+.glass {
+	background: var(--ink);
+	border: 2px solid rgba(244, 241, 250, 0.16);
+	box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.5);
+}
+
+.chip {
+	@apply inline-flex items-center gap-2 px-3.5 py-1.5 text-xs font-bold uppercase tracking-[0.2em];
+	background: var(--ink);
+	border: 1.5px solid currentColor;
+	border-radius: 4px;
+	transform: rotate(-1deg);
+}
+
+/* sticker buttons — solid ink, hard shadow, slight tilt; no glow, no blur */
+.btn-festival {
+	@apply inline-flex items-center justify-center gap-2 px-8 py-3.5 font-bold text-sm uppercase tracking-widest transition-transform duration-200;
+	background: linear-gradient(92deg, var(--violet), var(--pink));
+	color: #fff;
+	border: 2px solid #0a0612;
+	border-radius: 10px;
+	box-shadow: 5px 5px 0 var(--lime);
+	transform: rotate(-1.2deg);
+}
+.btn-festival:hover {
+	transform: rotate(0.5deg) translate(-2px, -2px);
+	box-shadow: 7px 7px 0 var(--lime);
+}
+
+.btn-lime {
+	@apply inline-flex items-center justify-center gap-2 px-8 py-3.5 font-bold text-sm uppercase tracking-widest transition-transform duration-200;
+	background: var(--lime);
+	color: #0a0612;
+	border: 2px solid #0a0612;
+	border-radius: 10px;
+	box-shadow: 5px 5px 0 var(--pink);
+	transform: rotate(1deg);
+}
+.btn-lime:hover {
+	transform: rotate(-0.5deg) translate(-2px, -2px);
+	box-shadow: 7px 7px 0 var(--pink);
+}
+
+.btn-ghost {
+	@apply inline-flex items-center justify-center gap-2 px-8 py-3.5 font-bold text-sm uppercase tracking-widest transition-all duration-200;
+	border: 2px dashed rgba(244, 241, 250, 0.4);
+	border-radius: 10px;
+	color: var(--color-foreground);
+}
+.btn-ghost:hover {
+	border-color: var(--lime);
+	border-style: solid;
+	color: var(--lime);
+	box-shadow: 4px 4px 0 rgba(199, 244, 65, 0.35);
+	transform: translate(-1px, -1px);
+}
+
+/* ============ POSTER TOOLKIT ============ */
+
+/* masking-tape strip */
+.tape {
+	@apply inline-block px-5 py-1.5 text-xs font-bold uppercase tracking-[0.25em];
+	background: var(--lime);
+	color: #0a0612;
+	clip-path: polygon(
+		2% 0%, 98% 4%, 100% 32%, 99% 68%, 100% 96%, 96% 100%,
+		3% 98%, 0% 70%, 1% 30%
+	);
+}
+.tape-pink {
+	background: var(--pink);
+}
+.tape-cyan {
+	background: var(--cyan);
+}
+
+/* ticket stub — punched notches on the sides */
+.ticket {
+	position: relative;
+	background: var(--ink);
+	border: 2px solid rgba(244, 241, 250, 0.18);
+	box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.5);
+	mask: radial-gradient(circle 9px at 0 50%, transparent 98%, #fff) left / 51% 100% no-repeat,
+		radial-gradient(circle 9px at 100% 50%, transparent 98%, #fff) right / 50% 100% no-repeat;
+	-webkit-mask: radial-gradient(circle 9px at 0 50%, transparent 98%, #fff) left / 51% 100% no-repeat,
+		radial-gradient(circle 9px at 100% 50%, transparent 98%, #fff) right / 50% 100% no-repeat;
+}
+
+/* halftone dot texture */
+.halftone {
+	background-image: radial-gradient(rgba(244, 241, 250, 0.25) 1.2px, transparent 1.3px);
+	background-size: 10px 10px;
+}
+
+/* huge repeated backdrop word — poster wallpaper type */
+.backdrop-word {
+	-webkit-text-stroke: 1px rgba(244, 241, 250, 0.08);
+	color: transparent;
+	user-select: none;
+	pointer-events: none;
+	line-height: 0.82;
+	white-space: nowrap;
+}
+
+/* animated gradient sweeping through display type */
+@keyframes gradient-sweep {
+	0% { background-position: 0% 50%; }
+	50% { background-position: 100% 50%; }
+	100% { background-position: 0% 50%; }
+}
+.text-gradient-live {
+	background: linear-gradient(
+		100deg,
+		var(--lime),
+		var(--cream),
+		var(--pink),
+		var(--violet),
+		var(--lime)
+	);
+	background-size: 300% 100%;
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+	animation: gradient-sweep 9s ease-in-out infinite;
+}
+
+/* slow float for stickers / decorations */
+@keyframes float-y {
+	0%, 100% { transform: translateY(0) rotate(var(--rot, 0deg)); }
+	50% { transform: translateY(-14px) rotate(calc(var(--rot, 0deg) + 3deg)); }
+}
+.float-slow {
+	animation: float-y 6s ease-in-out infinite;
+}
+@keyframes spin-slow {
+	to { transform: rotate(360deg); }
+}
+.spin-slow {
+	animation: spin-slow 22s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+	.float-slow,
+	.spin-slow,
+	.text-gradient-live {
+		animation: none;
+	}
+}
+
+/* ============ ATMOSPHERE (night-festival background) ============ */
+
+@keyframes atmo-drift {
+	0% { transform: translate(0, 0) scale(1); }
+	33% { transform: translate(40px, -30px) scale(1.08); }
+	66% { transform: translate(-30px, 24px) scale(0.95); }
+	100% { transform: translate(0, 0) scale(1); }
+}
+.atmo-blob {
+	animation: atmo-drift 36s ease-in-out infinite;
+	will-change: transform;
+}
+
+@keyframes atmo-sway {
+	0%, 100% { transform: rotate(-7deg); opacity: 0.55; }
+	50% { transform: rotate(7deg); opacity: 1; }
+}
+.atmo-beam {
+	animation: atmo-sway 20s ease-in-out infinite;
+	mix-blend-mode: screen;
+	filter: blur(18px);
+	pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.atmo-blob,
+	.atmo-beam {
+		animation: none;
+	}
+}
+
+/* ============ HERO WORDMARK (layered chrome poster type) ============ */
+
+/* premium chrome sweep — soft cream→pink→violet→cyan, no harsh rainbow */
+.text-chrome {
+	background: linear-gradient(
+		105deg,
+		#fdfbff 0%,
+		#ffd9f2 18%,
+		#ff6ec7 38%,
+		#a78bfa 58%,
+		#4dd8ff 78%,
+		#fdfbff 100%
+	);
+	background-size: 240% 100%;
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+	animation: gradient-sweep 13s ease-in-out infinite;
+}
+
+/* the stacked copies behind the hero word */
+.hero-word {
+	white-space: nowrap;
+	letter-spacing: -0.02em;
+	line-height: 0.9;
+	transform: scaleY(1.12);
+	transform-origin: bottom left;
+}
+.hero-word-echo {
+	-webkit-text-stroke: 1.5px rgba(199, 244, 65, 0.5);
+	color: transparent;
+}
+.hero-word-ink {
+	color: #0a0612;
+	-webkit-text-stroke: 1px rgba(244, 241, 250, 0.18);
+}
+
+/* ============ POSTER RAIL (horizontal stage scroll) ============ */
+
+.rail {
+	display: flex;
+	gap: 1.25rem;
+	overflow-x: auto;
+	padding: 1.5rem 0.5rem 2rem;
+	scroll-snap-type: x mandatory;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+.rail::-webkit-scrollbar {
+	display: none;
+}
+.rail > * {
+	scroll-snap-align: start;
+	flex-shrink: 0;
+}
+
+/* marker highlight behind a phrase */
+.marker {
+	background: linear-gradient(100deg, transparent 1%, var(--lime) 2%, var(--lime) 96%, transparent 98%);
+	color: #0a0612;
+	padding: 0 0.3em;
+	font-weight: 700;
+	box-decoration-break: clone;
+	-webkit-box-decoration-break: clone;
+}
+.marker-pink {
+	background: linear-gradient(100deg, transparent 1%, var(--pink) 2%, var(--pink) 96%, transparent 98%);
+}
+
+/* marquee */
+@keyframes marquee-x {
+	to {
+		transform: translateX(-50%);
+	}
+}
+.marquee-track {
+	display: flex;
+	width: max-content;
+	animation: marquee-x var(--marquee-dur, 30s) linear infinite;
+}
+.marquee-paused:hover .marquee-track {
+	animation-play-state: paused;
+}
+
+/* kinetic lineup — gradient fill wipes in from the left on row hover */
+.lineup-fill {
+	clip-path: inset(0 100% 0 0);
+	transition: clip-path 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.lineup-row:hover .lineup-fill {
+	clip-path: inset(0 0 0 0);
+}
+@media (prefers-reduced-motion: reduce) {
+	.lineup-fill {
+		transition: none;
+	}
+}
+
+/* film grain overlay — warm paper tooth, slightly stronger for print feel */
+.grain-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 70;
+	pointer-events: none;
+	opacity: 0.08;
+	mix-blend-mode: soft-light;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+/* faint warm bloom washing the whole page — festival hall haze */
+.grain-overlay::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background:
+		radial-gradient(60% 50% at 50% 0%, rgba(255, 138, 61, 0.05), transparent 70%),
+		radial-gradient(50% 40% at 100% 100%, rgba(255, 110, 199, 0.04), transparent 70%);
+}
+
+/* glow card hover */
+.glow-card {
+	position: relative;
+	overflow: hidden;
+	transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.glow-card::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	opacity: 0;
+	transition: opacity 0.5s;
+	background: radial-gradient(
+		600px circle at var(--mx, 50%) var(--my, 50%),
+		rgba(199, 244, 65, 0.08),
+		transparent 45%
+	);
+	pointer-events: none;
+}
+.glow-card:hover::after {
+	opacity: 1;
+}
+
+/* section eyebrow */
+.eyebrow {
+	@apply text-xs font-bold uppercase tracking-[0.35em];
+	color: var(--lime);
+}
+
+@media screen and (max-width: 768px) {
+	.about-desk {
+		display: none;
+	}
+	.about-mob {
+		display: block;
+	}
+}
+@media screen and (min-width: 769px) {
+	.about-desk {
+		display: block;
+	}
+	.about-mob {
+		display: none;
+	}
+}
