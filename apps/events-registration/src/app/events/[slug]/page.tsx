@@ -12,6 +12,7 @@ import { Reveal, RevealTitle } from "../../../components/fx/Reveal";
 import { Marquee } from "../../../components/fx/Marquee";
 import { PosterArt } from "../../../components/fx/PosterArt";
 import { FloatingStickers } from "../../../components/fx/Stickers";
+import { Cinema } from "../../../components/fx/Cinema";
 
 const IndividualEventPage = () => {
 	const params = useParams<{ slug: string }>();
@@ -46,8 +47,16 @@ const IndividualEventPage = () => {
 			<section className="min-h-screen pb-10">
 				{/* ------------------------------ HERO ------------------------------ */}
 				<div className="relative flex min-h-[72vh] flex-col items-center justify-center overflow-hidden px-4 pt-32 text-center">
-					{/* oversized themed motif floating behind the title */}
-					<div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-40">
+					{/* cinematic performance photography — the event happening */}
+					<Cinema
+						src={`/cards/${params.slug.toLowerCase()}.jpg`}
+						a={theme.a}
+						b={theme.b}
+						position="center 28%"
+						priority
+					/>
+					{/* themed motif reduced to a texture over the photo */}
+					<div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-20">
 						<PosterArt
 							slug={params.slug}
 							title={title}
@@ -57,7 +66,7 @@ const IndividualEventPage = () => {
 							className="h-[130%] w-auto max-w-none blur-[1px]"
 						/>
 					</div>
-					<div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,#0a0612_78%)]" />
+					<div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,#1c1218_82%)]" />
 					{/* the event's own stage light */}
 					<div
 						className="pointer-events-none absolute inset-0"
@@ -68,9 +77,9 @@ const IndividualEventPage = () => {
 					/>
 					<FloatingStickers
 						items={[
-							{ name: "star", color: theme.b, left: "12%", top: "26%", size: 52, rot: -10, depth: 0.7 },
-							{ name: "bolt", color: theme.a, left: "84%", top: "20%", size: 46, rot: 12, depth: 0.9 },
-							{ name: "spiral", color: theme.b, left: "78%", top: "68%", size: 54, rot: 0, depth: 0.5, className: "spin-slow" },
+							{ name: "ticket", color: theme.b, left: "12%", top: "26%", size: 52, rot: -10, depth: 0.7 },
+							{ name: "mic", color: theme.a, left: "84%", top: "20%", size: 46, rot: 12, depth: 0.9 },
+							{ name: "film", color: theme.b, left: "78%", top: "68%", size: 54, rot: 0, depth: 0.5, className: "spin-slow" },
 						]}
 					/>
 

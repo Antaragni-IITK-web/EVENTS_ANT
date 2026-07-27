@@ -2,146 +2,93 @@
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
+import type { IconType } from "react-icons";
+import {
+	FaMicrophoneAlt,
+	FaGuitar,
+	FaTheaterMasks,
+	FaCamera,
+	FaFilm,
+	FaDrum,
+	FaTrophy,
+	FaTicketAlt,
+	FaPaintBrush,
+	FaHeadphones,
+	FaMusic,
+	FaFeatherAlt,
+} from "react-icons/fa";
 
 /* ----------------------------------------------------------------------------
-   Festival sticker set — hand-drawn-feel SVG shapes scattered around
-   sections. FloatingStickers adds slow bobbing + cursor parallax so the
-   poster feels alive. All deterministic (no render-time randomness).
+   Festival stickers — every decorative element is a real festival object:
+   microphones, guitars, theatre masks, cameras, film reels, drums, trophies,
+   tickets, brushes. Rendered as merch-style badge stickers (ink disc, colored
+   ring, hard shadow). FloatingStickers adds slow bobbing + cursor parallax.
 ---------------------------------------------------------------------------- */
 
-type StickerName =
-	| "star"
-	| "bolt"
-	| "smiley"
-	| "flower"
-	| "spiral"
-	| "flame"
+export type StickerName =
+	| "mic"
+	| "guitar"
+	| "masks"
+	| "camera"
+	| "film"
+	| "drum"
+	| "trophy"
+	| "ticket"
+	| "brush"
+	| "headphones"
 	| "note"
-	| "eye";
+	| "quill";
+
+const OBJECT_ICONS: Record<StickerName, IconType> = {
+	mic: FaMicrophoneAlt,
+	guitar: FaGuitar,
+	masks: FaTheaterMasks,
+	camera: FaCamera,
+	film: FaFilm,
+	drum: FaDrum,
+	trophy: FaTrophy,
+	ticket: FaTicketAlt,
+	brush: FaPaintBrush,
+	headphones: FaHeadphones,
+	note: FaMusic,
+	quill: FaFeatherAlt,
+};
 
 export function Sticker({
 	name,
 	className = "",
-	color = "var(--lime)",
+	color = "var(--yellow)",
 }: {
 	name: StickerName;
 	className?: string;
 	color?: string;
 }) {
-	const common = {
-		className,
-		viewBox: "0 0 100 100",
-		fill: "none",
-		"aria-hidden": true as const,
-	};
-	switch (name) {
-		case "star":
-			return (
-				<svg {...common}>
-					<path
-						d="M50 4 L59 36 L92 38 L64 57 L74 92 L50 70 L26 92 L36 57 L8 38 L41 36 Z"
-						fill={color}
-						stroke="#0a0612"
-						strokeWidth="3"
-						strokeLinejoin="round"
-					/>
-				</svg>
-			);
-		case "bolt":
-			return (
-				<svg {...common}>
-					<path
-						d="M58 4 L20 56 L44 56 L36 96 L80 40 L54 40 Z"
-						fill={color}
-						stroke="#0a0612"
-						strokeWidth="3"
-						strokeLinejoin="round"
-					/>
-				</svg>
-			);
-		case "smiley":
-			return (
-				<svg {...common}>
-					<circle cx="50" cy="50" r="44" fill={color} stroke="#0a0612" strokeWidth="3" />
-					<circle cx="35" cy="40" r="6" fill="#0a0612" />
-					<circle cx="65" cy="40" r="6" fill="#0a0612" />
-					<path
-						d="M28 60 Q50 82 72 60"
-						stroke="#0a0612"
-						strokeWidth="5"
-						strokeLinecap="round"
-					/>
-				</svg>
-			);
-		case "flower":
-			return (
-				<svg {...common}>
-					{[0, 60, 120, 180, 240, 300].map((deg) => (
-						<ellipse
-							key={deg}
-							cx="50"
-							cy="26"
-							rx="14"
-							ry="22"
-							fill={color}
-							stroke="#0a0612"
-							strokeWidth="2.5"
-							transform={`rotate(${deg} 50 50)`}
-						/>
-					))}
-					<circle cx="50" cy="50" r="12" fill="#0a0612" />
-				</svg>
-			);
-		case "spiral":
-			return (
-				<svg {...common}>
-					<path
-						d="M50 50 m0 -4 a4 4 0 1 1 -4 4 a8 8 0 1 1 8 -8 a14 14 0 1 1 -14 14 a22 22 0 1 1 22 -22 a32 32 0 1 1 -32 32 a44 44 0 1 1 44 -44"
-						stroke={color}
-						strokeWidth="5"
-						strokeLinecap="round"
-					/>
-				</svg>
-			);
-		case "flame":
-			return (
-				<svg {...common}>
-					<path
-						d="M50 6 C58 26 76 32 76 58 A26 26 0 0 1 24 58 C24 40 38 34 36 18 C44 24 46 30 46 38 C52 30 50 18 50 6 Z"
-						fill={color}
-						stroke="#0a0612"
-						strokeWidth="3"
-						strokeLinejoin="round"
-					/>
-				</svg>
-			);
-		case "note":
-			return (
-				<svg {...common}>
-					<path
-						d="M38 78 L38 22 L78 12 L78 66"
-						stroke={color}
-						strokeWidth="6"
-						strokeLinecap="round"
-					/>
-					<ellipse cx="28" cy="80" rx="12" ry="9" fill={color} stroke="#0a0612" strokeWidth="2.5" />
-					<ellipse cx="68" cy="68" rx="12" ry="9" fill={color} stroke="#0a0612" strokeWidth="2.5" />
-				</svg>
-			);
-		case "eye":
-			return (
-				<svg {...common}>
-					<path
-						d="M6 50 Q50 12 94 50 Q50 88 6 50 Z"
-						fill={color}
-						stroke="#0a0612"
-						strokeWidth="3"
-					/>
-					<circle cx="50" cy="50" r="16" fill="#0a0612" />
-					<circle cx="56" cy="44" r="5" fill="#f4f1fa" />
-				</svg>
-			);
-	}
+	const Icon = OBJECT_ICONS[name];
+	return (
+		<svg
+			className={className}
+			viewBox="0 0 100 100"
+			fill="none"
+			aria-hidden
+		>
+			{/* hard offset shadow */}
+			<circle cx="54" cy="56" r="42" fill="rgba(0,0,0,0.45)" />
+			{/* badge disc */}
+			<circle cx="48" cy="48" r="42" fill="#241620" stroke={color} strokeWidth="3.5" />
+			{/* stitched inner ring — merch patch feel */}
+			<circle
+				cx="48"
+				cy="48"
+				r="35"
+				fill="none"
+				stroke={color}
+				strokeWidth="1.2"
+				strokeDasharray="4 5"
+				opacity="0.55"
+			/>
+			<Icon x={29} y={29} size={38} fill={color} />
+		</svg>
+	);
 }
 
 export interface FloatingSpec {

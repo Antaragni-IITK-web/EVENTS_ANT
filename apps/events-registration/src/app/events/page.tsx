@@ -7,7 +7,8 @@ import { Marquee } from "../../components/fx/Marquee";
 import { Reveal, RevealTitle } from "../../components/fx/Reveal";
 import { FloatingStickers } from "../../components/fx/Stickers";
 import { TiltCard } from "../../components/fx/TiltCard";
-import { PosterArt } from "../../components/fx/PosterArt";
+import { CardArt } from "../../components/fx/CardArt";
+import { Cinema, catKey } from "../../components/fx/Cinema";
 
 /* ----------------------------------------------------------------------------
    Festival lineup reveal — categories are STAGES, each its own zone:
@@ -52,12 +53,15 @@ export default function EventsPage() {
 	return (
 		<div className="pt-36">
 			{/* ------------------------------ HERO ------------------------------ */}
-			<section className="relative mx-auto max-w-7xl overflow-hidden px-4 pb-10 md:px-8">
+			<section className="relative -mt-36 overflow-hidden pb-10 pt-36">
+				{/* cinematic stage photography behind the lineup announcement */}
+				<Cinema src="/cinema/events-hero.jpg" a="#ff6b35" b="#8c2333" priority />
+				<div className="relative mx-auto max-w-7xl px-4 md:px-8">
 				<FloatingStickers
 					items={[
-						{ name: "bolt", color: "var(--lime)", left: "80%", top: "6%", size: 64, rot: 10, depth: 0.8 },
-						{ name: "star", color: "var(--pink)", left: "62%", top: "48%", size: 52, rot: -12, depth: 0.6 },
-						{ name: "spiral", color: "var(--cyan)", left: "8%", top: "58%", size: 58, rot: 0, depth: 0.9, className: "spin-slow" },
+						{ name: "mic", color: "var(--yellow)", left: "80%", top: "6%", size: 64, rot: 10, depth: 0.8 },
+						{ name: "masks", color: "var(--pink)", left: "62%", top: "48%", size: 52, rot: -12, depth: 0.6 },
+						{ name: "film", color: "var(--cyan)", left: "8%", top: "58%", size: 58, rot: 0, depth: 0.9, className: "spin-slow" },
 					]}
 				/>
 
@@ -81,7 +85,7 @@ export default function EventsPage() {
 				{/* stage jump rail — torn ticket stubs */}
 				<Reveal delay={0.2} className="mt-10 flex flex-wrap gap-3">
 					{CATEGORIES.map((cat, i) => {
-						const theme = CAT_THEME[cat] ?? { a: "#7c3aed", b: "#ff6ec7" };
+						const theme = CAT_THEME[cat] ?? { a: "#ff8a3d", b: "#d92643" };
 						return (
 							<a
 								key={cat}
@@ -98,11 +102,12 @@ export default function EventsPage() {
 						);
 					})}
 				</Reveal>
+				</div>
 			</section>
 
 			{/* ----------------------------- ZONES ------------------------------ */}
 			{CATEGORIES.map((cat, i) => {
-				const theme = CAT_THEME[cat] ?? { a: "#7c3aed", b: "#ff6ec7" };
+				const theme = CAT_THEME[cat] ?? { a: "#ff8a3d", b: "#d92643" };
 				const stage = STAGES[cat] ?? { stage: cat, blurb: "" };
 				const items = eventsData.filter((e) => e.category === cat);
 				return (
@@ -111,6 +116,13 @@ export default function EventsPage() {
 						id={`stage-${i}`}
 						className="relative scroll-mt-24 overflow-hidden py-16"
 					>
+						{/* per-stage cinematic photography, kept quiet under the posters */}
+						<Cinema
+							src={`/cinema/cat-${catKey(cat)}.jpg`}
+							a={theme.a}
+							b={theme.b}
+							opacity={0.32}
+						/>
 						{/* zone atmosphere — each stage has its own light */}
 						<div
 							className="pointer-events-none absolute inset-0"
@@ -170,7 +182,7 @@ export default function EventsPage() {
 											>
 												<TiltCard className="h-[300px] w-[228px] md:h-[356px] md:w-[270px]">
 													<div className="h-full w-full overflow-hidden border-2 border-white/15 shadow-[8px_8px_0_rgba(0,0,0,0.5)] transition-shadow duration-300 group-hover:shadow-[10px_10px_0_rgba(0,0,0,0.6)]">
-														<PosterArt
+														<CardArt
 															slug={e.slug}
 															title={e.title}
 															a={t.a}
@@ -201,7 +213,10 @@ export default function EventsPage() {
 
 			{/* --------------------------- CTA STRIP ---------------------------- */}
 			<section className="py-12">
-				<div className="-rotate-1 scale-[1.01]" style={{ background: "var(--pink)" }}>
+				<div
+					className="-rotate-1 scale-[1.01]"
+					style={{ background: "linear-gradient(92deg, var(--warm-red), var(--sun))" }}
+				>
 					<Marquee duration={26} className="py-5">
 						{Array.from({ length: 8 }).map((_, i) => (
 							<Link

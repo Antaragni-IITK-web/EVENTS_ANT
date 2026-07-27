@@ -12,10 +12,10 @@ const Footer = () => {
 			{/* closing statement */}
 			<div className="relative px-4 pb-6 pt-16 text-center">
 				<div className="pointer-events-none absolute left-6 top-10 hidden rotate-12 md:block">
-					<Sticker name="smiley" color="var(--orange)" className="h-16 w-16" />
+					<Sticker name="ticket" color="var(--sun)" className="h-16 w-16" />
 				</div>
 				<div className="pointer-events-none absolute right-8 top-24 hidden -rotate-12 md:block">
-					<Sticker name="star" color="var(--cyan)" className="h-14 w-14" />
+					<Sticker name="trophy" color="var(--yellow)" className="h-14 w-14" />
 				</div>
 
 				<p className="font-poster text-[11vw] uppercase leading-[0.9] md:text-[8vw]">

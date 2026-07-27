@@ -7,9 +7,10 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Marquee } from "../components/fx/Marquee";
 import { Reveal, RevealTitle } from "../components/fx/Reveal";
-import { PosterArt } from "../components/fx/PosterArt";
+import { CardArt } from "../components/fx/CardArt";
 import { FloatingStickers } from "../components/fx/Stickers";
 import { Magnetic } from "../components/fx/Magnetic";
+import { Cinema } from "../components/fx/Cinema";
 import { eventTheme, tripTheme } from "../data/themes";
 import { Contact } from "../components/Contact";
 
@@ -98,13 +99,13 @@ function Hero() {
 			{/* floating festival stickers with cursor parallax */}
 			<FloatingStickers
 				items={[
-					{ name: "star", color: "var(--lime)", left: "72%", top: "16%", size: 74, rot: 12, depth: 0.9 },
-					{ name: "flame", color: "var(--pink)", left: "6%", top: "20%", size: 62, rot: -10, depth: 0.6 },
-					{ name: "note", color: "var(--cyan)", left: "86%", top: "62%", size: 58, rot: 8, depth: 1 },
-					{ name: "flower", color: "var(--orange)", left: "58%", top: "8%", size: 48, rot: -14, depth: 0.5 },
-					{ name: "spiral", color: "var(--violet)", left: "12%", top: "72%", size: 66, rot: 0, depth: 0.8, className: "spin-slow" },
-					{ name: "smiley", color: "var(--lime)", left: "44%", top: "78%", size: 44, rot: 10, depth: 0.7 },
-					{ name: "eye", color: "var(--cyan)", left: "30%", top: "12%", size: 46, rot: -6, depth: 0.4 },
+					{ name: "mic", color: "var(--yellow)", left: "72%", top: "16%", size: 74, rot: 12, depth: 0.9 },
+					{ name: "guitar", color: "var(--sun)", left: "6%", top: "20%", size: 62, rot: -10, depth: 0.6 },
+					{ name: "note", color: "var(--pink)", left: "86%", top: "62%", size: 58, rot: 8, depth: 1 },
+					{ name: "masks", color: "var(--orange)", left: "58%", top: "8%", size: 48, rot: -14, depth: 0.5 },
+					{ name: "film", color: "var(--violet)", left: "12%", top: "72%", size: 66, rot: 0, depth: 0.8, className: "spin-slow" },
+					{ name: "ticket", color: "var(--lime)", left: "44%", top: "78%", size: 44, rot: 10, depth: 0.7 },
+					{ name: "camera", color: "var(--cyan)", left: "30%", top: "12%", size: 46, rot: -6, depth: 0.4 },
 				]}
 			/>
 
@@ -225,8 +226,8 @@ function Band() {
 				</Marquee>
 			</div>
 			<div
-				className="rotate-1 scale-[1.04] border-y-2 border-[#0a0612]"
-				style={{ background: "var(--pink)", marginTop: "-0.5rem" }}
+				className="rotate-1 scale-[1.04] border-y-2 border-[#1c1218]"
+				style={{ background: "var(--sun)", marginTop: "-0.5rem" }}
 			>
 				<Marquee duration={30} reverse className="py-2">
 					{Array.from({ length: 6 }).map((_, i) => (
@@ -275,11 +276,11 @@ function Portals() {
 					>
 						<span className="tape absolute -top-3 left-8 z-10 rotate-3">On campus</span>
 						<div className="relative h-[520px] overflow-hidden">
-							<PosterArt
+							<CardArt
 								slug="events-portal"
 								title="Events"
-								a="#7c3aed"
-								b="#ff6ec7"
+								a="#ff8a3d"
+								b="#d92643"
 								motif="rays"
 								className="absolute inset-0 h-full w-full transition-transform duration-700 group-hover:scale-105"
 							/>
@@ -314,11 +315,11 @@ function Portals() {
 							Across India
 						</span>
 						<div className="relative h-[520px] overflow-hidden">
-							<PosterArt
+							<CardArt
 								slug="roadtrips-portal"
 								title="Roadtrips"
-								a="#c7f441"
-								b="#ff6ec7"
+								a="#ffc94d"
+								b="#d92643"
 								motif="burst"
 								className="absolute inset-0 h-full w-full transition-transform duration-700 group-hover:scale-105"
 							/>
@@ -382,8 +383,8 @@ function About() {
 		<section className="relative mx-auto max-w-6xl overflow-hidden px-4 py-28">
 			<FloatingStickers
 				items={[
-					{ name: "bolt", color: "var(--orange)", left: "88%", top: "10%", size: 56, rot: 14, depth: 0.6 },
-					{ name: "flower", color: "var(--pink)", left: "4%", top: "60%", size: 52, rot: -8, depth: 0.8 },
+					{ name: "trophy", color: "var(--yellow)", left: "88%", top: "10%", size: 56, rot: 14, depth: 0.6 },
+					{ name: "brush", color: "var(--pink)", left: "4%", top: "60%", size: 52, rot: -8, depth: 0.8 },
 				]}
 			/>
 
@@ -470,6 +471,8 @@ const WALL = [
 function Legacy() {
 	return (
 		<section className="relative overflow-hidden py-28">
+			{/* the crowd — festival night photography under the poster wall */}
+			<Cinema src="/cinema/home-crowd.jpg" a="#ff6b35" b="#8c2333" opacity={0.4} />
 			<div className="backdrop-word font-poster pointer-events-none absolute left-0 top-6 w-full text-center text-[13vw] uppercase">
 				Legends
 			</div>
@@ -498,7 +501,7 @@ function Legacy() {
 								className={`tape absolute -top-3 left-1/2 z-10 -translate-x-1/2 ${i % 3 === 1 ? "tape-pink" : i % 3 === 2 ? "tape-cyan" : ""}`}
 								style={{ width: 70, height: 18, padding: 0 }}
 							/>
-							<PosterArt
+							<CardArt
 								slug={p.slug}
 								title={p.title}
 								a={t.a}

@@ -47,8 +47,8 @@ export function Cursor() {
 				gsap.to(ring, {
 					scale: text ? 3.2 : 1.8,
 					backgroundColor: text
-						? "rgba(199,244,65,0.95)"
-						: "rgba(199,244,65,0.12)",
+						? "rgba(255,201,77,0.95)"
+						: "rgba(255,201,77,0.12)",
 					duration: 0.35,
 					ease: "power3.out",
 				});
@@ -57,7 +57,7 @@ export function Cursor() {
 				label.textContent = "";
 				gsap.to(ring, {
 					scale: 1,
-					backgroundColor: "rgba(199,244,65,0)",
+					backgroundColor: "rgba(255,201,77,0)",
 					duration: 0.35,
 					ease: "power3.out",
 				});
@@ -83,7 +83,7 @@ export function Cursor() {
 			<div
 				ref={ringRef}
 				className="pointer-events-none fixed left-0 top-0 z-[99] flex h-10 w-10 items-center justify-center rounded-full border"
-				style={{ borderColor: "rgba(199,244,65,0.55)" }}
+				style={{ borderColor: "rgba(255,201,77,0.55)" }}
 			>
 				<span
 					ref={labelRef}

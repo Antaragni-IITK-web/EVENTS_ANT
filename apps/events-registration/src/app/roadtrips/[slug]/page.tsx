@@ -21,9 +21,10 @@ import Bugbeatboxing_registration from "../../../components/Bug-beatboxing_regis
 import Synchro_registration from "../../../components/Synchro_registration";
 import { Marquee } from "../../../components/fx/Marquee";
 import { RevealTitle } from "../../../components/fx/Reveal";
-import { PosterArt } from "../../../components/fx/PosterArt";
+import { CardArt } from "../../../components/fx/CardArt";
 import { FloatingStickers } from "../../../components/fx/Stickers";
 import { TiltCard } from "../../../components/fx/TiltCard";
+import { Cinema } from "../../../components/fx/Cinema";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -196,8 +197,8 @@ export default function RoadtripDetailPage({
 				/>
 				<FloatingStickers
 					items={[
-						{ name: "flame", color: "var(--orange)", left: "14%", top: "24%", size: 58, rot: -12, depth: 0.8 },
-						{ name: "bolt", color: "var(--pink)", left: "82%", top: "20%", size: 50, rot: 14, depth: 0.9 },
+						{ name: "mic", color: "var(--sun)", left: "14%", top: "24%", size: 58, rot: -12, depth: 0.8 },
+						{ name: "headphones", color: "var(--pink)", left: "82%", top: "20%", size: 50, rot: 14, depth: 0.9 },
 					]}
 				/>
 
@@ -226,7 +227,7 @@ export default function RoadtripDetailPage({
 						>
 							<TiltCard className="h-[420px] w-72" max={11}>
 								<div className="relative h-full w-full overflow-hidden border-2 border-white/15 shadow-[10px_10px_0_rgba(0,0,0,0.55)] transition-shadow duration-300 group-hover:shadow-[14px_14px_0_rgba(0,0,0,0.65)]">
-									<PosterArt
+									<CardArt
 										slug={f.slug}
 										title={f.label}
 										a={f.theme.a}
@@ -254,6 +255,13 @@ export default function RoadtripDetailPage({
 			{/* ------------------------------ HERO ------------------------------
 			     a campaign world: the tour poster tilts beside massive type */}
 			<section className="relative flex min-h-screen items-center overflow-hidden px-5 pt-28 md:px-12">
+				{/* this battle's own cinematic world */}
+				<Cinema
+					src={`/cinema/trip-${slug.toLowerCase()}.jpg`}
+					a={theme.a}
+					b={theme.b}
+					priority
+				/>
 				{/* the battle's own lighting */}
 				<div
 					className="pointer-events-none absolute inset-0"
@@ -271,9 +279,9 @@ export default function RoadtripDetailPage({
 				</div>
 				<FloatingStickers
 					items={[
-						{ name: "flame", color: theme.a, left: "8%", top: "22%", size: 56, rot: -12, depth: 0.7 },
-						{ name: "bolt", color: theme.b, left: "46%", top: "16%", size: 46, rot: 10, depth: 0.9 },
-						{ name: "star", color: theme.a, left: "40%", top: "78%", size: 50, rot: 8, depth: 0.5 },
+						{ name: "guitar", color: theme.a, left: "8%", top: "22%", size: 56, rot: -12, depth: 0.7 },
+						{ name: "mic", color: theme.b, left: "46%", top: "16%", size: 46, rot: 10, depth: 0.9 },
+						{ name: "drum", color: theme.a, left: "40%", top: "78%", size: 50, rot: 8, depth: 0.5 },
 					]}
 				/>
 
@@ -304,10 +312,10 @@ export default function RoadtripDetailPage({
 					</div>
 
 					{/* the collectible tour poster, tilting */}
-					<div className="hidden md:block">
+					<div className="hidden md:!block">
 						<TiltCard className="mx-auto w-full max-w-xs" max={10}>
 							<div className="relative aspect-[3/4] overflow-hidden border-2 border-white/15 shadow-[12px_12px_0_rgba(0,0,0,0.55)]">
-								<PosterArt
+								<CardArt
 									slug={slug.toLowerCase()}
 									title={heroTitle}
 									a={theme.a}
@@ -363,7 +371,7 @@ export default function RoadtripDetailPage({
 								{detailInfo?.aboutUs.title ?? "Details Coming Soon"}
 							</p>
 							<div className="mx-auto h-80 w-60 overflow-hidden rounded-2xl border border-white/10 shadow-2xl shadow-black/50 -rotate-2">
-								<PosterArt
+								<CardArt
 									slug={`${slug.toLowerCase()}-about`}
 									title={heroTitle}
 									a={theme.a}

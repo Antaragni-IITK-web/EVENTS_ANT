@@ -15,19 +15,19 @@ const CELL = 24; // px per grid cell
 const DECAY = 0.965; // heat retained per frame (higher = longer trail)
 const BASE_ALPHA = 0.06;
 
-/* heat 0→1 maps violet → pink → lime */
+/* heat 0→1 maps like an ember: deep crimson → ember orange → molten gold */
 function heatColor(t: number, alpha: number): string {
 	let r: number, g: number, b: number;
 	if (t < 0.5) {
-		const k = t * 2;
-		r = 124 + (255 - 124) * k;
-		g = 58 + (110 - 58) * k;
-		b = 237 + (199 - 237) * k;
+		const k = t * 2; /* #e11d48 → #ff8a3d */
+		r = 225 + (255 - 225) * k;
+		g = 29 + (138 - 29) * k;
+		b = 72 + (61 - 72) * k;
 	} else {
-		const k = (t - 0.5) * 2;
-		r = 255 + (199 - 255) * k;
-		g = 110 + (244 - 110) * k;
-		b = 199 + (65 - 199) * k;
+		const k = (t - 0.5) * 2; /* #ff8a3d → #ffd166 */
+		r = 255;
+		g = 138 + (209 - 138) * k;
+		b = 61 + (102 - 61) * k;
 	}
 	return `rgba(${r | 0},${g | 0},${b | 0},${alpha})`;
 }
@@ -64,6 +64,11 @@ export function CharGrid() {
 			dpr = Math.min(window.devicePixelRatio || 1, 1.5);
 			c.width = Math.floor(c.clientWidth * dpr);
 			c.height = Math.floor(c.clientHeight * dpr);
+			/* zero-size at mount (layout not settled) — skip; resize rebuilds */
+			if (c.width === 0 || c.height === 0) {
+				base = null;
+				return;
+			}
 			cols = Math.ceil(c.clientWidth / CELL) + 1;
 			rows = Math.ceil(c.clientHeight / CELL) + 1;
 			chars = Array.from({ length: cols * rows }, () =>
@@ -83,7 +88,7 @@ export function CharGrid() {
 			for (let y = 0; y < rows; y++) {
 				for (let x = 0; x < cols; x++) {
 					const jitter = 0.5 + Math.random() * 0.9;
-					bctx.fillStyle = `rgba(244,241,250,${BASE_ALPHA * jitter})`;
+					bctx.fillStyle = `rgba(247,240,228,${BASE_ALPHA * jitter})`;
 					bctx.fillText(
 						chars[y * cols + x]!,
 						x * CELL + CELL / 2,
@@ -124,7 +129,11 @@ export function CharGrid() {
 
 		function tick(now: number) {
 			raf = requestAnimationFrame(tick);
-			if (document.hidden || !ctx || !base) return;
+			if (document.hidden || !ctx || !base) {
+				/* canvas had no size at mount — try rebuilding once layout exists */
+				if (!base && canvas!.clientWidth > 0) build();
+				return;
+			}
 
 			for (const d of drifters) {
 				d.t += 1;
@@ -163,8 +172,10 @@ export function CharGrid() {
 		build();
 		/* paint the resting grid immediately — no blank first frame,
 		   and hidden tabs still show the texture */
-		ctx.setTransform(1, 0, 0, 1, 0, 0);
-		ctx.drawImage(base!, 0, 0);
+		if (base) {
+			ctx.setTransform(1, 0, 0, 1, 0, 0);
+			ctx.drawImage(base, 0, 0);
+		}
 
 		if (!reduced) {
 			window.addEventListener("pointermove", onMove, { passive: true });

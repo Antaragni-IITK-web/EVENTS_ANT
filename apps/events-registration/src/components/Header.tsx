@@ -148,7 +148,7 @@ const Header = () => {
 										>
 											<div
 												className="border-b-2 border-dashed border-white/15 px-5 py-4"
-												style={{ background: "rgba(199,244,65,0.06)" }}
+												style={{ background: "rgba(255,201,77,0.07)" }}
 											>
 												<p className="text-[9px] font-bold uppercase tracking-[0.3em] text-[var(--lime)]">
 													Backstage pass

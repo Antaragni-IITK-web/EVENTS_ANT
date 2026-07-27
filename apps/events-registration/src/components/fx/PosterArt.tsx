@@ -113,7 +113,7 @@ function Mark({
 						fill={b}
 						opacity={0.45}
 					/>
-					<Icon x={x - size / 2} y={y - size / 2} size={size} fill="#f4f1fa" />
+					<Icon x={x - size / 2} y={y - size / 2} size={size} fill="#f7f0e4" />
 				</>
 			) : glyph ? (
 				<>
@@ -135,7 +135,7 @@ function Mark({
 						fontSize={size * 1.15}
 						fontWeight={900}
 						textAnchor="middle"
-						fill="#f4f1fa"
+						fill="#f7f0e4"
 						fontFamily="var(--font-rakkas), sans-serif"
 					>
 						{glyph}
@@ -244,7 +244,7 @@ function scene(motif: Motif, s: SceneArgs) {
 							cy={cy}
 							r={rad}
 							fill="none"
-							stroke="rgba(244,241,250,0.16)"
+							stroke="rgba(247,240,228,0.16)"
 							strokeWidth={1.5}
 						/>
 					))}
@@ -253,7 +253,7 @@ function scene(motif: Motif, s: SceneArgs) {
 					{/* light glint on the record */}
 					<path
 						d={`M ${cx - 70} ${cy - 44} A 82 82 0 0 1 ${cx - 12} ${cy - 82}`}
-						stroke="rgba(244,241,250,0.5)"
+						stroke="rgba(247,240,228,0.5)"
 						strokeWidth={5}
 						strokeLinecap="round"
 						fill="none"
@@ -271,7 +271,7 @@ function scene(motif: Motif, s: SceneArgs) {
 					{/* spotlight cones from top corners */}
 					<polygon points={`14,-10 -40,300 150,300`} fill={a} opacity={0.3} />
 					<polygon points={`306,-10 170,300 360,300`} fill={b} opacity={0.3} />
-					<polygon points={`160,-30 60,310 260,310`} fill="#f4f1fa" opacity={0.14} />
+					<polygon points={`160,-30 60,310 260,310`} fill="#f7f0e4" opacity={0.14} />
 					{/* motion trails arcing through the frame */}
 					{[0, 1, 2].map((i) => (
 						<path
@@ -337,7 +337,7 @@ function scene(motif: Motif, s: SceneArgs) {
 							y1={cy - 140}
 							x2={cx}
 							y2={cy - 128}
-							stroke="rgba(244,241,250,0.5)"
+							stroke="rgba(247,240,228,0.5)"
 							strokeWidth={2}
 							transform={`rotate(${deg} ${cx} ${cy})`}
 						/>
@@ -405,7 +405,7 @@ function scene(motif: Motif, s: SceneArgs) {
 								y1={-10}
 								x2={W + 10 + Math.cos(rad) * 420}
 								y2={-10 - Math.sin(rad) * 420}
-								stroke="rgba(244,241,250,0.35)"
+								stroke="rgba(247,240,228,0.35)"
 								strokeWidth={1 + r() * 2}
 							/>
 						);
@@ -482,7 +482,7 @@ function scene(motif: Motif, s: SceneArgs) {
 					{/* brush swash */}
 					<path
 						d={`M 24 330 Q ${W / 2} ${292 + r() * 30} ${W - 24} 322`}
-						stroke="#f4f1fa"
+						stroke="#f7f0e4"
 						strokeWidth={9}
 						strokeLinecap="round"
 						fill="none"
@@ -625,7 +625,7 @@ export function PosterArt({
 					y={30}
 					fontSize={11}
 					fontWeight={700}
-					fill="#f4f1fa"
+					fill="#f7f0e4"
 					opacity={0.85}
 					fontFamily="var(--font-inter), monospace"
 					letterSpacing={2}
@@ -647,7 +647,7 @@ export function PosterArt({
 				{/* barcode */}
 				<g transform={`translate(${W - 74} ${H - 26})`} opacity={0.9}>
 					{Array.from({ length: 18 }, (_, i) => (
-						<rect key={i} x={i * 3.4} y={0} width={r() > 0.5 ? 2.2 : 1.1} height={14} fill="#f4f1fa" />
+						<rect key={i} x={i * 3.4} y={0} width={r() > 0.5 ? 2.2 : 1.1} height={14} fill="#f7f0e4" />
 					))}
 				</g>
 				{/* corner ticks */}
@@ -663,7 +663,7 @@ export function PosterArt({
 						key={i}
 						d={`M ${x} ${y + 12 * sy} L ${x} ${y} L ${x + 12 * sx} ${y}`}
 						fill="none"
-						stroke="rgba(244,241,250,0.55)"
+						stroke="rgba(247,240,228,0.55)"
 						strokeWidth={2}
 					/>
 				))}

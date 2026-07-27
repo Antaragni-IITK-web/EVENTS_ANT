@@ -6,8 +6,9 @@ import { tripTheme } from "../../data/themes";
 import { Reveal, RevealTitle } from "../../components/fx/Reveal";
 import { FloatingStickers } from "../../components/fx/Stickers";
 import { TiltCard } from "../../components/fx/TiltCard";
-import { PosterArt } from "../../components/fx/PosterArt";
+import { CardArt } from "../../components/fx/CardArt";
 import { Marquee } from "../../components/fx/Marquee";
+import { Cinema } from "../../components/fx/Cinema";
 
 /* ----------------------------------------------------------------------------
    ANTARAGNI ON TOUR — a national tour announcement, not a list.
@@ -57,7 +58,7 @@ function TourPoster({
 					<div className="relative overflow-hidden border-2 border-white/15 shadow-[10px_10px_0_rgba(0,0,0,0.5)] transition-shadow duration-300 group-hover:shadow-[14px_14px_0_rgba(0,0,0,0.6)]">
 						{/* the collectible poster */}
 						<div className="relative aspect-[3/4]">
-							<PosterArt
+							<CardArt
 								slug={slug}
 								title={title}
 								a={t.a}
@@ -110,7 +111,10 @@ export default function RoadtripsPage() {
 	return (
 		<div className="pt-36">
 			{/* ------------------------------ HERO ------------------------------ */}
-			<section className="relative mx-auto max-w-7xl overflow-hidden px-4 pb-6 md:px-8">
+			<section className="relative -mt-36 overflow-hidden pb-6 pt-36">
+				{/* the tour on the road — cinematic backdrop */}
+				<Cinema src="/cinema/roadtrips-hero.jpg" a="#ff6b35" b="#d92643" priority />
+				<div className="relative mx-auto max-w-7xl px-4 md:px-8">
 				<div
 					className="backdrop-word font-poster pointer-events-none absolute -top-4 left-0 text-[16vw] uppercase"
 					aria-hidden
@@ -120,9 +124,9 @@ export default function RoadtripsPage() {
 
 				<FloatingStickers
 					items={[
-						{ name: "flame", color: "var(--orange)", left: "78%", top: "12%", size: 66, rot: 8, depth: 0.8 },
-						{ name: "note", color: "var(--cyan)", left: "60%", top: "52%", size: 52, rot: -10, depth: 0.6 },
-						{ name: "star", color: "var(--pink)", left: "6%", top: "62%", size: 56, rot: 14, depth: 0.9 },
+						{ name: "guitar", color: "var(--sun)", left: "78%", top: "12%", size: 66, rot: 8, depth: 0.8 },
+						{ name: "drum", color: "var(--yellow)", left: "60%", top: "52%", size: 52, rot: -10, depth: 0.6 },
+						{ name: "mic", color: "var(--pink)", left: "6%", top: "62%", size: 56, rot: 14, depth: 0.9 },
 					]}
 				/>
 
@@ -143,6 +147,7 @@ export default function RoadtripsPage() {
 						sharpest comics and fiercest crews.
 					</p>
 				</Reveal>
+				</div>
 			</section>
 
 			{/* --------------------------- NATIONALS ----------------------------
@@ -157,7 +162,7 @@ export default function RoadtripsPage() {
 						>
 							<TiltCard className="mx-auto w-full max-w-sm md:order-2" max={8}>
 								<div className="relative aspect-[3/4] overflow-hidden border-2 border-white/15 shadow-[12px_12px_0_rgba(0,0,0,0.55)]">
-									<PosterArt
+									<CardArt
 										slug={nationals.slug}
 										title={nationals.title}
 										a={nat.a}
@@ -223,7 +228,7 @@ export default function RoadtripsPage() {
 			</section>
 
 			{/* ------------------------- TOUR MARQUEE ---------------------------- */}
-			<div className="my-6 -rotate-1 scale-[1.02]" style={{ background: "var(--cyan)" }}>
+			<div className="my-6 -rotate-1 scale-[1.02]" style={{ background: "var(--yellow)" }}>
 				<Marquee duration={26} className="py-4">
 					{Array.from({ length: 6 }).map((_, i) => (
 						<span
