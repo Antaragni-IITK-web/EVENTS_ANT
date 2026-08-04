@@ -4,5 +4,5 @@ export declare function Parallax({ className, children, speed, id, position, }: 
     speed: number;
     id: string;
     position: string;
-}): import("react/jsx-runtime").JSX.Element;
+}): import("react").JSX.Element;
 //# sourceMappingURL=parallax.d.ts.map

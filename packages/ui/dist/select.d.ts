@@ -1,3 +1,4 @@
+import * as React from "react";
 interface SelectProps {
     value: string;
     onValueChange: (val: string) => void;
@@ -7,6 +8,6 @@ interface SelectProps {
         value: string;
     }[];
 }
-export declare function Select({ value, onValueChange, placeholder, options, }: SelectProps): import("react/jsx-runtime").JSX.Element;
+export declare function Select({ value, onValueChange, placeholder, options, }: SelectProps): React.JSX.Element;
 export {};
 //# sourceMappingURL=select.d.ts.map

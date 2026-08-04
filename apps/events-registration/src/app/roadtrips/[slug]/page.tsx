@@ -458,7 +458,7 @@ export default function RoadtripDetailPage({
 									slot, and we&rsquo;ll see you in the pit.
 								</p>
 							</div>
-							<div className="relative mt-10">{renderRegistrationForm()}</div>
+							<div className="reg-arena relative mt-10">{renderRegistrationForm()}</div>
 						</section>
 					)}
 
@@ -477,7 +477,7 @@ export default function RoadtripDetailPage({
 										key={idx}
 										className="glass glow-card w-64 rounded-3xl p-6 text-center"
 									>
-										<div className="mx-auto mb-4 flex h-52 items-center overflow-hidden rounded-xl">
+										<div className="mx-auto flex h-52 items-center overflow-hidden rounded-xl">
 											<img
 												src={sponsor.img}
 												alt={sponsor.name}
@@ -486,9 +486,6 @@ export default function RoadtripDetailPage({
 												className="h-fit w-full object-contain"
 											/>
 										</div>
-										<h3 className="font-title text-2xl font-bold text-secondary">
-											{sponsor.name}
-										</h3>
 									</div>
 								))}
 							</div>

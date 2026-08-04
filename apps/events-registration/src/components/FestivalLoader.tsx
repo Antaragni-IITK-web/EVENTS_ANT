@@ -5,16 +5,12 @@ import { useStore } from "@repo/store";
 
 /* ----------------------------------------------------------------------------
    FestivalLoader — the opening curtain.
-   The Antaragni brush mark draws itself in a single stroke (like a hand
-   painting it), embers glow behind it, the wordmark stamps in, then the
-   whole screen wipes upward like a stage curtain. Same contract as the
-   shared Loader: waits for page load + minimum time, then releases
-   `initialAnimation` in the store.
+   The REAL Antaragni brush mark (public/logo.png as a mask) ignites: molten
+   fire rises up through the logo shape, it flickers like a flame, the
+   wordmark stamps in, then the screen wipes upward like a stage curtain.
+   Same contract as the shared Loader: waits for page load + minimum time,
+   then releases `initialAnimation` in the store.
 ---------------------------------------------------------------------------- */
-
-/* the Antaragni mark, traced as one continuous brush stroke */
-const MARK_PATH =
-	"M 62 5 C 56 21, 40 52, 24 84 C 18 96, 13 106, 9 117 C 33 126, 62 124, 85 116 C 89 114, 91 112, 90 109 C 81 93, 69 71, 58 48 C 55 42, 52 37, 50 32";
 
 export default function FestivalLoader() {
 	const [status, setStatus] = useState<"loading" | "leaving" | "finished">(
@@ -62,39 +58,16 @@ export default function FestivalLoader() {
 			/>
 			<div className="halftone pointer-events-none absolute inset-0 opacity-20" />
 
-			{/* the mark, drawing itself */}
+			{/* the real mark, igniting from the base up */}
 			<div
-				className={`loader-mark relative transition-transform duration-500 ${
+				className={`loader-mark relative h-44 w-[118px] transition-transform duration-500 ${
 					status === "leaving" ? "scale-110" : ""
 				}`}
 			>
-				<svg
-					width="130"
-					height="164"
-					viewBox="0 0 100 130"
-					fill="none"
-					className="overflow-visible"
-				>
-					{/* faint ember echo behind the stroke */}
-					<path
-						d={MARK_PATH}
-						stroke="rgba(255,138,61,0.25)"
-						strokeWidth="16"
-						strokeLinecap="round"
-						strokeLinejoin="round"
-						className="loader-stroke"
-						pathLength={1}
-					/>
-					<path
-						d={MARK_PATH}
-						stroke="#b32024"
-						strokeWidth="11"
-						strokeLinecap="round"
-						strokeLinejoin="round"
-						className="loader-stroke"
-						pathLength={1}
-					/>
-				</svg>
+				{/* ghost of the mark, faintly visible before the fire reaches it */}
+				<div className="loader-logo-ghost absolute inset-0" />
+				{/* molten fill rising through the logo shape */}
+				<div className="loader-logo-fire absolute inset-0" />
 			</div>
 
 			{/* wordmark stamps in after the stroke */}
@@ -102,7 +75,7 @@ export default function FestivalLoader() {
 				ANTARAGNI<span style={{ color: "var(--gold)" }}>&rsquo;26</span>
 			</p>
 			<p className="loader-sub mt-2 text-[10px] font-bold uppercase tracking-[0.4em] text-[#f7f0e4]/45">
-				The rebirth of culture
+				The fire shall rise again
 			</p>
 
 			{/* ember progress line */}

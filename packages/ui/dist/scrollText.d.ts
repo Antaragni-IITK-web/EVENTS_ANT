@@ -3,5 +3,5 @@ export declare function ScrollText({ text, className, bulk, fadeOut, }: {
     className?: string;
     bulk?: boolean;
     fadeOut?: boolean;
-}): import("react/jsx-runtime").JSX.Element;
+}): import("react").JSX.Element;
 //# sourceMappingURL=scrollText.d.ts.map

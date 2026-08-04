@@ -53,7 +53,7 @@ export function CardArt({
 	const serial = `Nº ${String((index ?? 7) + 1).padStart(2, "0")}/26`;
 
 	return (
-		<div className={`relative overflow-hidden bg-[#17101f] ${className}`}>
+		<div className={`card-fx relative overflow-hidden bg-[#17101f] ${className}`}>
 			{/* the photograph */}
 			<Image
 				src={`/cards/${cardKey(slug)}.jpg`}

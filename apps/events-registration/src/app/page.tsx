@@ -8,7 +8,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Marquee } from "../components/fx/Marquee";
 import { Reveal, RevealTitle } from "../components/fx/Reveal";
 import { CardArt } from "../components/fx/CardArt";
-import { FloatingStickers } from "../components/fx/Stickers";
+import { Embers } from "../components/fx/Embers";
 import { Magnetic } from "../components/fx/Magnetic";
 import { Cinema } from "../components/fx/Cinema";
 import { eventTheme, tripTheme } from "../data/themes";
@@ -37,7 +37,6 @@ function Hero() {
 					duration: 1.2,
 					delay: 0.25,
 				})
-					.from(".hero-back", { opacity: 0, duration: 0.9 }, "-=0.6")
 					.from(".hero-eyebrow", { opacity: 0, y: 20, duration: 0.7 }, "-=0.7")
 					.from(".hero-sub", { opacity: 0, y: 24, duration: 0.8 }, "-=0.5")
 					.from(
@@ -79,68 +78,63 @@ function Hero() {
 			ref={ref}
 			className="relative flex min-h-screen flex-col justify-center overflow-hidden px-5 md:px-12"
 		>
-			{/* wallpaper of outline type behind everything */}
-			<div className="hero-backdrop pointer-events-none absolute inset-0 flex flex-col justify-center gap-2 opacity-90">
-				{[0, 1, 2, 3, 4].map((row) => (
+			{/* typographic wallpaper — three warm outline rows drifting slowly,
+			    faded at the edges so they never fight the wordmark */}
+			<div className="hero-backdrop hero-rows pointer-events-none absolute -inset-x-[12%] inset-y-0 flex -rotate-3 flex-col justify-center gap-[3vw]">
+				{[
+					{ dur: "85s", rev: false },
+					{ dur: "62s", rev: true },
+					{ dur: "74s", rev: false },
+				].map((row, i) => (
 					<div
-						key={row}
-						className="backdrop-word font-poster text-[11vw] uppercase"
+						key={i}
+						className="marquee-track"
 						style={{
-							transform: `translateX(${row % 2 ? -6 : -18}%) rotate(-4deg)`,
+							["--marquee-dur" as string]: row.dur,
+							animationDirection: row.rev ? "reverse" : "normal",
 						}}
 					>
-						{Array.from({ length: 4 })
-							.map(() => "ANTARAGNI ✦ ")
-							.join("")}
+						{[0, 1].map((c) => (
+							<span
+								key={c}
+								className="backdrop-word backdrop-word-warm font-poster whitespace-nowrap px-6 text-[8.5vw] uppercase"
+							>
+								{"ANTARAGNI ✦ ".repeat(5)}
+							</span>
+						))}
 					</div>
 				))}
 			</div>
 
-			{/* floating festival stickers with cursor parallax */}
-			<FloatingStickers
-				items={[
-					{ name: "mic", color: "var(--yellow)", left: "72%", top: "16%", size: 74, rot: 12, depth: 0.9 },
-					{ name: "guitar", color: "var(--sun)", left: "6%", top: "20%", size: 62, rot: -10, depth: 0.6 },
-					{ name: "note", color: "var(--pink)", left: "86%", top: "62%", size: 58, rot: 8, depth: 1 },
-					{ name: "masks", color: "var(--orange)", left: "58%", top: "8%", size: 48, rot: -14, depth: 0.5 },
-					{ name: "film", color: "var(--violet)", left: "12%", top: "72%", size: 66, rot: 0, depth: 0.8, className: "spin-slow" },
-					{ name: "ticket", color: "var(--lime)", left: "44%", top: "78%", size: 44, rot: 10, depth: 0.7 },
-					{ name: "camera", color: "var(--cyan)", left: "30%", top: "12%", size: 46, rot: -6, depth: 0.4 },
-				]}
-			/>
+			{/* stage beam falling on the wordmark */}
+			<div className="hero-beam pointer-events-none absolute left-[38%] top-[-24%] h-[95%] w-[48vw] -translate-x-1/2" />
 
-			{/* ticket-stamp date, pinned top-right like a price sticker */}
+			{/* sparks rising from the fire — the hero breathes */}
+			<Embers count={72} />
+
+			{/* cinematic vignette — center pops, edges fall away */}
+			<div className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_100%_at_45%_42%,transparent_52%,rgba(12,7,8,0.6)_100%)]" />
+
+			{/* ticket-stamp date, pinned top-right — 61st Edition headlines it */}
 			<div className="hero-stamp absolute right-5 top-24 rotate-6 md:right-14 md:top-28">
-				<div className="flex flex-col items-center gap-1">
+				<div className="flex flex-col items-center gap-1.5">
+					<span className="tape tape-pink !text-sm">61ST EDITION</span>
 					<span className="tape">OCT 2026</span>
-					<span className="tape tape-pink">IIT KANPUR</span>
-					<span className="tape tape-cyan">61st Edition</span>
+					<span className="tape tape-cyan">IIT KANPUR</span>
 				</div>
 			</div>
 
 			<div className="relative max-w-[1500px]">
-				<p className="hero-eyebrow mb-4 flex items-center gap-3 text-xs font-bold uppercase tracking-[0.35em] text-foreground/70">
-					<span className="inline-block h-3 w-3 rotate-45" style={{ background: "var(--lime)" }} />
+				<p className="hero-eyebrow mb-5 flex items-center gap-3 text-sm font-bold uppercase tracking-[0.3em] text-foreground/85 md:text-lg">
+					<span className="inline-block h-3.5 w-3.5 rotate-45" style={{ background: "var(--gold)" }} />
 					North India&rsquo;s biggest college cultural festival
 				</p>
 
-				{/* the identity — ONE line, layered like a screen-printed poster:
-				    lime outline echo behind, ink offset below, chrome front */}
+				{/* the identity — ONE line: molten letters with an ink outline,
+				    hard poster shadow + ember bloom. No misregistered echo. */}
 				<div className="hero-title relative w-fit select-none">
-					<span
-						aria-hidden
-						className="hero-back hero-word hero-word-echo font-title absolute left-0 top-0 -translate-x-[0.06em] -translate-y-[0.06em] text-[10.5vw] font-black md:text-[9.3vw]"
-					>
-						{TITLE}
-					</span>
-					<span
-						aria-hidden
-						className="hero-back hero-word hero-word-ink font-title absolute left-0 top-0 translate-x-[0.07em] translate-y-[0.07em] text-[10.5vw] font-black md:text-[9.3vw]"
-					>
-						{TITLE}
-					</span>
 					<h1
-						className="hero-word font-title relative text-[10.5vw] font-black md:text-[9.3vw]"
+						className="hero-word hero-fire-shadow font-title relative text-[10.5vw] font-black md:text-[9.3vw]"
 						aria-label={TITLE}
 					>
 						{TITLE.split("").map((ch, i) => (
@@ -381,13 +375,6 @@ const STATS = [
 function About() {
 	return (
 		<section className="relative mx-auto max-w-6xl overflow-hidden px-4 py-28">
-			<FloatingStickers
-				items={[
-					{ name: "trophy", color: "var(--yellow)", left: "88%", top: "10%", size: 56, rot: 14, depth: 0.6 },
-					{ name: "brush", color: "var(--pink)", left: "4%", top: "60%", size: 52, rot: -8, depth: 0.8 },
-				]}
-			/>
-
 			<div className="grid items-start gap-16 md:grid-cols-[1.1fr_1fr]">
 				<Reveal>
 					<span className="tape mb-5 inline-block rotate-1">

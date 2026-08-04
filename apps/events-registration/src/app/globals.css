@@ -235,6 +235,38 @@ body {
 	line-height: 0.82;
 	white-space: nowrap;
 }
+/* warm variant — ember-lit outline for the landing wallpaper */
+.backdrop-word-warm {
+	-webkit-text-stroke: 1px rgba(255, 183, 105, 0.13);
+}
+
+/* landing wallpaper rows: fade toward the edges so type never clutters */
+.hero-rows {
+	mask-image: radial-gradient(95% 85% at 48% 45%, black 35%, transparent 96%);
+	-webkit-mask-image: radial-gradient(95% 85% at 48% 45%, black 35%, transparent 96%);
+}
+
+/* stage beam falling on the hero wordmark */
+@keyframes beam-sway {
+	0%, 100% { transform: translateX(-50%) rotate(-2.5deg); opacity: 0.75; }
+	50% { transform: translateX(-50%) rotate(2.5deg); opacity: 1; }
+}
+.hero-beam {
+	background: linear-gradient(
+		180deg,
+		rgba(255, 201, 77, 0.16) 0%,
+		rgba(255, 138, 61, 0.07) 45%,
+		transparent 72%
+	);
+	clip-path: polygon(44% 0, 56% 0, 100% 100%, 0 100%);
+	filter: blur(22px);
+	mix-blend-mode: screen;
+	transform-origin: 50% 0%;
+	animation: beam-sway 14s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+	.hero-beam { animation: none; }
+}
 
 /* animated gradient sweeping through display type */
 @keyframes gradient-sweep {
@@ -340,13 +372,12 @@ body {
 	transform: scaleY(1.12);
 	transform-origin: bottom left;
 }
-.hero-word-echo {
-	-webkit-text-stroke: 1.5px rgba(255, 209, 102, 0.55);
-	color: transparent;
-}
-.hero-word-ink {
-	color: #0a0612;
-	-webkit-text-stroke: 1px rgba(244, 241, 250, 0.18);
+/* real depth on the molten wordmark: hard poster shadow + ember bloom.
+   NOTE: no -webkit-text-stroke here — it artifacts against
+   background-clip:text (outlines the glyph counters misaligned). */
+.hero-fire-shadow {
+	filter: drop-shadow(0.045em 0.055em 0 rgba(20, 10, 12, 0.92))
+		drop-shadow(0 0.12em 0.5em rgba(217, 38, 67, 0.42));
 }
 
 /* ============ POSTER RAIL (horizontal stage scroll) ============ */
@@ -387,21 +418,43 @@ body {
 
 /* ============ FESTIVAL LOADER ============ */
 
-@keyframes loader-draw {
-	from { stroke-dashoffset: 1; }
-	to { stroke-dashoffset: 0; }
-}
 @keyframes loader-flicker {
-	0%, 100% { filter: drop-shadow(0 0 6px rgba(255, 107, 53, 0.55)); }
-	50% { filter: drop-shadow(0 0 14px rgba(255, 138, 61, 0.85)); }
-}
-.loader-stroke {
-	stroke-dasharray: 1;
-	stroke-dashoffset: 1;
-	animation: loader-draw 1.3s cubic-bezier(0.65, 0, 0.35, 1) 0.15s forwards;
+	0%, 100% { filter: drop-shadow(0 0 8px rgba(255, 107, 53, 0.5)); }
+	50% { filter: drop-shadow(0 0 18px rgba(255, 138, 61, 0.85)); }
 }
 .loader-mark {
-	animation: loader-flicker 2.2s ease-in-out 1.5s infinite;
+	animation: loader-flicker 2.2s ease-in-out 1.6s infinite;
+}
+/* the real logo used as a mask — ghost + rising molten fill */
+.loader-logo-ghost,
+.loader-logo-fire {
+	-webkit-mask: url("/logo.png") center / contain no-repeat;
+	mask: url("/logo.png") center / contain no-repeat;
+}
+.loader-logo-ghost {
+	background: rgba(247, 240, 228, 0.1);
+}
+@keyframes loader-ignite {
+	to { clip-path: inset(0 0 0 0); }
+}
+@keyframes loader-molten {
+	from { background-position: 50% 100%; }
+	to { background-position: 50% 0%; }
+}
+.loader-logo-fire {
+	background: linear-gradient(
+		180deg,
+		#ffc94d 0%,
+		#ff8a3d 32%,
+		#d92643 68%,
+		#8c2333 100%
+	);
+	background-size: 100% 240%;
+	background-position: 50% 100%;
+	clip-path: inset(100% 0 0 0);
+	animation:
+		loader-ignite 1.5s cubic-bezier(0.65, 0, 0.35, 1) 0.2s forwards,
+		loader-molten 2.6s ease-in-out 1.7s infinite alternate;
 }
 @keyframes loader-stamp {
 	from { opacity: 0; transform: translateY(14px) scale(0.94); }
@@ -425,7 +478,7 @@ body {
 	animation: loader-fill 1.9s cubic-bezier(0.65, 0, 0.35, 1) 0.1s forwards;
 }
 @media (prefers-reduced-motion: reduce) {
-	.loader-stroke { animation-duration: 0.01s; animation-delay: 0s; }
+	.loader-logo-fire { animation-duration: 0.01s, 0.01s; animation-delay: 0s, 0s; }
 	.loader-mark { animation: none; }
 	.loader-word, .loader-sub { animation-duration: 0.01s; animation-delay: 0s; }
 	.loader-bar { animation-duration: 0.01s; }
@@ -457,6 +510,119 @@ body {
 }
 .marquee-paused:hover .marquee-track {
 	animation-play-state: paused;
+}
+
+/* ============ CARD HOVER FX ============
+   The card itself reacts: lifts + scales, the photo zooms slower inside,
+   and a light sweep runs across like stage light hitting the cardstock. */
+.card-fx {
+	transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.group:hover .card-fx {
+	transform: scale(1.045) translateY(-6px);
+}
+.card-fx > img {
+	transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1) !important;
+}
+.group:hover .card-fx > img {
+	transform: scale(1.09);
+}
+.card-fx::after {
+	content: "";
+	position: absolute;
+	inset: -30%;
+	background: linear-gradient(
+		105deg,
+		transparent 42%,
+		rgba(255, 220, 160, 0.22) 50%,
+		transparent 58%
+	);
+	transform: translateX(-130%) rotate(0.001deg);
+	pointer-events: none;
+	z-index: 2;
+}
+.group:hover .card-fx::after {
+	transition: transform 0.85s cubic-bezier(0.65, 0, 0.35, 1);
+	transform: translateX(130%) rotate(0.001deg);
+}
+@media (prefers-reduced-motion: reduce) {
+	.card-fx,
+	.card-fx > img,
+	.card-fx::after {
+		transition: none;
+	}
+}
+
+/* ============ REGISTRATION ARENA ============
+   The six ported roadtrip registration forms keep their logic but get
+   re-skinned here: glass container → ink panel, pill button → sticker,
+   inputs → warm ink stock. Scoped so nothing else is touched. */
+
+.reg-arena section {
+	min-height: unset !important;
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+}
+/* the forms render their own big title — we already print "Enter the Arena" */
+.reg-arena h1 {
+	display: none;
+}
+.reg-arena [class*="backdrop-blur"] {
+	background: var(--ink) !important;
+	backdrop-filter: none !important;
+	-webkit-backdrop-filter: none !important;
+	border: 2px solid rgba(246, 241, 234, 0.15) !important;
+	border-radius: 12px !important;
+	box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.5);
+}
+.reg-arena label {
+	color: rgba(247, 240, 228, 0.75) !important;
+	text-transform: uppercase;
+	font-size: 11px !important;
+	letter-spacing: 0.14em;
+	font-weight: 700;
+}
+.reg-arena input,
+.reg-arena select,
+.reg-arena textarea {
+	background: #201219 !important;
+	border: 2px solid rgba(246, 241, 234, 0.14) !important;
+	border-radius: 8px !important;
+	color: var(--paper) !important;
+	box-shadow: none !important;
+}
+.reg-arena input:focus,
+.reg-arena select:focus,
+.reg-arena textarea:focus {
+	border-color: var(--gold) !important;
+	outline: none !important;
+}
+.reg-arena button[type="submit"] {
+	background: var(--gold) !important;
+	color: #1a1114 !important;
+	border: 2px solid #1a1114 !important;
+	border-radius: 10px !important;
+	box-shadow: 5px 5px 0 var(--flame) !important;
+	transform: rotate(-1deg);
+	text-transform: uppercase;
+	font-size: 0.95rem !important;
+	letter-spacing: 0.08em;
+	transition: transform 0.2s, box-shadow 0.2s;
+}
+.reg-arena button[type="submit"]:hover {
+	transform: rotate(0.5deg) translate(-2px, -2px);
+	box-shadow: 7px 7px 0 var(--flame) !important;
+}
+
+/* card wall — cards deal themselves in when the filter changes */
+@keyframes wall-deal {
+	from { opacity: 0; transform: translateY(26px) rotate(0deg) scale(0.96); }
+}
+.wall-card {
+	animation: wall-deal 0.55s cubic-bezier(0.19, 1, 0.22, 1) backwards;
+}
+@media (prefers-reduced-motion: reduce) {
+	.wall-card { animation: none; }
 }
 
 /* kinetic lineup — gradient fill wipes in from the left on row hover */

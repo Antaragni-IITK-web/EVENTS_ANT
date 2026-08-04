@@ -137,7 +137,7 @@ export function Atmosphere() {
 				className="absolute inset-0"
 				style={{
 					background:
-						"radial-gradient(125% 95% at 50% -5%, #3d2130 0%, #2d1a26 34%, #22141d 68%, #1c1218 100%)",
+						"radial-gradient(125% 95% at 42% -5%, #452433 0%, #2e1a26 36%, #201219 70%, #170f13 100%)",
 				}}
 			/>
 			{/* ember floor glow — stage light pooling at the bottom */}
@@ -145,7 +145,7 @@ export function Atmosphere() {
 				className="absolute inset-x-0 bottom-0 h-1/2"
 				style={{
 					background:
-						"radial-gradient(80% 100% at 50% 100%, rgba(255,107,53,0.09), transparent 70%)",
+						"radial-gradient(80% 100% at 50% 100%, rgba(255,107,53,0.13), transparent 70%)",
 				}}
 			/>
 

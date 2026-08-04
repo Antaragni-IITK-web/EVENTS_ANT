@@ -3,5 +3,5 @@ export declare function Section({ spacer, children, className, id, }: {
     children: React.ReactNode;
     className?: string;
     id?: string;
-}): import("react/jsx-runtime").JSX.Element;
+}): import("react").JSX.Element;
 //# sourceMappingURL=section.d.ts.map

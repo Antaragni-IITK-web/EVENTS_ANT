@@ -1,215 +1,138 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { eventsData } from "../../data/events";
 import { eventTheme, CAT_THEME } from "../../data/themes";
 import { Marquee } from "../../components/fx/Marquee";
 import { Reveal, RevealTitle } from "../../components/fx/Reveal";
-import { FloatingStickers } from "../../components/fx/Stickers";
 import { TiltCard } from "../../components/fx/TiltCard";
 import { CardArt } from "../../components/fx/CardArt";
-import { Cinema, catKey } from "../../components/fx/Cinema";
+import { Cinema } from "../../components/fx/Cinema";
 
 /* ----------------------------------------------------------------------------
-   Festival lineup reveal — categories are STAGES, each its own zone:
-   tinted atmosphere, huge zone typography, and a horizontal rail of
-   collectible posters you flick through like a crate of records.
+   THE LINEUP — every event on one wall, like a rack of collectible cards.
+   No mile-long stage sections: a compact hero, a stage filter rail, and a
+   single continuous grid on one unbroken atmosphere (no bg jumps).
 ---------------------------------------------------------------------------- */
 
-const STAGES: Record<string, { stage: string; blurb: string }> = {
-	"Performing Arts": {
-		stage: "Performing Arts Stage",
-		blurb: "Dance, music and drama under the biggest lights on campus.",
-	},
-	"Literary Arts": {
-		stage: "Literary Arena",
-		blurb: "Words as weapons — debates, quizzes and poetry that cuts.",
-	},
-	"Media Arts": {
-		stage: "Media District",
-		blurb: "Lenses, frames and stories told at 24 frames a second.",
-	},
-	"Visual Arts": {
-		stage: "Visual District",
-		blurb: "Wet paint, loud walls and galleries that shout.",
-	},
-	Personality: {
-		stage: "Spotlight Stage",
-		blurb: "One mic, one runway, all eyes on you.",
-	},
-	Fashion: {
-		stage: "The Runway",
-		blurb: "Walk like thunder — India's boldest college fashion battle.",
-	},
-	"Special Event": {
-		stage: "After Dark Zone",
-		blurb: "The weird, the wonderful, the unmissable.",
-	},
+const STAGES: Record<string, string> = {
+	"Performing Arts": "Performing Arts Stage",
+	"Literary Arts": "Literary Arena",
+	"Media Arts": "Media District",
+	"Visual Arts": "Visual District",
+	Personality: "Spotlight Stage",
+	Fashion: "The Runway",
+	"Special Event": "After Dark Zone",
 };
 
 const CATEGORIES = Array.from(new Set(eventsData.map((e) => e.category)));
 
 export default function EventsPage() {
+	const [active, setActive] = useState("All");
+
+	const visible =
+		active === "All"
+			? eventsData
+			: eventsData.filter((e) => e.category === active);
+
 	return (
 		<div className="pt-36">
-			{/* ------------------------------ HERO ------------------------------ */}
-			<section className="relative -mt-36 overflow-hidden pb-10 pt-36">
-				{/* cinematic stage photography behind the lineup announcement */}
+			{/* --------------------------- COMPACT HERO -------------------------- */}
+			<section className="relative -mt-36 overflow-hidden pb-8 pt-36">
 				<Cinema src="/cinema/events-hero.jpg" a="#ff6b35" b="#8c2333" priority />
 				<div className="relative mx-auto max-w-7xl px-4 md:px-8">
-				<FloatingStickers
-					items={[
-						{ name: "mic", color: "var(--yellow)", left: "80%", top: "6%", size: 64, rot: 10, depth: 0.8 },
-						{ name: "masks", color: "var(--pink)", left: "62%", top: "48%", size: 52, rot: -12, depth: 0.6 },
-						{ name: "film", color: "var(--cyan)", left: "8%", top: "58%", size: 58, rot: 0, depth: 0.9, className: "spin-slow" },
-					]}
-				/>
-
-				<Reveal>
-					<span className="tape mb-5 inline-block -rotate-2">
-						The main arena &middot; On campus
-					</span>
-				</Reveal>
-				<RevealTitle
-					as="h1"
-					text="THE LINEUP"
-					className="font-poster text-[18vw] uppercase leading-[0.85] md:text-[11rem]"
-				/>
-				<Reveal delay={0.15}>
-					<p className="mt-6 max-w-xl text-foreground/70">
-						Seven stages. Forty-plus battles. Flick through each crate, find
-						your stage, and put your name on the bill.
-					</p>
-				</Reveal>
-
-				{/* stage jump rail — torn ticket stubs */}
-				<Reveal delay={0.2} className="mt-10 flex flex-wrap gap-3">
-					{CATEGORIES.map((cat, i) => {
-						const theme = CAT_THEME[cat] ?? { a: "#ff8a3d", b: "#d92643" };
-						return (
-							<a
-								key={cat}
-								href={`#stage-${i}`}
-								data-cursor-text="JUMP"
-								className="ticket px-5 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] transition-transform duration-200 hover:-translate-y-1"
-								style={{
-									color: theme.b,
-									transform: `rotate(${(i % 3) - 1}deg)`,
-								}}
-							>
-								{STAGES[cat]?.stage ?? cat}
-							</a>
-						);
-					})}
-				</Reveal>
+					<Reveal>
+						<span className="tape mb-4 inline-block -rotate-2">
+							The main arena &middot; On campus
+						</span>
+					</Reveal>
+					<div className="flex flex-wrap items-end justify-between gap-6">
+						<RevealTitle
+							as="h1"
+							text="THE LINEUP"
+							className="font-poster text-[16vw] uppercase leading-[0.85] md:text-[9rem]"
+						/>
+						<Reveal delay={0.15}>
+							<p className="mb-3 max-w-sm text-foreground/70">
+								Seven stages, forty-plus battles — the whole bill on one
+								wall. Pick a stage, pick your card, enter the arena.
+							</p>
+						</Reveal>
+					</div>
 				</div>
 			</section>
 
-			{/* ----------------------------- ZONES ------------------------------ */}
-			{CATEGORIES.map((cat, i) => {
-				const theme = CAT_THEME[cat] ?? { a: "#ff8a3d", b: "#d92643" };
-				const stage = STAGES[cat] ?? { stage: cat, blurb: "" };
-				const items = eventsData.filter((e) => e.category === cat);
-				return (
-					<section
-						key={cat}
-						id={`stage-${i}`}
-						className="relative scroll-mt-24 overflow-hidden py-16"
-					>
-						{/* per-stage cinematic photography, kept quiet under the posters */}
-						<Cinema
-							src={`/cinema/cat-${catKey(cat)}.jpg`}
-							a={theme.a}
-							b={theme.b}
-							opacity={0.32}
-						/>
-						{/* zone atmosphere — each stage has its own light */}
-						<div
-							className="pointer-events-none absolute inset-0"
+			{/* --------------------------- STAGE FILTER -------------------------- */}
+			<div className="mx-auto flex max-w-7xl flex-wrap gap-3 px-4 py-8 md:px-8">
+				{["All", ...CATEGORIES].map((cat, i) => {
+					const theme = CAT_THEME[cat] ?? { a: "#ffc94d", b: "#ff5f3c" };
+					const isActive = active === cat;
+					return (
+						<button
+							key={cat}
+							onClick={() => setActive(cat)}
+							data-cursor-text="PICK"
+							className={`ticket px-5 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-200 hover:-translate-y-1 ${
+								isActive ? "!border-transparent" : ""
+							}`}
 							style={{
-								background: `radial-gradient(90% 70% at ${i % 2 ? "85%" : "15%"} 20%, ${theme.a}1f 0%, transparent 60%), radial-gradient(70% 60% at ${i % 2 ? "10%" : "90%"} 90%, ${theme.b}17 0%, transparent 65%)`,
+								color: isActive ? "#1a1114" : theme.b,
+								background: isActive
+									? `linear-gradient(92deg, ${theme.a}, ${theme.b})`
+									: undefined,
+								transform: `rotate(${(i % 3) - 1}deg)`,
 							}}
-							aria-hidden
-						/>
-						<div
-							className="backdrop-word font-poster pointer-events-none absolute top-2 text-[9rem] uppercase md:text-[14rem]"
-							style={{ [i % 2 ? "right" : "left"]: "-0.5rem" }}
-							aria-hidden
 						>
-							{String(i + 1).padStart(2, "0")}
-						</div>
+							{cat === "All" ? "All Stages" : (STAGES[cat] ?? cat)}
+						</button>
+					);
+				})}
+			</div>
 
-						<div className="relative mx-auto max-w-7xl px-4 md:px-8">
-							{/* zone header */}
-							<Reveal className={i % 2 ? "md:ml-auto md:w-fit md:text-right" : ""}>
-								<span
-									className="text-[10px] font-bold uppercase tracking-[0.35em]"
-									style={{ color: theme.b }}
-								>
-									Stage {String(i + 1).padStart(2, "0")} &middot;{" "}
-									{items.length} {items.length === 1 ? "event" : "events"}
-								</span>
-								<h2
-									className="font-poster mt-1 text-5xl uppercase leading-[0.9] md:text-8xl"
-									style={{
-										background: `linear-gradient(94deg, ${theme.a}, ${theme.b})`,
-										WebkitBackgroundClip: "text",
-										backgroundClip: "text",
-										color: "transparent",
-									}}
-								>
-									{stage.stage}
-								</h2>
-								{stage.blurb && (
-									<p className={`mt-2 max-w-md text-sm text-foreground/60 ${i % 2 ? "md:ml-auto" : ""}`}>
-										{stage.blurb}
-									</p>
-								)}
-							</Reveal>
-
-							{/* the crate — horizontal poster rail */}
-							<Reveal delay={0.1}>
-								<div className="rail" data-cursor-text="DRAG">
-									{items.map((e, j) => {
-										const t = eventTheme(e.slug, e.category);
-										return (
-											<Link
-												key={e.slug}
-												href={`/events/${e.slug}`}
-												data-cursor-text="OPEN"
-												className="group block"
-												style={{ transform: `rotate(${j % 2 ? 1.4 : -1.4}deg)` }}
-											>
-												<TiltCard className="h-[300px] w-[228px] md:h-[356px] md:w-[270px]">
-													<div className="h-full w-full overflow-hidden border-2 border-white/15 shadow-[8px_8px_0_rgba(0,0,0,0.5)] transition-shadow duration-300 group-hover:shadow-[10px_10px_0_rgba(0,0,0,0.6)]">
-														<CardArt
-															slug={e.slug}
-															title={e.title}
-															a={t.a}
-															b={t.b}
-															motif={t.motif}
-															index={j}
-															className="h-full w-full"
-														/>
-													</div>
-												</TiltCard>
-											</Link>
-										);
-									})}
-									{/* end-of-crate cap */}
-									<div className="flex w-40 items-center justify-center">
-										<span
-											className="font-poster rotate-90 whitespace-nowrap text-2xl uppercase tracking-widest text-foreground/25"
-										>
-											{stage.stage} &rarr;
-										</span>
+			{/* ---------------------------- CARD WALL ---------------------------- */}
+			<section className="mx-auto max-w-7xl px-4 pb-16 md:px-8">
+				<div
+					key={active}
+					className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4 lg:gap-7"
+				>
+					{visible.map((e, j) => {
+						const t = eventTheme(e.slug, e.category);
+						return (
+							<Link
+								key={e.slug}
+								href={`/events/${e.slug}`}
+								data-cursor-text="OPEN"
+								className="group block wall-card"
+								style={{
+									transform: `rotate(${j % 2 ? 0.9 : -0.9}deg)`,
+									animationDelay: `${Math.min(j * 55, 500)}ms`,
+								}}
+							>
+								<TiltCard className="w-full" max={8}>
+									<div className="relative aspect-[3/4] overflow-hidden border-2 border-white/15 shadow-[7px_7px_0_rgba(0,0,0,0.5)] transition-shadow duration-300 group-hover:shadow-[10px_10px_0_rgba(0,0,0,0.6)]">
+										<CardArt
+											slug={e.slug}
+											title={e.title}
+											a={t.a}
+											b={t.b}
+											motif={t.motif}
+											index={j}
+											className="absolute inset-0 h-full w-full"
+										/>
 									</div>
-								</div>
-							</Reveal>
-						</div>
-					</section>
-				);
-			})}
+								</TiltCard>
+								{/* stage tag under the card */}
+								<p
+									className="mt-2.5 px-1 text-center text-[10px] font-bold uppercase tracking-[0.2em] text-foreground/50 transition-colors duration-300 group-hover:text-[var(--gold)]"
+								>
+									{STAGES[e.category] ?? e.category}
+								</p>
+							</Link>
+						);
+					})}
+				</div>
+			</section>
 
 			{/* --------------------------- CTA STRIP ---------------------------- */}
 			<section className="py-12">
@@ -222,7 +145,7 @@ export default function EventsPage() {
 							<Link
 								key={i}
 								href="/dashboard"
-								className="font-poster mx-8 flex items-center gap-8 text-3xl uppercase text-[#0a0612]"
+								className="font-poster mx-8 flex items-center gap-8 text-3xl uppercase text-[#1a1114]"
 							>
 								<span>Ready to compete?</span>
 								<span className="underline decoration-4 underline-offset-4">
