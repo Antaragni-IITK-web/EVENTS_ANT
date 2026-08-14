@@ -1,1 +1,1 @@
-{"version":3,"file":"lenisProvider.d.ts","sourceRoot":"","sources":["../src/lenisProvider.tsx"],"names":[],"mappings":"AAQA,wBAAgB,aAAa,CAAC,EAAE,QAAQ,EAAE,EAAE;IAAE,QAAQ,EAAE,KAAK,CAAC,SAAS,CAAA;CAAE,sCAexE"}
+{"version":3,"file":"lenisProvider.d.ts","sourceRoot":"","sources":["../src/lenisProvider.tsx"],"names":[],"mappings":"AAQA,wBAAgB,aAAa,CAAC,EAAE,QAAQ,EAAE,EAAE;IAAE,QAAQ,EAAE,KAAK,CAAC,SAAS,CAAA;CAAE,kDAexE"}

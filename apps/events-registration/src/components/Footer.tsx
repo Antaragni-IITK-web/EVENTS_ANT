@@ -34,7 +34,7 @@ const Footer = () => {
 							className="font-title mx-6 flex items-center gap-6 text-xl font-black uppercase text-[#0a0612]"
 						>
 							Antaragni &rsquo;26 <span>&#10022;</span> IIT Kanpur
-							<span>&#10022;</span> The rebirth of culture <span>&#10022;</span>
+							<span>&#10022;</span> The fire shall rise again <span>&#10022;</span>
 						</span>
 					))}
 				</Marquee>

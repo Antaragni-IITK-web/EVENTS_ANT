@@ -127,6 +127,7 @@ export default function RoadtripsPage() {
 						{ name: "guitar", color: "var(--sun)", left: "78%", top: "12%", size: 66, rot: 8, depth: 0.8 },
 						{ name: "drum", color: "var(--yellow)", left: "60%", top: "52%", size: 52, rot: -10, depth: 0.6 },
 						{ name: "mic", color: "var(--pink)", left: "6%", top: "62%", size: 56, rot: 14, depth: 0.9 },
+						{ name: "antaragni", color: "var(--sun)", left: "85%", top: "85%", size: 58, rot: -5, depth: 0.7 },
 					]}
 				/>
 
@@ -215,14 +216,22 @@ export default function RoadtripsPage() {
 					</h2>
 				</Reveal>
 
-				<div className="grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+				<div className="grid gap-x-8 gap-y-14 grid-cols-1 sm:grid-cols-4 lg:grid-cols-6">
 					{rest.map((trip, i) => (
-						<TourPoster
+						<div
 							key={trip.slug}
-							slug={trip.slug}
-							title={trip.title}
-							i={i}
-						/>
+							className={`sm:col-span-2 ${
+								i === 3 ? "lg:col-start-2" : ""
+							} ${
+								i === 4 ? "sm:col-start-2 lg:col-start-auto" : ""
+							}`}
+						>
+							<TourPoster
+								slug={trip.slug}
+								title={trip.title}
+								i={i}
+							/>
+						</div>
 					))}
 				</div>
 			</section>

@@ -1,4 +1,4 @@
 export declare function LenisProvider({ children }: {
     children: React.ReactNode;
-}): import("react").JSX.Element | null;
+}): import("react/jsx-runtime").JSX.Element | null;
 //# sourceMappingURL=lenisProvider.d.ts.map

@@ -38,7 +38,7 @@ const LandingPage = () => {
           ANTARAGNI
         </h1>
         <p className="hero-text text-lg sm:!text-xl md:!text-2xl text-secondary mt-4 max-w-2xl">
-          Celebrating 60 years of legacy. A rebirth of culture, energy, and art.
+          Unleashing the fire within. The fire shall rise again.
         </p>
 
         <div className="hero-text mt-12">

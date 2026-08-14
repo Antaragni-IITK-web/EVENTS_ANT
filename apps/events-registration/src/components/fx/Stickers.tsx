@@ -16,6 +16,7 @@ import {
 	FaHeadphones,
 	FaMusic,
 	FaFeatherAlt,
+	FaFire,
 } from "react-icons/fa";
 
 /* ----------------------------------------------------------------------------
@@ -37,7 +38,8 @@ export type StickerName =
 	| "brush"
 	| "headphones"
 	| "note"
-	| "quill";
+	| "quill"
+	| "antaragni";
 
 const OBJECT_ICONS: Record<StickerName, IconType> = {
 	mic: FaMicrophoneAlt,
@@ -52,6 +54,7 @@ const OBJECT_ICONS: Record<StickerName, IconType> = {
 	headphones: FaHeadphones,
 	note: FaMusic,
 	quill: FaFeatherAlt,
+	antaragni: FaFire,
 };
 
 export function Sticker({
@@ -103,9 +106,13 @@ export interface FloatingSpec {
 	className?: string;
 }
 
+export const SHOW_STICKERS = true; // Set to false to remove stickers completely (Plan A)
+
 /* absolutely-positioned sticker field; parent must be `relative` */
 export function FloatingStickers({ items }: { items: FloatingSpec[] }) {
 	const wrapRef = useRef<HTMLDivElement>(null);
+
+	if (!SHOW_STICKERS) return null;
 
 	useEffect(() => {
 		const wrap = wrapRef.current;

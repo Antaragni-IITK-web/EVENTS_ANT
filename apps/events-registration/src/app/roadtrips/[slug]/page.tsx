@@ -199,6 +199,7 @@ export default function RoadtripDetailPage({
 					items={[
 						{ name: "mic", color: "var(--sun)", left: "14%", top: "24%", size: 58, rot: -12, depth: 0.8 },
 						{ name: "headphones", color: "var(--pink)", left: "82%", top: "20%", size: 50, rot: 14, depth: 0.9 },
+						{ name: "antaragni", color: "var(--sun)", left: "10%", top: "70%", size: 62, rot: 20, depth: 0.7 },
 					]}
 				/>
 
@@ -282,6 +283,7 @@ export default function RoadtripDetailPage({
 						{ name: "guitar", color: theme.a, left: "8%", top: "22%", size: 56, rot: -12, depth: 0.7 },
 						{ name: "mic", color: theme.b, left: "46%", top: "16%", size: 46, rot: 10, depth: 0.9 },
 						{ name: "drum", color: theme.a, left: "40%", top: "78%", size: 50, rot: 8, depth: 0.5 },
+						{ name: "antaragni", color: "var(--sun)", left: "85%", top: "85%", size: 55, rot: -10, depth: 0.8 },
 					]}
 				/>
 

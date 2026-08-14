@@ -80,6 +80,7 @@ const IndividualEventPage = () => {
 							{ name: "ticket", color: theme.b, left: "12%", top: "26%", size: 52, rot: -10, depth: 0.7 },
 							{ name: "mic", color: theme.a, left: "84%", top: "20%", size: 46, rot: 12, depth: 0.9 },
 							{ name: "film", color: theme.b, left: "78%", top: "68%", size: 54, rot: 0, depth: 0.5, className: "spin-slow" },
+							{ name: "antaragni", color: "var(--sun)", left: "8%", top: "72%", size: 60, rot: -15, depth: 0.8 },
 						]}
 					/>
 

@@ -378,7 +378,7 @@ function About() {
 			<div className="grid items-start gap-16 md:grid-cols-[1.1fr_1fr]">
 				<Reveal>
 					<span className="tape mb-5 inline-block rotate-1">
-						The rebirth of culture
+						Unleashing the fire within
 					</span>
 					<h2 className="font-title text-4xl font-black leading-tight md:text-5xl">
 						Six decades of{" "}

@@ -5,6 +5,6 @@ interface CardProps {
     imageUrl: string;
     newTab?: boolean;
 }
-export declare function Card({ href, title, subtitle, imageUrl, newTab, }: CardProps): import("react").JSX.Element;
+export declare function Card({ href, title, subtitle, imageUrl, newTab, }: CardProps): import("react/jsx-runtime").JSX.Element;
 export {};
 //# sourceMappingURL=event-card.d.ts.map

@@ -1,5 +1,5 @@
 export declare function Loader({ type }: {
     type?: number;
-}): import("react").JSX.Element | null;
+}): import("react/jsx-runtime").JSX.Element | null;
 export default Loader;
 //# sourceMappingURL=loader.d.ts.map
