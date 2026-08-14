@@ -1,38 +1,98 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useStore } from "@repo/store";
+import gsap from "gsap";
 
 /* ----------------------------------------------------------------------------
-   FestivalLoader — the opening curtain.
-   The REAL Antaragni brush mark (public/logo.png as a mask) ignites: molten
-   fire rises up through the logo shape, it flickers like a flame, the
-   wordmark stamps in, then the screen wipes upward like a stage curtain.
-   Same contract as the shared Loader: waits for page load + minimum time,
-   then releases `initialAnimation` in the store.
+   FestivalLoader — Brutalist No Art style preloader.
+   Pitch black screen, digital counter, and an expanding mask that reveals 
+   the hero video underneath in stages.
 ---------------------------------------------------------------------------- */
 
 export default function FestivalLoader() {
-	const [status, setStatus] = useState<"loading" | "leaving" | "finished">(
-		"loading"
-	);
+	const [status, setStatus] = useState<"loading" | "finished">("loading");
 	const { setInitialAnimation } = useStore();
+	
+	const counterRef = useRef<HTMLDivElement>(null);
+	const holeRef = useRef<HTMLDivElement>(null);
+	const wrapperRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		const pageLoad = new Promise<void>((resolve) => {
 			if (document.readyState === "complete") resolve();
 			else window.addEventListener("load", () => resolve(), { once: true });
 		});
-		const minTime = new Promise<void>((r) => setTimeout(r, 2000));
-		Promise.all([pageLoad, minTime]).then(() => setStatus("leaving"));
-	}, []);
+		
+		const tl = gsap.timeline({
+			onComplete: () => {
+				setStatus("finished");
+			}
+		});
 
-	useEffect(() => {
-		if (status === "leaving") {
-			const t = setTimeout(() => setStatus("finished"), 850);
-			return () => clearTimeout(t);
-		}
-	}, [status]);
+		// 1. Counter counts from 0 to 100
+		tl.to(
+			{ val: 0 }, 
+			{ 
+				val: 100, 
+				duration: 2.5, 
+				ease: "power2.inOut",
+				onUpdate: function() {
+					if (counterRef.current) {
+						counterRef.current.innerText = Math.round(this.targets()[0].val) + "%";
+					}
+				}
+			}
+		);
+
+		// Wait for page to actually load before revealing
+		tl.add(async () => {
+			await pageLoad;
+		});
+
+		// 2. Open the tiny square hole
+		tl.to(holeRef.current, {
+			width: "5rem",
+			height: "5rem",
+			duration: 0.5,
+			ease: "power4.out"
+		});
+
+		// Pause
+		tl.to({}, { duration: 0.3 });
+
+		// 3. Expand to cinematic rectangle
+		tl.to(holeRef.current, {
+			width: "50vw",
+			height: "25vh",
+			duration: 0.8,
+			ease: "power3.inOut"
+		});
+
+		// Pause
+		tl.to({}, { duration: 0.2 });
+
+		// 4. Expand to full screen (hole becomes massive)
+		tl.to(holeRef.current, {
+			width: "200vw",
+			height: "200vh",
+			duration: 1.2,
+			ease: "power4.inOut"
+		});
+
+		// Fade out counter during final expansion
+		tl.to(counterRef.current, {
+			opacity: 0,
+			duration: 0.3
+		}, "-=1");
+        
+        // 5. Fade out entire wrapper (graceful exit)
+        tl.to(wrapperRef.current, {
+            opacity: 0,
+            duration: 0.4
+        }, "-=0.2");
+
+	}, []);
 
 	useEffect(() => {
 		if (status === "finished") setInitialAnimation(false);
@@ -42,46 +102,28 @@ export default function FestivalLoader() {
 
 	return (
 		<div
-			className={`fixed inset-0 z-[90] flex flex-col items-center justify-center overflow-hidden transition-transform duration-[850ms] ease-[cubic-bezier(0.76,0,0.24,1)] ${
-				status === "leaving" ? "-translate-y-full" : ""
-			}`}
-			style={{ background: "#1a1114" }}
+            ref={wrapperRef}
+			className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden pointer-events-auto"
 			aria-hidden
 		>
-			{/* ember atmosphere behind the mark */}
-			<div
-				className="pointer-events-none absolute inset-0"
-				style={{
-					background:
-						"radial-gradient(50% 42% at 50% 46%, rgba(255,107,53,0.16) 0%, transparent 65%), radial-gradient(90% 60% at 50% 100%, rgba(217,38,67,0.1) 0%, transparent 60%)",
-				}}
-			/>
-			<div className="halftone pointer-events-none absolute inset-0 opacity-20" />
+			{/* 
+                THE SHADOW HOLE TRICK:
+                A transparent div in the center with a massive black box-shadow that covers the screen.
+                When the div's width/height expand, the "hole" in the blackness grows, revealing the page!
+            */}
+			<div 
+                ref={holeRef}
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0 h-0 bg-transparent rounded-sm"
+                style={{ boxShadow: "0 0 0 100vmax #0a0612" }}
+            />
 
-			{/* the real mark, igniting from the base up */}
-			<div
-				className={`loader-mark relative h-44 w-[118px] transition-transform duration-500 ${
-					status === "leaving" ? "scale-110" : ""
-				}`}
-			>
-				{/* ghost of the mark, faintly visible before the fire reaches it */}
-				<div className="loader-logo-ghost absolute inset-0" />
-				{/* molten fill rising through the logo shape */}
-				<div className="loader-logo-fire absolute inset-0" />
-			</div>
-
-			{/* wordmark stamps in after the stroke */}
-			<p className="loader-word font-title mt-6 text-2xl font-black tracking-tight text-[#f7f0e4]">
-				ANTARAGNI<span style={{ color: "var(--gold)" }}>&rsquo;26</span>
-			</p>
-			<p className="loader-sub mt-2 text-[10px] font-bold uppercase tracking-[0.4em] text-[#f7f0e4]/45">
-				The fire shall rise again
-			</p>
-
-			{/* ember progress line */}
-			<div className="absolute bottom-14 h-[2px] w-40 overflow-hidden rounded-full bg-white/10">
-				<div className="loader-bar h-full w-full origin-left rounded-full" />
-			</div>
+            {/* Counter */}
+            <div 
+                ref={counterRef}
+                className="relative z-10 font-sans text-6xl md:text-8xl font-black text-white mix-blend-difference select-none"
+            >
+                0%
+            </div>
 		</div>
 	);
 }

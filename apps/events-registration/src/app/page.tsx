@@ -59,16 +59,16 @@ function Hero() {
 					scrub: true,
 				},
 			});
-			gsap.to(".hero-backdrop", {
-				yPercent: 22,
-				ease: "none",
-				scrollTrigger: {
-					trigger: ref.current,
-					start: "top top",
-					end: "bottom top",
-					scrub: true,
-				},
-			});
+			// gsap.to(".hero-backdrop", {
+			// 	yPercent: 22,
+			// 	ease: "none",
+			// 	scrollTrigger: {
+			// 		trigger: ref.current,
+			// 		start: "top top",
+			// 		end: "bottom top",
+			// 		scrub: true,
+			// 	},
+			// });
 		},
 		{ scope: ref }
 	);
@@ -78,63 +78,96 @@ function Hero() {
 			ref={ref}
 			className="relative flex min-h-screen flex-col justify-center overflow-hidden px-5 md:px-12"
 		>
-			{/* typographic wallpaper — three warm outline rows drifting slowly,
-			    faded at the edges so they never fight the wordmark */}
-			<div className="hero-backdrop hero-rows pointer-events-none absolute -inset-x-[12%] inset-y-0 flex -rotate-3 flex-col justify-center gap-[3vw]">
-				{[
-					{ dur: "85s", rev: false },
-					{ dur: "62s", rev: true },
-					{ dur: "74s", rev: false },
-				].map((row, i) => (
-					<div
-						key={i}
-						className="marquee-track"
-						style={{
-							["--marquee-dur" as string]: row.dur,
-							animationDirection: row.rev ? "reverse" : "normal",
-						}}
-					>
-						{[0, 1].map((c) => (
-							<span
-								key={c}
-								className="backdrop-word backdrop-word-warm font-poster whitespace-nowrap px-6 text-[8.5vw] uppercase"
+			{/* NEW VIDEO BACKGROUND - Gritty B&W + Grain + Color Tone */}
+			<div className="absolute inset-0 pointer-events-none z-0 overflow-hidden bg-[#0a0612]">
+				{/* 1. Black & White Base Video */}
+				<video 
+					src="/cinema/final_video_events.mov" 
+					autoPlay 
+					loop 
+					muted 
+					playsInline 
+					className="h-full w-full object-cover"
+					style={{ filter: "grayscale(100%) contrast(1.3) brightness(0.7)" }}
+				/>
+
+				{/* 2. Film Grain Overlay */}
+				<div 
+					className="absolute inset-0 opacity-20 mix-blend-overlay"
+					style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")" }}
+				/>
+
+				{/* 3. Single Color Tone Filter (Antaragni Fire Orange) */}
+				<div className="absolute inset-0 bg-[#ff6b35] opacity-50 mix-blend-color" />
+
+				{/* 4. Deep Vignette to keep text readable */}
+				<div className="absolute inset-0 bg-[radial-gradient(120%_100%_at_50%_50%,transparent_30%,#0a0612_100%)] opacity-90" />
+			</div>
+
+			{/* OLD BACKGROUND ELEMENTS (Disabled to be non-destructive) */}
+			{false && (
+				<>
+					{/* typographic wallpaper — three warm outline rows drifting slowly,
+						faded at the edges so they never fight the wordmark */}
+					<div className="hero-backdrop hero-rows pointer-events-none absolute -inset-x-[12%] inset-y-0 flex -rotate-3 flex-col justify-center gap-[3vw]">
+						{[
+							{ dur: "85s", rev: false },
+							{ dur: "62s", rev: true },
+							{ dur: "74s", rev: false },
+						].map((row, i) => (
+							<div
+								key={i}
+								className="marquee-track"
+								style={{
+									["--marquee-dur" as string]: row.dur,
+									animationDirection: row.rev ? "reverse" : "normal",
+								}}
 							>
-								{"ANTARAGNI ✦ ".repeat(5)}
-							</span>
+								{[0, 1].map((c) => (
+									<span
+										key={c}
+										className="backdrop-word backdrop-word-warm font-poster whitespace-nowrap px-6 text-[8.5vw] uppercase"
+									>
+										{"ANTARAGNI ✦ ".repeat(5)}
+									</span>
+								))}
+							</div>
 						))}
 					</div>
-				))}
-			</div>
 
-			{/* stage beam falling on the wordmark */}
-			<div className="hero-beam pointer-events-none absolute left-[38%] top-[-24%] h-[95%] w-[48vw] -translate-x-1/2" />
+					{/* stage beam falling on the wordmark */}
+					<div className="hero-beam pointer-events-none absolute left-[38%] top-[-24%] h-[95%] w-[48vw] -translate-x-1/2" />
 
-			{/* sparks rising from the fire — the hero breathes */}
-			<Embers count={72} />
+					{/* sparks rising from the fire — the hero breathes */}
+					<Embers count={72} />
 
-			{/* cinematic vignette — center pops, edges fall away */}
-			<div className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_100%_at_45%_42%,transparent_52%,rgba(12,7,8,0.6)_100%)]" />
+					{/* cinematic vignette — center pops, edges fall away */}
+					<div className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_100%_at_45%_42%,transparent_52%,rgba(12,7,8,0.6)_100%)]" />
+				</>
+			)}
 
-			{/* ticket-stamp date, pinned top-right — 61st Edition headlines it */}
-			<div className="hero-stamp absolute right-5 top-24 rotate-6 md:right-14 md:top-28">
-				<div className="flex flex-col items-center gap-1.5">
-					<span className="tape tape-pink !text-sm">61ST EDITION</span>
-					<span className="tape">OCT 2026</span>
-					<span className="tape tape-cyan">IIT KANPUR</span>
+			{/* ticket-stamp date, pinned top-right — 61st Edition headlines it (Disabled) */}
+			{false && (
+				<div className="hero-stamp absolute right-5 top-24 rotate-6 md:right-14 md:top-28">
+					<div className="flex flex-col items-center gap-1.5">
+						<span className="tape tape-pink !text-sm">61ST EDITION</span>
+						<span className="tape">OCT 2026</span>
+						<span className="tape tape-cyan">IIT KANPUR</span>
+					</div>
 				</div>
-			</div>
+			)}
 
-			<div className="relative max-w-[1500px]">
-				<p className="hero-eyebrow mb-5 flex items-center gap-3 text-sm font-bold uppercase tracking-[0.3em] text-foreground/85 md:text-lg">
+			<div className="relative w-full max-w-[1500px] flex flex-col items-center text-center">
+				<p className="hero-eyebrow mb-5 flex items-center justify-center gap-3 text-sm font-bold uppercase tracking-[0.3em] text-foreground/85 md:text-lg">
 					<span className="inline-block h-3.5 w-3.5 rotate-45" style={{ background: "var(--gold)" }} />
 					North India&rsquo;s biggest college cultural festival
 				</p>
 
 				{/* the identity — ONE line: molten letters with an ink outline,
 				    hard poster shadow + ember bloom. No misregistered echo. */}
-				<div className="hero-title relative w-fit select-none">
+				<div className="hero-title relative w-fit mx-auto select-none px-6 py-2 backdrop-grayscale backdrop-contrast-[100] backdrop-brightness-[1.5] mix-blend-difference text-white">
 					<h1
-						className="hero-word hero-fire-shadow font-title relative text-[10.5vw] font-black md:text-[9.3vw]"
+						className="hero-word font-title relative text-[8.5vw] font-black md:text-[7.5vw]"
 						aria-label={TITLE}
 					>
 						{TITLE.split("").map((ch, i) => (
@@ -144,7 +177,7 @@ function Hero() {
 								aria-hidden
 							>
 								<span
-									className="hero-letter text-chrome inline-block"
+									className="hero-letter inline-block"
 									style={{ animationDelay: `${i * 0.4}s` }}
 								>
 									{ch}
@@ -154,8 +187,8 @@ function Hero() {
 					</h1>
 				</div>
 
-				<div className="mt-8 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
-					<p className="hero-sub max-w-md text-base leading-relaxed text-foreground/70 md:text-lg">
+				<div className="mt-8 flex w-full flex-col items-center gap-8 md:flex-row md:justify-center md:gap-12">
+					<p className="hero-sub max-w-md text-base leading-relaxed text-foreground/70 md:text-lg text-center">
 						Four days. Hundreds of stages. One incredible story — and
 						you&rsquo;re in it. The 61st edition returns louder than ever.
 					</p>

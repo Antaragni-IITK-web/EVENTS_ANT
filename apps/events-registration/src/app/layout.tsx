@@ -42,8 +42,11 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body
-				className={`${unbounded.variable} ${grotesk.variable} ${anton.variable} antialiased`}
+				className={`${unbounded.variable} ${grotesk.variable} ${anton.variable} antialiased relative`}
 			>
+				{/* Non-destructive ambient fire glow to match hero video */}
+				<div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(120%_100%_at_50%_0%,#ff6b3515_0%,transparent_80%)]" />
+				
 				<Cursor />
 				<Toaster
 					toastOptions={{

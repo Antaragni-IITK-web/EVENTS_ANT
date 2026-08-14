@@ -70,22 +70,19 @@ const Header = () => {
 	return (
 		<>
 			<header className="fixed left-0 right-0 top-0 z-40 px-4 pt-4 md:px-6">
-				<nav className="flex items-start justify-between">
-					{/* Wordmark — rotated lime sticker */}
+				<nav className="relative flex items-center justify-between w-full">
 					<Magnetic strength={0.2}>
 						<Link
 							href="/"
-							className={`font-title inline-block -rotate-2 border-2 border-[#0a0612] px-3.5 py-2 text-base font-black tracking-tight transition-shadow duration-300 ${
-								scrolled ? "shadow-[4px_4px_0_rgba(0,0,0,0.55)]" : "shadow-[5px_5px_0_var(--violet)]"
-							}`}
-							style={{ background: "var(--lime)", color: "#0a0612", borderRadius: 8 }}
+							className="inline-flex h-16 w-16 items-center justify-center -rotate-2 border-2 border-[#0a0612] p-2 transition-shadow duration-300 shadow-[5px_5px_0_var(--pink)]"
+							style={{ background: "var(--lime)", borderRadius: 10 }}
 						>
-							ANTARAGNI&rsquo;26
+							<img src="/logo.png" alt="Antaragni '26" className="h-full w-full object-contain" />
 						</Link>
 					</Magnetic>
 
 					{/* Desktop — wristband strip */}
-					<div className="hidden items-center md:!flex">
+					<div className="hidden md:!flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
 						<div
 							className="flex rotate-1 items-center border-2 border-white/15 bg-[var(--ink)] px-1.5 py-1 shadow-[5px_5px_0_rgba(0,0,0,0.5)]"
 							style={{ borderRadius: 8 }}
@@ -111,9 +108,10 @@ const Header = () => {
 							})}
 							<span className="mx-2 h-3 w-3 rounded-full border-2 border-white/25 bg-background" />
 						</div>
+					</div>
 
-						{/* Auth — backstage pass */}
-						<div className="ml-4">
+					{/* Auth — backstage pass */}
+					<div className="hidden items-center md:!flex">
 							{user ? (
 								<div className="relative" ref={profileMenuRef}>
 									<button
@@ -181,13 +179,12 @@ const Header = () => {
 								<Magnetic strength={0.25}>
 									<button
 										onClick={handleSignIn}
-										className="btn-lime !px-5 !py-2 !text-xs"
+										className="btn-lime !px-8 !py-3 !text-sm"
 									>
 										Sign in
 									</button>
 								</Magnetic>
 							)}
-						</div>
 					</div>
 
 					{/* Mobile burger — sticker square */}
