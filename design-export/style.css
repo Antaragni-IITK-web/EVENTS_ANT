@@ -1,0 +1,177 @@
+/* CSS Custom Properties mapping to Antaragni '26 */
+:root {
+    --bg: #1a1114;
+    --fg: #f7f0e4;
+    
+    --gold: #ffc94d;
+    --ember: #ff8a3d;
+    --flame: #ff5f3c;
+    --crimson: #d92643;
+    
+    --font-poster: 'Anton', sans-serif;
+    --font-title: 'Rakkas', serif;
+    --font-body: 'Inter', sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+}
+
+/* Typography */
+.hero-title {
+    font-family: var(--font-poster);
+    font-size: 12vw;
+    line-height: 0.85;
+    margin: 1rem 0;
+    text-transform: uppercase;
+}
+
+.gradient-text {
+    background: linear-gradient(94deg, var(--gold), var(--flame));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.hero-body {
+    max-width: 600px;
+    margin: 0 auto 2rem auto;
+    font-size: 1.25rem;
+    opacity: 0.8;
+}
+
+/* Tape Banners */
+.tape {
+    display: inline-block;
+    background: var(--gold);
+    color: #000;
+    padding: 4px 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+}
+
+.tape-pink {
+    display: inline-block;
+    background: var(--flame);
+    color: #fff;
+    padding: 4px 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+}
+
+.rotated-subhead {
+    transform: rotate(-2deg);
+    margin-bottom: 1rem;
+}
+
+/* Hero Layout */
+.hero-section {
+    position: relative;
+    text-align: center;
+    padding: 8rem 2rem;
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Marquee */
+.marquee-wrapper {
+    background: var(--gold);
+    padding: 0.5rem 0;
+    transform: rotate(-1deg) scale(1.02);
+    margin: 1rem 0;
+}
+.marquee-content {
+    background: transparent;
+    color: #000;
+    white-space: nowrap;
+    text-align: center;
+}
+
+/* Floating Stickers */
+.sticker {
+    position: absolute;
+    font-size: 4rem;
+    filter: drop-shadow(4px 4px 0px rgba(0,0,0,0.8));
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px) rotate(-10deg); }
+    50% { transform: translateY(-15px) rotate(0deg); }
+    100% { transform: translateY(0px) rotate(-10deg); }
+}
+
+/* Grid & Cards */
+.grid-section {
+    padding: 4rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.section-title {
+    font-family: var(--font-poster);
+    font-size: 4rem;
+    margin-bottom: 2rem;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.card {
+    border: 2px solid rgba(255,255,255,0.15);
+    box-shadow: 10px 10px 0px rgba(0,0,0,0.5);
+    background: #241419; /* Ink */
+    padding: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 14px 14px 0px rgba(0,0,0,0.7);
+}
+
+.card-art {
+    aspect-ratio: 4/5;
+    width: 100%;
+}
+
+.card-title {
+    font-family: var(--font-title);
+    text-transform: uppercase;
+    font-size: 1.5rem;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+/* Button */
+.primary-btn {
+    background: var(--crimson);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    font-family: var(--font-poster);
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.5);
+    transition: transform 0.1s;
+}
+.primary-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+}
