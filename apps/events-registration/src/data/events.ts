@@ -384,13 +384,6 @@ export const competitions = [
 		link: "/musicals",
 	},
 	{
-		event: "MUSICALS",
-		comp: "A CAPPELLA",
-		desc: "ENGLISH SINGING COMPETITION",
-		type: "GROUP",
-		link: "/musicals",
-	},
-	{
 		event: "RITAMBHARA",
 		comp: "RITAMBHARA",
 		desc: "FASHION SHOW",
