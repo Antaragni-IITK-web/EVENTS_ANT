@@ -6,7 +6,9 @@ import { doc } from "@repo/firebase";
 import { Guidelines } from "../../../components/Guidelines";
 import { Competitions } from "../../../components/Competitions";
 import { Contacts } from "../../../components/Contacts";
+import { Gallery } from "../../../components/Gallery";
 import { Reveal } from "../../../components/fx/Reveal";
+import { eventGallery } from "../../../data/gallery";
 import type { VisualTheme } from "../../../data/themes";
 
 interface inter {
@@ -80,6 +82,7 @@ export function EventDetails({
 		.join("\n");
 
 	const showComps = slug !== "MnM";
+	const photos = eventGallery[slug] ?? [];
 
 	const jumpToCompetition = (competitionName: string) => {
 		setOpenCompetition(competitionName);
@@ -92,6 +95,7 @@ export function EventDetails({
 		{ id: "overview", label: "Overview" },
 		...(showComps ? [{ id: "competitions", label: "Competitions" }] : []),
 		{ id: "guidelines", label: "Guidelines" },
+		...(photos.length ? [{ id: "gallery", label: "Gallery" }] : []),
 		{ id: "contacts", label: "Contacts" },
 	];
 
@@ -197,6 +201,14 @@ export function EventDetails({
 				<SectionHead id="guidelines" label="Guidelines" />
 				<Guidelines />
 			</section>
+
+			{/* ------------------------------ GALLERY ---------------------------- */}
+			{photos.length > 0 && (
+				<section id="gallery" className="scroll-mt-32 pb-24">
+					<SectionHead id="gallery" label="Gallery" />
+					<Gallery photos={photos} theme={theme} title={title || slug} />
+				</section>
+			)}
 
 			{/* ----------------------------- CONTACTS ---------------------------- */}
 			<section id="contacts" className="scroll-mt-32 pb-10">
