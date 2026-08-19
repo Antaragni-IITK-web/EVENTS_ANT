@@ -46,7 +46,7 @@ export const EVENT_THEME: Record<string, VisualTheme> = {
 };
 
 export const TRIP_THEME: Record<string, VisualTheme> = {
-	BattleUnderground: { a: "#ff8a3d", b: "#d92643", tag: "Rap Battle", motif: "burst", tagline: "Bars over everything." },
+	BattleUnderground: { a: "#ff8a3d", b: "#d92643", tag: "BUG", motif: "burst", tagline: "Bars over everything." },
 	"bug-rap": { a: "#ff8a3d", b: "#d92643", tag: "Rap Battle", motif: "burst", tagline: "Bars over everything." },
 	"bug-beatboxing": { a: "#ff5f3c", b: "#8c2333", tag: "Beatboxing", motif: "bars", tagline: "No instruments. No mercy." },
 	synchro: { a: "#ffc94d", b: "#d92643", tag: "Battle of Bands", motif: "bars", tagline: "Loudest band wins." },

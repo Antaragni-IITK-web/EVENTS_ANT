@@ -81,18 +81,18 @@ function Hero() {
 			{/* NEW VIDEO BACKGROUND - Gritty B&W + Grain + Color Tone */}
 			<div className="absolute inset-0 pointer-events-none z-0 overflow-hidden bg-[#0a0612]">
 				{/* 1. Black & White Base Video */}
-				<video 
-					src="/cinema/final_video_events.mov" 
-					autoPlay 
-					loop 
-					muted 
-					playsInline 
+				<video
+					src="/cinema/final_video_events.mov"
+					autoPlay
+					loop
+					muted
+					playsInline
 					className="h-full w-full object-cover"
 					style={{ filter: "grayscale(100%) contrast(1.3) brightness(0.7)" }}
 				/>
 
 				{/* 2. Film Grain Overlay */}
-				<div 
+				<div
 					className="absolute inset-0 opacity-20 mix-blend-overlay"
 					style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")" }}
 				/>
@@ -440,13 +440,12 @@ function About() {
 							style={{ transform: `rotate(${i % 2 ? 1 : -1}deg) translateX(${(i % 3) * 14}px)` }}
 						>
 							<span
-								className={`font-poster text-7xl leading-[0.9] md:text-8xl ${
-									s.style === "gradient"
+								className={`font-poster text-7xl leading-[0.9] md:text-8xl ${s.style === "gradient"
 										? "text-gradient-live"
 										: s.style === "outline"
 											? "text-stroke-lime"
 											: ""
-								}`}
+									}`}
 							>
 								<Counter to={s.to} suffix={s.suffix} />
 							</span>
@@ -513,9 +512,8 @@ function Legacy() {
 					return (
 						<div
 							key={i}
-							className={`relative mx-4 h-64 w-48 shrink-0 border-2 border-white/15 shadow-[7px_7px_0_rgba(0,0,0,0.5)] md:h-80 md:w-60 ${
-								i % 2 ? "translate-y-4 rotate-2" : "-translate-y-2 -rotate-2"
-							}`}
+							className={`relative mx-4 h-64 w-48 shrink-0 border-2 border-white/15 shadow-[7px_7px_0_rgba(0,0,0,0.5)] md:h-80 md:w-60 ${i % 2 ? "translate-y-4 rotate-2" : "-translate-y-2 -rotate-2"
+								}`}
 						>
 							<span
 								className={`tape absolute -top-3 left-1/2 z-10 -translate-x-1/2 ${i % 3 === 1 ? "tape-pink" : i % 3 === 2 ? "tape-cyan" : ""}`}

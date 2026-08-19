@@ -25,6 +25,7 @@ import { CardArt } from "../../../components/fx/CardArt";
 import { FloatingStickers } from "../../../components/fx/Stickers";
 import { TiltCard } from "../../../components/fx/TiltCard";
 import { Cinema } from "../../../components/fx/Cinema";
+import { TourMap } from "../../../components/TourMap";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -394,37 +395,43 @@ export default function RoadtripDetailPage({
 							b={theme.b}
 							tag={theme.tag}
 						>
-							<div className="border-t border-white/10">
-								{scheduleInfo.map((item, idx) => (
-									<div
-										key={idx}
-										className="group flex items-center gap-5 border-b border-white/10 px-2 py-5 transition-colors duration-300 hover:bg-white/5 md:gap-8 md:px-6"
-									>
-										<span
-											className="font-title w-14 shrink-0 text-sm font-bold md:text-base"
-											style={{ color: theme.b }}
+							{/* New Animated Tour Map */}
+							<TourMap schedule={scheduleInfo} theme={theme} />
+
+							{/* Old List format (hidden non-destructively) */}
+							{false && (
+								<div className="border-t border-white/10">
+									{scheduleInfo.map((item, idx) => (
+										<div
+											key={idx}
+											className="group flex items-center gap-5 border-b border-white/10 px-2 py-5 transition-colors duration-300 hover:bg-white/5 md:gap-8 md:px-6"
 										>
-											{String(idx + 1).padStart(2, "0")}
-										</span>
-										<h3 className="font-title min-w-0 flex-1 truncate text-3xl font-black uppercase leading-none text-foreground/85 md:text-5xl">
-											{item.city}
-										</h3>
-										<span className="chip shrink-0 !text-[10px]" style={{ color: theme.a }}>
-											{item.date}
-										</span>
-										{item.img && (
-											<span className="hidden h-16 w-12 shrink-0 overflow-hidden rounded-lg border border-white/10 md:block">
-												{/* CMS-served city poster */}
-												<img
-													src={item.img}
-													alt={item.city}
-													className="h-full w-full object-cover"
-												/>
+											<span
+												className="font-title w-14 shrink-0 text-sm font-bold md:text-base"
+												style={{ color: theme.b }}
+											>
+												{String(idx + 1).padStart(2, "0")}
 											</span>
-										)}
-									</div>
-								))}
-							</div>
+											<h3 className="font-title min-w-0 flex-1 truncate text-3xl font-black uppercase leading-none text-foreground/85 md:text-5xl">
+												{item.city}
+											</h3>
+											<span className="chip shrink-0 !text-[10px]" style={{ color: theme.a }}>
+												{item.date}
+											</span>
+											{item.img && (
+												<span className="hidden h-16 w-12 shrink-0 overflow-hidden rounded-lg border border-white/10 md:block">
+													{/* CMS-served city poster */}
+													<img
+														src={item.img}
+														alt={item.city}
+														className="h-full w-full object-cover"
+													/>
+												</span>
+											)}
+										</div>
+									))}
+								</div>
+							)}
 						</PageSection>
 					)}
 
