@@ -19,7 +19,7 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 /* ---------------------------------- HERO ----------------------------------
    An album cover, not a landing page: left-anchored giant wordmark with a
    live gradient sweeping through it, repeated outline type wallpapering the
-   back, festival stickers floating with cursor parallax, ticket-stamp date. */
+   back, ticket-stamp date. */
 
 const TITLE = "ANTARAGNI";
 
@@ -107,7 +107,7 @@ function Hero() {
 			{/* OLD BACKGROUND ELEMENTS (Disabled to be non-destructive) */}
 			{false && (
 				<>
-					{/* typographic wallpaper — three warm outline rows drifting slowly,
+					{/* typographic wallpaper - three warm outline rows drifting slowly,
 						faded at the edges so they never fight the wordmark */}
 					<div className="hero-backdrop hero-rows pointer-events-none absolute -inset-x-[12%] inset-y-0 flex -rotate-3 flex-col justify-center gap-[3vw]">
 						{[
@@ -138,15 +138,15 @@ function Hero() {
 					{/* stage beam falling on the wordmark */}
 					<div className="hero-beam pointer-events-none absolute left-[38%] top-[-24%] h-[95%] w-[48vw] -translate-x-1/2" />
 
-					{/* sparks rising from the fire — the hero breathes */}
+					{/* sparks rising from the fire - the hero breathes */}
 					<Embers count={72} />
 
-					{/* cinematic vignette — center pops, edges fall away */}
+					{/* cinematic vignette - center pops, edges fall away */}
 					<div className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_100%_at_45%_42%,transparent_52%,rgba(12,7,8,0.6)_100%)]" />
 				</>
 			)}
 
-			{/* ticket-stamp date, pinned top-right — 61st Edition headlines it (Disabled) */}
+			{/* ticket-stamp date, pinned top-right - 61st Edition headlines it (Disabled) */}
 			{false && (
 				<div className="hero-stamp absolute right-5 top-24 rotate-6 md:right-14 md:top-28">
 					<div className="flex flex-col items-center gap-1.5">
@@ -163,7 +163,7 @@ function Hero() {
 					North India&rsquo;s biggest college cultural festival
 				</p>
 
-				{/* the identity — ONE line: molten letters with an ink outline,
+				{/* the identity - ONE line: molten letters with an ink outline,
 				    hard poster shadow + ember bloom. No misregistered echo. */}
 				<div className="hero-title relative w-fit mx-auto select-none px-6 py-2 backdrop-grayscale backdrop-contrast-[100] backdrop-brightness-[1.5] mix-blend-difference text-white">
 					<h1
@@ -189,7 +189,7 @@ function Hero() {
 
 				<div className="mt-8 flex w-full flex-col items-center gap-8 md:flex-row md:justify-center md:gap-12">
 					<p className="hero-sub max-w-md text-base leading-relaxed text-foreground/70 md:text-lg text-center">
-						Four days. Hundreds of stages. One incredible story — and
+						Four days. Hundreds of stages. One incredible story, and
 						you&rsquo;re in it. The 61st edition returns louder than ever.
 					</p>
 
@@ -273,7 +273,7 @@ function Band() {
 }
 
 /* ------------------------------ PORTAL POSTERS ----------------------------
-   Two tilted, overlapping gig posters taped to the wall — not cards. */
+   Two tilted, overlapping gig posters taped to the wall - not cards. */
 
 function Portals() {
 	return (
@@ -331,7 +331,7 @@ function Portals() {
 					</Link>
 				</Reveal>
 
-				{/* Roadtrips poster — offset lower, opposite tilt */}
+				{/* Roadtrips poster - offset lower, opposite tilt */}
 				<Reveal delay={0.12} className="md:mt-24">
 					<Link
 						href="/roadtrips"
@@ -375,7 +375,7 @@ function Portals() {
 }
 
 /* --------------------------------- NUMBERS --------------------------------
-   No boxes. The numbers ARE the layout — a giant typographic stack. */
+   No boxes. The numbers ARE the layout - a giant typographic stack. */
 
 function Counter({ to, suffix }: { to: number; suffix: string }) {
 	const ref = useRef<HTMLSpanElement>(null);
@@ -422,8 +422,8 @@ function About() {
 					<p className="mt-6 leading-relaxed text-foreground/70">
 						Since 1966, Antaragni has been where India&rsquo;s most fearless
 						performers collide. From midnight jam sessions to roaring pronites,
-						from street plays that stop crowds to quizzes that break brains —
-						this is the stage where legends take their first bow.
+						from street plays that stop crowds to quizzes that break brains.
+						This is the stage where legends take their first bow.
 					</p>
 					<p className="mt-4 leading-relaxed text-foreground/70">
 						In 2026 we return <span className="marker">louder, brighter and bolder</span>.
@@ -431,7 +431,7 @@ function About() {
 					</p>
 				</Reveal>
 
-				{/* typographic stat stack — numbers bleed into the background */}
+				{/* typographic stat stack - numbers bleed into the background */}
 				<Reveal className="flex flex-col gap-2" stagger={0.12}>
 					{STATS.map((s, i) => (
 						<div
@@ -475,7 +475,7 @@ const ARTISTS = [
 	"Salim–Sulaiman",
 ];
 
-/* poster wall — generated art, one per marquee slot */
+/* poster wall - generated art, one per marquee slot */
 const WALL = [
 	{ slug: "musicals", title: "Music" },
 	{ slug: "junoon", title: "Junoon", trip: true },
@@ -490,7 +490,7 @@ const WALL = [
 function Legacy() {
 	return (
 		<section className="relative overflow-hidden py-28">
-			{/* the crowd — festival night photography under the poster wall */}
+			{/* the crowd - festival night photography under the poster wall */}
 			<Cinema src="/cinema/home-crowd.jpg" a="#ff6b35" b="#8c2333" opacity={0.4} />
 			<div className="backdrop-word font-poster pointer-events-none absolute left-0 top-6 w-full text-center text-[13vw] uppercase">
 				Legends

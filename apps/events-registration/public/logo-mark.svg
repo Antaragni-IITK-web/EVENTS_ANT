@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 130" fill="none">
-  <!-- Antaragni brush mark (traced) — replace with the official vector anytime;
+  <!-- Antaragni brush mark (traced) - replace with the official vector anytime;
        the loader reads its path from FestivalLoader.tsx -->
   <path d="M 62 5 C 56 21, 40 52, 24 84 C 18 96, 13 106, 9 117 C 33 126, 62 124, 85 116 C 89 114, 91 112, 90 109 C 81 93, 69 71, 58 48 C 55 42, 52 37, 50 32" stroke="#b32024" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

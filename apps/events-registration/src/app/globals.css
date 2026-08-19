@@ -3,17 +3,17 @@
 @import "@repo/ui/styles.css";
 @plugin "@tailwindcss/typography";
 
-/* ============ ANTARAGNI '26 — DESIGN TOKENS ============
-   THE ANTARAGNI PALETTE — fire only. Molten gold (the fest's heritage
+/* ============ ANTARAGNI '26 - DESIGN TOKENS ============
+   THE ANTARAGNI PALETTE - fire only. Molten gold (the fest's heritage
    color), ember orange, flame, crimson and deep maroon on warm charcoal.
    No neons, no cool hues. Premium, mature, energetic.
 
    NOTE: legacy var names (--lime/--pink/--violet/--cyan) are kept as
    ALIASES into the fire family so every component re-skins automatically. */
 @theme {
-	--color-background: #1a1114; /* warm charcoal — fire-lit dark */
+	--color-background: #1a1114; /* warm charcoal - fire-lit dark */
 	--color-foreground: #f7f0e4; /* warm cream white */
-	--color-primary: #ffc94d; /* molten gold — the Antaragni color */
+	--color-primary: #ffc94d; /* molten gold - the Antaragni color */
 	--color-secondary: #ff5f3c; /* flame */
 	--color-accent: #d92643; /* crimson */
 }
@@ -26,7 +26,7 @@
 	--color-accent: #d92643;
 
 	/* THE fire family */
-	--gold: #ffc94d; /* molten gold — heritage highlight */
+	--gold: #ffc94d; /* molten gold - heritage highlight */
 	--ember: #ff8a3d; /* burnt orange */
 	--flame: #ff5f3c; /* hot flame */
 	--crimson: #d92643; /* deep fire */
@@ -34,7 +34,7 @@
 	--amber: #ffb769; /* soft amber light */
 	--cream: #fff1d6; /* paper cream */
 
-	/* legacy aliases — old names, new fire values (auto re-skins the site) */
+	/* legacy aliases - old names, new fire values (auto re-skins the site) */
 	--lime: var(--gold);
 	--pink: var(--flame);
 	--violet: var(--maroon);
@@ -47,7 +47,7 @@
 	--font-sans: var(--font-inter);
 	--font-title: var(--font-rakkas);
 
-	/* solid panel ink — warm maroon-charcoal, never blue-black */
+	/* solid panel ink - warm maroon-charcoal, never blue-black */
 	--ink: #241419;
 	--ink-2: #2c1a1f; /* raised panel */
 	--paper: #f7f0e4;
@@ -128,7 +128,7 @@ body {
 	color: transparent;
 }
 
-/* .glass is DEAD as glassmorphism — every legacy usage now renders as a
+/* .glass is DEAD as glassmorphism - every legacy usage now renders as a
    solid screen-printed ink panel with paper tooth and a hard offset shadow */
 .glass {
 	background: var(--ink)
@@ -146,7 +146,7 @@ body {
 	transform: rotate(-1deg);
 }
 
-/* sticker buttons — solid ink, hard shadow, slight tilt; no glow, no blur */
+/* sticker buttons - solid ink, hard shadow, slight tilt; no glow, no blur */
 .btn-festival {
 	@apply inline-flex items-center justify-center gap-2 px-8 py-3.5 font-bold text-sm uppercase tracking-widest transition-transform duration-200;
 	background: linear-gradient(92deg, var(--warm-red), var(--sun));
@@ -208,7 +208,7 @@ body {
 	background: var(--cyan);
 }
 
-/* ticket stub — punched notches on the sides */
+/* ticket stub - punched notches on the sides */
 .ticket {
 	position: relative;
 	background: var(--ink);
@@ -226,7 +226,7 @@ body {
 	background-size: 10px 10px;
 }
 
-/* huge repeated backdrop word — poster wallpaper type */
+/* huge repeated backdrop word - poster wallpaper type */
 .backdrop-word {
 	-webkit-text-stroke: 1px rgba(244, 241, 250, 0.08);
 	color: transparent;
@@ -235,7 +235,7 @@ body {
 	line-height: 0.82;
 	white-space: nowrap;
 }
-/* warm variant — ember-lit outline for the landing wallpaper */
+/* warm variant - ember-lit outline for the landing wallpaper */
 .backdrop-word-warm {
 	-webkit-text-stroke: 1px rgba(255, 183, 105, 0.13);
 }
@@ -345,7 +345,7 @@ body {
 
 /* ============ HERO WORDMARK (layered chrome poster type) ============ */
 
-/* molten-metal sweep — cream → gold → ember → crimson → maroon;
+/* molten-metal sweep - cream → gold → ember → crimson → maroon;
    fire moving through the letters */
 .text-chrome {
 	background: linear-gradient(
@@ -373,7 +373,7 @@ body {
 	transform-origin: bottom left;
 }
 /* real depth on the molten wordmark: hard poster shadow + ember bloom.
-   NOTE: no -webkit-text-stroke here — it artifacts against
+   NOTE: no -webkit-text-stroke here - it artifacts against
    background-clip:text (outlines the glyph counters misaligned). */
 .hero-fire-shadow {
 	filter: drop-shadow(0.045em 0.055em 0 rgba(20, 10, 12, 0.92))
@@ -423,9 +423,10 @@ body {
 	50% { filter: drop-shadow(0 0 18px rgba(255, 138, 61, 0.85)); }
 }
 .loader-mark {
-	animation: loader-flicker 2.2s ease-in-out 1.6s infinite;
+	animation: loader-flicker 2.2s ease-in-out infinite;
 }
-/* the real logo used as a mask — ghost + rising molten fill */
+/* the real logo used as a mask - ghost shell + molten fill. The fill line is
+   driven from FestivalLoader (clip-path == the counter %), not a keyframe. */
 .loader-logo-ghost,
 .loader-logo-fire {
 	-webkit-mask: url("/logo.png") center / contain no-repeat;
@@ -434,9 +435,6 @@ body {
 .loader-logo-ghost {
 	background: rgba(247, 240, 228, 0.1);
 }
-@keyframes loader-ignite {
-	to { clip-path: inset(0 0 0 0); }
-}
 @keyframes loader-molten {
 	from { background-position: 50% 100%; }
 	to { background-position: 50% 0%; }
@@ -444,17 +442,34 @@ body {
 .loader-logo-fire {
 	background: linear-gradient(
 		180deg,
-		#ffc94d 0%,
-		#ff8a3d 32%,
-		#d92643 68%,
+		#fff6e5 0%,
+		#ffc94d 18%,
+		#ff8a3d 45%,
+		#d92643 74%,
 		#8c2333 100%
 	);
-	background-size: 100% 240%;
+	/* only 20% of overshoot so the molten range maps onto the mark itself:
+	   hot cream/gold at the tip, deep crimson at the base */
+	background-size: 100% 120%;
 	background-position: 50% 100%;
 	clip-path: inset(100% 0 0 0);
-	animation:
-		loader-ignite 1.5s cubic-bezier(0.65, 0, 0.35, 1) 0.2s forwards,
-		loader-molten 2.6s ease-in-out 1.7s infinite alternate;
+	filter: drop-shadow(0 0 14px rgba(255, 138, 61, 0.45));
+	animation: loader-molten 2.6s ease-in-out infinite alternate;
+	will-change: clip-path;
+}
+/* ember pool breathing behind the mark */
+@keyframes loader-halo {
+	0%, 100% { opacity: 0.45; transform: scale(1); }
+	50% { opacity: 0.8; transform: scale(1.09); }
+}
+.loader-halo {
+	background: radial-gradient(
+		closest-side,
+		rgba(255, 138, 61, 0.34) 0%,
+		rgba(217, 38, 67, 0.15) 45%,
+		transparent 72%
+	);
+	animation: loader-halo 3.4s ease-in-out infinite;
 }
 @keyframes loader-stamp {
 	from { opacity: 0; transform: translateY(14px) scale(0.94); }
@@ -478,8 +493,8 @@ body {
 	animation: loader-fill 1.9s cubic-bezier(0.65, 0, 0.35, 1) 0.1s forwards;
 }
 @media (prefers-reduced-motion: reduce) {
-	.loader-logo-fire { animation-duration: 0.01s, 0.01s; animation-delay: 0s, 0s; }
-	.loader-mark { animation: none; }
+	.loader-logo-fire { animation: none; filter: none; }
+	.loader-mark, .loader-halo { animation: none; }
 	.loader-word, .loader-sub { animation-duration: 0.01s; animation-delay: 0s; }
 	.loader-bar { animation-duration: 0.01s; }
 }
@@ -563,7 +578,7 @@ body {
 	padding-top: 0 !important;
 	padding-bottom: 0 !important;
 }
-/* the forms render their own big title — we already print "Enter the Arena" */
+/* the forms render their own big title - we already print "Enter the Arena" */
 .reg-arena h1 {
 	display: none;
 }
@@ -614,7 +629,7 @@ body {
 	box-shadow: 7px 7px 0 var(--flame) !important;
 }
 
-/* card wall — cards deal themselves in when the filter changes */
+/* card wall - cards deal themselves in when the filter changes */
 @keyframes wall-deal {
 	from { opacity: 0; transform: translateY(26px) rotate(0deg) scale(0.96); }
 }
@@ -625,7 +640,7 @@ body {
 	.wall-card { animation: none; }
 }
 
-/* kinetic lineup — gradient fill wipes in from the left on row hover */
+/* kinetic lineup - gradient fill wipes in from the left on row hover */
 .lineup-fill {
 	clip-path: inset(0 100% 0 0);
 	transition: clip-path 0.55s cubic-bezier(0.16, 1, 0.3, 1);
@@ -639,7 +654,7 @@ body {
 	}
 }
 
-/* film grain overlay — warm paper tooth, slightly stronger for print feel */
+/* film grain overlay - warm paper tooth, slightly stronger for print feel */
 .grain-overlay {
 	position: fixed;
 	inset: 0;
@@ -649,7 +664,7 @@ body {
 	mix-blend-mode: soft-light;
 	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
 }
-/* faint warm bloom washing the whole page — festival hall haze */
+/* faint warm bloom washing the whole page - festival hall haze */
 .grain-overlay::after {
 	content: "";
 	position: absolute;

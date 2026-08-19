@@ -6,11 +6,11 @@ import { PosterArt } from "./PosterArt";
 import type { Motif } from "../../data/themes";
 
 /* ----------------------------------------------------------------------------
-   CardArt — the collectible festival card, photographic edition.
+   CardArt - the collectible festival card, photographic edition.
    Real cinematic photography (public/cards/<slug>.jpg) graded in the event's
    fire colors, wrapped in the trading-card chrome: serial number, corner
    registration ticks, diagonal title ribbon, barcode. If the photo doesn't
-   exist, falls back to the generative PosterArt vector scene — same API.
+   exist, falls back to the generative PosterArt vector scene - same API.
 ---------------------------------------------------------------------------- */
 
 function cardKey(slug: string): string {
@@ -65,7 +65,7 @@ export function CardArt({
 				className="object-cover"
 			/>
 
-			{/* unified grade — dark crush + the event's duotone */}
+			{/* unified grade - dark crush + the event's duotone */}
 			<div
 				className="pointer-events-none absolute inset-0"
 				style={{

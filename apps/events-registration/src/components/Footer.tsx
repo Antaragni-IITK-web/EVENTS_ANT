@@ -2,22 +2,14 @@
 
 import Link from "next/link";
 import { Marquee } from "./fx/Marquee";
-import { Sticker } from "./fx/Stickers";
 
-/* Festival ending screen — the encore, not a sitemap.
+/* Festival ending screen - the encore, not a sitemap.
    Giant closing type, film-style credits, a stamped ticket strip. */
 const Footer = () => {
 	return (
 		<footer className="relative mt-28 overflow-hidden">
 			{/* closing statement */}
 			<div className="relative px-4 pb-6 pt-16 text-center">
-				<div className="pointer-events-none absolute left-6 top-10 hidden rotate-12 md:block">
-					<Sticker name="ticket" color="var(--sun)" className="h-16 w-16" />
-				</div>
-				<div className="pointer-events-none absolute right-8 top-24 hidden -rotate-12 md:block">
-					<Sticker name="trophy" color="var(--yellow)" className="h-14 w-14" />
-				</div>
-
 				<p className="font-poster text-[11vw] uppercase leading-[0.9] md:text-[8vw]">
 					<span className="text-gradient-live">See you</span>
 					<br />

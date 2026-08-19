@@ -1,6 +1,6 @@
 /* ----------------------------------------------------------------------------
-   PosterArt v3 — collectible festival posters, one scene per motif.
-   Not icon-in-a-rectangle: each motif is a small illustrated WORLD —
+   PosterArt v3 - collectible festival posters, one scene per motif.
+   Not icon-in-a-rectangle: each motif is a small illustrated WORLD -
    vinyl + frequency stage for music, spotlight cones + motion trails for
    dance, manga panels + speed lines for anime, paint drips for fine arts,
    radar rings for quiz, waveform horizon for lit/DJ, punk burst for rock.
@@ -146,7 +146,7 @@ function Mark({
 	);
 }
 
-/* crowd silhouette — rows of heads along the bottom of a stage scene */
+/* crowd silhouette - rows of heads along the bottom of a stage scene */
 function Crowd({ y, r: rand }: { y: number; r: () => number }) {
 	const heads: React.ReactNode[] = [];
 	for (let row = 0; row < 2; row++) {
@@ -213,7 +213,7 @@ function scene(motif: Motif, s: SceneArgs) {
 	const g = `url(#${uid}-g)`;
 
 	switch (motif) {
-		/* ---- MUSIC — vinyl deck over a frequency skyline, crowd below ---- */
+		/* ---- MUSIC - vinyl deck over a frequency skyline, crowd below ---- */
 		case "bars": {
 			const cx = W / 2;
 			const cy = 150;
@@ -264,7 +264,7 @@ function scene(motif: Motif, s: SceneArgs) {
 			);
 		}
 
-		/* ---- DANCE — spotlight cones, motion trails, stage + crowd ---- */
+		/* ---- DANCE - spotlight cones, motion trails, stage + crowd ---- */
 		case "rays": {
 			return (
 				<g>
@@ -295,7 +295,7 @@ function scene(motif: Motif, s: SceneArgs) {
 			);
 		}
 
-		/* ---- QUIZ / DEBATE — radar rings, orbit dots, crosshair ticks ---- */
+		/* ---- QUIZ / DEBATE - radar rings, orbit dots, crosshair ticks ---- */
 		case "rings": {
 			const cx = W / 2;
 			const cy = 172;
@@ -350,7 +350,7 @@ function scene(motif: Motif, s: SceneArgs) {
 			);
 		}
 
-		/* ---- LIT / DJ — waveform horizon, big moon disc, reflection ---- */
+		/* ---- LIT / DJ - waveform horizon, big moon disc, reflection ---- */
 		case "wave": {
 			const cx = W / 2;
 			return (
@@ -388,7 +388,7 @@ function scene(motif: Motif, s: SceneArgs) {
 			);
 		}
 
-		/* ---- ANIME / PHOTO — manga panels, speed lines, halftone, action ---- */
+		/* ---- ANIME / PHOTO - manga panels, speed lines, halftone, action ---- */
 		case "dots": {
 			return (
 				<g>
@@ -436,7 +436,7 @@ function scene(motif: Motif, s: SceneArgs) {
 			);
 		}
 
-		/* ---- FINE ARTS / COMEDY — paint drips, blob, splatter, swash ---- */
+		/* ---- FINE ARTS / COMEDY - paint drips, blob, splatter, swash ---- */
 		case "blob": {
 			return (
 				<g>
@@ -493,7 +493,7 @@ function scene(motif: Motif, s: SceneArgs) {
 			);
 		}
 
-		/* ---- ROCK / RAP / DRAMA — punk burst, echo, caution band, sparks ---- */
+		/* ---- ROCK / RAP / DRAMA - punk burst, echo, caution band, sparks ---- */
 		case "burst": {
 			const cx = W / 2;
 			const cy = 190;
@@ -595,7 +595,7 @@ export function PosterArt({
 			</defs>
 
 			<g clipPath={`url(#${uid}-clip)`}>
-				{/* base — rich printed stock, not digital black */}
+				{/* base - rich printed stock, not digital black */}
 				<rect width={W} height={H} fill="#17101f" />
 				<rect width={W} height={H} fill={`url(#${uid}-glow)`} />
 

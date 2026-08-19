@@ -27,7 +27,7 @@ interface EventData {
 }
 
 /* ----------------------------------------------------------------------------
-   EventDetails — editorial scroll layout (replaces the old tab box).
+   EventDetails - editorial scroll layout (replaces the old tab box).
    One continuous page: Overview → Competitions → Guidelines → Contacts,
    with a sticky anchor nav. Firestore parsing is untouched.
 ---------------------------------------------------------------------------- */

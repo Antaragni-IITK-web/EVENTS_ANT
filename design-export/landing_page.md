@@ -35,7 +35,7 @@ This document details *every single text node, CSS class, component, and structu
   - The word "ANTARAGNI" is split. Each letter is wrapped in: `<span className="inline-block overflow-hidden align-bottom"><span className="hero-letter text-chrome inline-block">A</span></span>` (and so on).
 - **Subtitle & CTAs Container**: `<div className="mt-8 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">`
   - **Subtitle**: `<p className="hero-sub max-w-md text-base leading-relaxed text-foreground/70 md:text-lg">`
-  - Text: `Four days. Hundreds of stages. One incredible story — and you're in it. The 61st edition returns louder than ever.`
+  - Text: `Four days. Hundreds of stages. One incredible story, and you're in it. The 61st edition returns louder than ever.`
   - **CTA Wrapper**: `<div className="flex flex-wrap items-center gap-5">`
   - **CTA 1**: `<Link href="/events" className="hero-cta btn-lime" data-cursor-text="GO">Explore Events</Link>`
   - **CTA 2**: `<Link href="/roadtrips" className="hero-cta btn-festival" data-cursor-text="GO">Ride the Roadtrips</Link>`
@@ -100,7 +100,7 @@ This document details *every single text node, CSS class, component, and structu
 - **Wrapper**: `<Reveal>`
 - **Eyebrow**: `<span className="tape mb-5 inline-block rotate-1">Unleashing the fire within</span>`
 - **Title**: `<h2 className="font-title text-4xl font-black leading-tight md:text-5xl">Six decades of <span className="marker-pink marker -rotate-1 inline-block">goosebumps.</span></h2>`
-- **P1**: `<p className="mt-6 leading-relaxed text-foreground/70">Since 1966, Antaragni has been where India's most fearless performers collide. From midnight jam sessions to roaring pronites, from street plays that stop crowds to quizzes that break brains — this is the stage where legends take their first bow.</p>`
+- **P1**: `<p className="mt-6 leading-relaxed text-foreground/70">Since 1966, Antaragni has been where India's most fearless performers collide. From midnight jam sessions to roaring pronites, from street plays that stop crowds to quizzes that break brains. This is the stage where legends take their first bow.</p>`
 - **P2**: `<p className="mt-4 leading-relaxed text-foreground/70">In 2026 we return <span className="marker">louder, brighter and bolder</span>. Register, compete, and write yourself into the story.</p>`
 
 ### 4b. Right Column (Counter Stack)

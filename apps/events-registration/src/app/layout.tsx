@@ -6,7 +6,7 @@ import { ClientComponent } from "../components/clientComponent";
 import { Cursor } from "../components/fx/Cursor";
 import { Toaster } from "react-hot-toast";
 
-/* Display face — mapped onto the shared --font-rakkas slot so every
+/* Display face - mapped onto the shared --font-rakkas slot so every
    font-title usage across shared packages picks it up. */
 const unbounded = Unbounded({
 	subsets: ["latin"],
@@ -14,14 +14,14 @@ const unbounded = Unbounded({
 	variable: "--font-rakkas",
 });
 
-/* Body face — mapped onto the shared --font-inter slot. */
+/* Body face - mapped onto the shared --font-inter slot. */
 const grotesk = Space_Grotesk({
 	subsets: ["latin"],
 	weight: ["300", "400", "500", "600", "700"],
 	variable: "--font-inter",
 });
 
-/* Condensed poster face — massive lineup-poster headline stacks. */
+/* Condensed poster face - massive lineup-poster headline stacks. */
 const anton = Anton({
 	subsets: ["latin"],
 	weight: "400",
@@ -29,7 +29,7 @@ const anton = Anton({
 });
 
 export const metadata: Metadata = {
-	title: "Antaragni '26 — Events & Roadtrips | IIT Kanpur",
+	title: "Antaragni '26 - Events & Roadtrips | IIT Kanpur",
 	description:
 		"The 61st edition of Antaragni, the annual cultural festival of IIT Kanpur. Compete, perform, belong.",
 };

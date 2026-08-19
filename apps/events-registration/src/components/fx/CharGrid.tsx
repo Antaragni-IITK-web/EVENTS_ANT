@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 
 /* ----------------------------------------------------------------------------
-   CharGrid — the site-wide live background.
+   CharGrid - the site-wide live background.
    A faint dot-matrix of characters covers the page. Characters near the
    cursor heat up (brighten + shift through the brand ramp) and cool back
    down, leaving a soft trail. Two slow autonomous drifters keep the field
@@ -64,7 +64,7 @@ export function CharGrid() {
 			dpr = Math.min(window.devicePixelRatio || 1, 1.5);
 			c.width = Math.floor(c.clientWidth * dpr);
 			c.height = Math.floor(c.clientHeight * dpr);
-			/* zero-size at mount (layout not settled) — skip; resize rebuilds */
+			/* zero-size at mount (layout not settled) - skip; resize rebuilds */
 			if (c.width === 0 || c.height === 0) {
 				base = null;
 				return;
@@ -76,7 +76,7 @@ export function CharGrid() {
 			);
 			heat = new Float32Array(cols * rows);
 
-			/* prerender the resting grid once — per-frame cost is one drawImage */
+			/* prerender the resting grid once - per-frame cost is one drawImage */
 			base = document.createElement("canvas");
 			base.width = c.width;
 			base.height = c.height;
@@ -121,7 +121,7 @@ export function CharGrid() {
 			stamp(e.clientX, e.clientY, 1, 3.2);
 		};
 
-		/* autonomous drifters — keep the field breathing when idle */
+		/* autonomous drifters - keep the field breathing when idle */
 		const drifters = [
 			{ t: Math.random() * 100, speed: 0.00016, ry: 0.3 },
 			{ t: Math.random() * 100, speed: 0.00011, ry: 0.7 },
@@ -130,7 +130,7 @@ export function CharGrid() {
 		function tick(now: number) {
 			raf = requestAnimationFrame(tick);
 			if (document.hidden || !ctx || !base) {
-				/* canvas had no size at mount — try rebuilding once layout exists */
+				/* canvas had no size at mount - try rebuilding once layout exists */
 				if (!base && canvas!.clientWidth > 0) build();
 				return;
 			}
@@ -170,7 +170,7 @@ export function CharGrid() {
 		}
 
 		build();
-		/* paint the resting grid immediately — no blank first frame,
+		/* paint the resting grid immediately - no blank first frame,
 		   and hidden tabs still show the texture */
 		if (base) {
 			ctx.setTransform(1, 0, 0, 1, 0, 0);

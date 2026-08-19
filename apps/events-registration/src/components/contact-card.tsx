@@ -11,7 +11,7 @@ export interface ContactCardProps {
 	className?: string;
 }
 
-/* Contact card as a festival CREW PASS — ink stock, punched lanyard slot,
+/* Contact card as a festival CREW PASS - ink stock, punched lanyard slot,
    molten-ring portrait, dashed tear line, barcode. Matches the poster system. */
 export function ContactCard({ contact, className }: ContactCardProps) {
 	return (

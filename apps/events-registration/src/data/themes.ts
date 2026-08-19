@@ -3,7 +3,7 @@
    Used by lineup lists, detail pages and generated poster art.
    motif → which generative composition PosterArt draws.
 
-   THE ANTARAGNI PALETTE — fire only. Every identity is a pairing from:
+   THE ANTARAGNI PALETTE - fire only. Every identity is a pairing from:
    gold #ffc94d · amber #ffb769 · ember #ff8a3d · flame #ff5f3c ·
    crimson #d92643 · maroon #8c2333 · cream #fff1d6
    Variety comes from heat (light↔dark), not from hue families.
@@ -19,7 +19,7 @@ export interface VisualTheme {
 	tagline: string; // one-liner used in hover marquees / detail heroes
 }
 
-/* per-category fallback gradients — fire, graded by heat */
+/* per-category fallback gradients - fire, graded by heat */
 export const CAT_THEME: Record<string, { a: string; b: string }> = {
 	"Performing Arts": { a: "#ff8a3d", b: "#d92643" },
 	"Literary Arts": { a: "#ffc94d", b: "#8c2333" },

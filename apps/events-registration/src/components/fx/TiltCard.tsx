@@ -3,7 +3,7 @@
 import { useRef, ReactNode } from "react";
 import gsap from "gsap";
 
-/* Physical 3D tilt on hover — the card leans away from the cursor like a
+/* Physical 3D tilt on hover - the card leans away from the cursor like a
    real piece of cardstock, with a moving sheen. Fine pointers only. */
 export function TiltCard({
 	children,

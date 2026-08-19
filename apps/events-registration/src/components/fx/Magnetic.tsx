@@ -3,7 +3,7 @@
 import { useRef, ReactNode } from "react";
 import gsap from "gsap";
 
-/* Magnetic wrapper — the child leans toward the cursor while hovered
+/* Magnetic wrapper - the child leans toward the cursor while hovered
    and snaps back on leave. Fine pointers only; no-op on touch. */
 export function Magnetic({
 	children,

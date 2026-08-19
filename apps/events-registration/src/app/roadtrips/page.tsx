@@ -4,14 +4,13 @@ import Link from "next/link";
 import { roadtrips } from "../../data/roadtrips";
 import { tripTheme } from "../../data/themes";
 import { Reveal, RevealTitle } from "../../components/fx/Reveal";
-import { FloatingStickers } from "../../components/fx/Stickers";
 import { TiltCard } from "../../components/fx/TiltCard";
 import { CardArt } from "../../components/fx/CardArt";
 import { Marquee } from "../../components/fx/Marquee";
 import { Cinema } from "../../components/fx/Cinema";
 
 /* ----------------------------------------------------------------------------
-   ANTARAGNI ON TOUR — a national tour announcement, not a list.
+   ANTARAGNI ON TOUR - a national tour announcement, not a list.
    Every battle is a collectible tour poster (TiltCard + PosterArt) with tour
    branding, a caption strip and a dramatic scroll-in. Nationals headlines.
 ---------------------------------------------------------------------------- */
@@ -20,7 +19,7 @@ const STEPS = [
 	{
 		n: "01",
 		title: "Register your act",
-		desc: "Pick your battle — rock, rap, beatbox, comedy or decks — and sign up online.",
+		desc: "Pick your battle: rock, rap, beatbox, comedy or decks. Sign up online.",
 	},
 	{
 		n: "02",
@@ -30,7 +29,7 @@ const STEPS = [
 	{
 		n: "03",
 		title: "Finale at IIT Kanpur",
-		desc: "City champions clash on the biggest stage of them all — the Nationals at Antaragni '26.",
+		desc: "City champions clash on the biggest stage of them all, the Nationals at Antaragni '26.",
 	},
 ];
 
@@ -80,7 +79,7 @@ function TourPoster({
 					</div>
 				</TiltCard>
 
-				{/* caption strip — tour billing */}
+				{/* caption strip - tour billing */}
 				<div className="mt-4 flex items-center justify-between gap-3 px-1">
 					<div className="min-w-0">
 						<p
@@ -112,7 +111,7 @@ export default function RoadtripsPage() {
 		<div className="pt-36">
 			{/* ------------------------------ HERO ------------------------------ */}
 			<section className="relative -mt-36 overflow-hidden pb-6 pt-36">
-				{/* the tour on the road — cinematic backdrop */}
+				{/* the tour on the road - cinematic backdrop */}
 				<Cinema src="/cinema/roadtrips-hero.jpg" a="#ff6b35" b="#d92643" priority />
 				<div className="relative mx-auto max-w-7xl px-4 md:px-8">
 				<div
@@ -121,15 +120,6 @@ export default function RoadtripsPage() {
 				>
 					On Tour &#10022; On Tour
 				</div>
-
-				<FloatingStickers
-					items={[
-						{ name: "guitar", color: "var(--sun)", left: "78%", top: "12%", size: 66, rot: 8, depth: 0.8 },
-						{ name: "drum", color: "var(--yellow)", left: "60%", top: "52%", size: 52, rot: -10, depth: 0.6 },
-						{ name: "mic", color: "var(--pink)", left: "6%", top: "62%", size: 56, rot: 14, depth: 0.9 },
-						{ name: "antaragni", color: "var(--sun)", left: "85%", top: "85%", size: 58, rot: -5, depth: 0.7 },
-					]}
-				/>
 
 				<Reveal className="relative">
 					<span className="tape tape-pink mb-5 inline-block rotate-1">
@@ -152,7 +142,7 @@ export default function RoadtripsPage() {
 			</section>
 
 			{/* --------------------------- NATIONALS ----------------------------
-			     the headline act — full-width featured tour banner */}
+			     the headline act - full-width featured tour banner */}
 			{nationals && nat && (
 				<section className="relative mx-auto max-w-7xl px-4 py-14 md:px-8">
 					<Reveal>

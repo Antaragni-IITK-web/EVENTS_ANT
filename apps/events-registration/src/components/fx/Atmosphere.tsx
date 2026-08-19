@@ -4,8 +4,8 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
 /* ----------------------------------------------------------------------------
-   Atmosphere — the night-festival environment behind everything.
-   Layer 1: deep gradient base (midnight violet / navy / magenta — no pure black)
+   Atmosphere - the night-festival environment behind everything.
+   Layer 1: deep gradient base (midnight violet / navy / magenta - no pure black)
    Layer 2: drifting glow blobs (stage wash) with cursor parallax
    Layer 3: light beams sweeping like distant stage rigs
    Layer 4: floating dust / haze particles (canvas)
@@ -132,7 +132,7 @@ export function Atmosphere() {
 
 	return (
 		<div ref={wrapRef} className="absolute inset-0 overflow-hidden" aria-hidden>
-			{/* Layer 1 — fire-lit charcoal, embers overhead, never blue-black */}
+			{/* Layer 1 - fire-lit charcoal, embers overhead, never blue-black */}
 			<div
 				className="absolute inset-0"
 				style={{
@@ -140,7 +140,7 @@ export function Atmosphere() {
 						"radial-gradient(125% 95% at 42% -5%, #452433 0%, #2e1a26 36%, #201219 70%, #170f13 100%)",
 				}}
 			/>
-			{/* ember floor glow — stage light pooling at the bottom */}
+			{/* ember floor glow - stage light pooling at the bottom */}
 			<div
 				className="absolute inset-x-0 bottom-0 h-1/2"
 				style={{
@@ -149,7 +149,7 @@ export function Atmosphere() {
 				}}
 			/>
 
-			{/* Layer 2 — drifting stage-wash glows */}
+			{/* Layer 2 - drifting stage-wash glows */}
 			{BLOBS.map((b, i) => (
 				<div key={i} data-depth={b.depth} className="absolute" style={{ left: b.x, top: b.y }}>
 					<div
@@ -167,7 +167,7 @@ export function Atmosphere() {
 				</div>
 			))}
 
-			{/* Layer 3 — distant stage-light beams */}
+			{/* Layer 3 - distant stage-light beams */}
 			<div
 				className="atmo-beam absolute -top-1/4 left-[18%] h-[150%] w-40 origin-top"
 				style={{
@@ -186,7 +186,7 @@ export function Atmosphere() {
 				}}
 			/>
 
-			{/* Layer 4 — floating dust / concert haze */}
+			{/* Layer 4 - floating dust / concert haze */}
 			<Dust />
 		</div>
 	);

@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 
 /* ----------------------------------------------------------------------------
-   Cinema — cinematic photography backdrop with ONE consistent grade:
+   Cinema - cinematic photography backdrop with ONE consistent grade:
    dark crush from the edges, warm duotone tint in the event's colors,
    vignette, film grain, and a slow Ken Burns drift. Every image on the
    site passes through this treatment so all photography reads as one
@@ -49,7 +49,7 @@ export function Cinema({
 	/* overall presence of the photo layer (zones use less than heroes) */
 	opacity?: number;
 	priority?: boolean;
-	/* object-position — portrait sources in wide slots want "center 30%" */
+	/* object-position - portrait sources in wide slots want "center 30%" */
 	position?: string;
 	className?: string;
 }) {
@@ -69,14 +69,14 @@ export function Cinema({
 					quality={70}
 					priority={priority}
 					onError={() => setOk(false)}
-					/* Ken Burns only on hero instances — animating every zone
+					/* Ken Burns only on hero instances - animating every zone
 					   backdrop at once is what makes scrolling feel heavy */
 					className={`object-cover ${priority ? "cinema-img" : ""}`}
 					style={{ opacity, objectPosition: position }}
 				/>
 			)}
 
-			{/* dark crush — the photo never fights the type */}
+			{/* dark crush - the photo never fights the type */}
 			<div
 				className="absolute inset-0"
 				style={{

@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 
 /* ----------------------------------------------------------------------------
-   Embers — sparks rising from the fire. Tiny glowing particles drift upward
+   Embers - sparks rising from the fire. Tiny glowing particles drift upward
    with a lazy sway, flickering between gold, ember and crimson. Replaces the
    sticker field on the landing hero. Pauses when hidden; static dots under
    reduced motion.

@@ -11,7 +11,7 @@ import { CardArt } from "../../components/fx/CardArt";
 import { Cinema } from "../../components/fx/Cinema";
 
 /* ----------------------------------------------------------------------------
-   THE LINEUP — every event on one wall, like a rack of collectible cards.
+   THE LINEUP - every event on one wall, like a rack of collectible cards.
    No mile-long stage sections: a compact hero, a stage filter rail, and a
    single continuous grid on one unbroken atmosphere (no bg jumps).
 ---------------------------------------------------------------------------- */
@@ -55,7 +55,7 @@ export default function EventsPage() {
 						/>
 						<Reveal delay={0.15}>
 							<p className="mb-3 max-w-sm text-foreground/70">
-								Seven stages, forty-plus battles — the whole bill on one
+								Seven stages, forty-plus battles, the whole bill on one
 								wall. Pick a stage, pick your card, enter the arena.
 							</p>
 						</Reveal>

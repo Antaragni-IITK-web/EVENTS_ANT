@@ -10,7 +10,7 @@ import Footer from "./Footer";
 import { CharGrid } from "./fx/CharGrid";
 import { Atmosphere } from "./fx/Atmosphere";
 
-/* every route change starts at the top — Lenis + App Router can otherwise
+/* every route change starts at the top - Lenis + App Router can otherwise
    carry the previous scroll position onto the new page */
 function ScrollReset() {
 	const pathname = usePathname();

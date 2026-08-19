@@ -81,7 +81,7 @@ const Header = () => {
 						</Link>
 					</Magnetic>
 
-					{/* Desktop — wristband strip */}
+					{/* Desktop - wristband strip */}
 					<div className="hidden md:!flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
 						<div
 							className="flex rotate-1 items-center border-2 border-white/15 bg-[var(--ink)] px-1.5 py-1 shadow-[5px_5px_0_rgba(0,0,0,0.5)]"
@@ -110,7 +110,7 @@ const Header = () => {
 						</div>
 					</div>
 
-					{/* Auth — backstage pass */}
+					{/* Auth - backstage pass */}
 					<div className="hidden items-center md:!flex">
 							{user ? (
 								<div className="relative" ref={profileMenuRef}>
@@ -187,7 +187,7 @@ const Header = () => {
 							)}
 					</div>
 
-					{/* Mobile burger — sticker square */}
+					{/* Mobile burger - sticker square */}
 					<button
 						onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
 						className="flex h-11 w-11 rotate-2 flex-col items-center justify-center gap-1.5 border-2 border-white/15 bg-[var(--ink)] shadow-[4px_4px_0_rgba(0,0,0,0.5)] md:!hidden"
@@ -207,7 +207,7 @@ const Header = () => {
 				</nav>
 			</header>
 
-			{/* Mobile overlay — solid poster wall */}
+			{/* Mobile overlay - solid poster wall */}
 			<div
 				className={`fixed inset-0 z-30 flex flex-col justify-between bg-[#0a0612] px-8 pb-10 pt-32 transition-all duration-500 md:!hidden ${
 					isMobileMenuOpen ? "visible opacity-100" : "invisible opacity-0"

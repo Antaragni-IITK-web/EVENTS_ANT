@@ -11,7 +11,7 @@ import type { Motif } from "../../data/themes";
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 /* ----------------------------------------------------------------------------
-   KineticLineup — festival-lineup typography list.
+   KineticLineup - festival-lineup typography list.
    Huge type rows; hovering a row slides a gradient marquee curtain over it
    and a floating generated poster chases the cursor. Replaces card grids.
 ---------------------------------------------------------------------------- */
@@ -40,7 +40,7 @@ export function KineticLineup({ items }: { items: LineupItem[] }) {
 
 	useGSAP(
 		() => {
-			/* skip the reveal if the tab is hidden at mount — a paused rAF would
+			/* skip the reveal if the tab is hidden at mount - a paused rAF would
 			   otherwise leave rows stranded at opacity 0 */
 			if (!document.hidden) {
 				gsap.from(".lineup-row", {
@@ -121,7 +121,7 @@ export function KineticLineup({ items }: { items: LineupItem[] }) {
 						className="lineup-row group relative block overflow-hidden border-b border-white/10"
 					>
 						{/* gradient fill wipes in from the left on hover
-						    (clip-path inset — no transform/scale, bulletproof) */}
+						    (clip-path inset - no transform/scale, bulletproof) */}
 						<div
 							className="lineup-fill pointer-events-none absolute inset-0"
 							style={{
@@ -135,7 +135,7 @@ export function KineticLineup({ items }: { items: LineupItem[] }) {
 								{String(i + 1).padStart(2, "0")}
 							</span>
 
-							{/* poster thumb — always visible, pops on hover */}
+							{/* poster thumb - always visible, pops on hover */}
 							<span className="block h-20 w-14 shrink-0 overflow-hidden rounded-lg border border-white/10 shadow-lg transition-transform duration-500 group-hover:scale-105 md:h-24 md:w-16">
 								<PosterArt
 									slug={item.slug}

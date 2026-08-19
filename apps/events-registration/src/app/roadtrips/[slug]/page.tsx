@@ -22,7 +22,6 @@ import Synchro_registration from "../../../components/Synchro_registration";
 import { Marquee } from "../../../components/fx/Marquee";
 import { RevealTitle } from "../../../components/fx/Reveal";
 import { CardArt } from "../../../components/fx/CardArt";
-import { FloatingStickers } from "../../../components/fx/Stickers";
 import { TiltCard } from "../../../components/fx/TiltCard";
 import { Cinema } from "../../../components/fx/Cinema";
 import { TourMap } from "../../../components/TourMap";
@@ -146,9 +145,6 @@ export default function RoadtripDetailPage({
 			email: c.email?.content,
 			image: c.image.content.url,
 		}));
-	const sponsorsInfo = details
-		?.filter((d) => d.flag?.content === "sponsor")
-		.map((s) => ({ name: s.name.content, img: s.image.content.url }));
 	const scheduleInfo = details
 		?.filter((d) => d.flag?.content === "schedule")
 		.map((s) => ({
@@ -196,14 +192,6 @@ export default function RoadtripDetailPage({
 					}}
 					aria-hidden
 				/>
-				<FloatingStickers
-					items={[
-						{ name: "mic", color: "var(--sun)", left: "14%", top: "24%", size: 58, rot: -12, depth: 0.8 },
-						{ name: "headphones", color: "var(--pink)", left: "82%", top: "20%", size: 50, rot: 14, depth: 0.9 },
-						{ name: "antaragni", color: "var(--sun)", left: "10%", top: "70%", size: 62, rot: 20, depth: 0.7 },
-					]}
-				/>
-
 				<div className="relative">
 					<span className="tape mb-5 inline-block -rotate-2">
 						Battle Underground &middot; Pick your arena
@@ -279,15 +267,6 @@ export default function RoadtripDetailPage({
 				>
 					{heroTitle}
 				</div>
-				<FloatingStickers
-					items={[
-						{ name: "guitar", color: theme.a, left: "8%", top: "22%", size: 56, rot: -12, depth: 0.7 },
-						{ name: "mic", color: theme.b, left: "46%", top: "16%", size: 46, rot: 10, depth: 0.9 },
-						{ name: "drum", color: theme.a, left: "40%", top: "78%", size: 50, rot: 8, depth: 0.5 },
-						{ name: "antaragni", color: "var(--sun)", left: "85%", top: "85%", size: 55, rot: -10, depth: 0.8 },
-					]}
-				/>
-
 				<div className="relative grid w-full max-w-7xl items-center gap-10 md:mx-auto md:grid-cols-[1.2fr_1fr]">
 					<div>
 						<span className="tape mb-5 inline-block -rotate-2" style={{ background: theme.a }}>
@@ -472,34 +451,19 @@ export default function RoadtripDetailPage({
 					)}
 
 					{/* ---------------------------- SPONSORS ---------------------------- */}
-					{sponsorsInfo && sponsorsInfo.length > 0 && (
-						<PageSection
-							n="03"
-							title="Sponsors"
-							a={theme.a}
-							b={theme.b}
-							tag={theme.tag}
-						>
-							<div className="flex flex-wrap justify-center gap-8">
-								{sponsorsInfo.map((sponsor, idx) => (
-									<div
-										key={idx}
-										className="glass glow-card w-64 rounded-3xl p-6 text-center"
-									>
-										<div className="mx-auto flex h-52 items-center overflow-hidden rounded-xl">
-											<img
-												src={sponsor.img}
-												alt={sponsor.name}
-												width={170}
-												height={213}
-												className="h-fit w-full object-contain"
-											/>
-										</div>
-									</div>
-								))}
-							</div>
-						</PageSection>
-					)}
+					<PageSection
+						n="03"
+						title="Sponsors"
+						a={theme.a}
+						b={theme.b}
+						tag={theme.tag}
+					>
+						<div className="flex justify-center py-8">
+							<p className="font-poster text-4xl uppercase leading-none text-foreground/30 md:text-6xl">
+								Coming soon
+							</p>
+						</div>
+					</PageSection>
 
 					{/* ---------------------------- PARTNERS ---------------------------- */}
 					{partnersInfo && partnersInfo.length > 0 && (

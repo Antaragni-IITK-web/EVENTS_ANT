@@ -11,7 +11,6 @@ import { eventTheme } from "../../../data/themes";
 import { Reveal, RevealTitle } from "../../../components/fx/Reveal";
 import { Marquee } from "../../../components/fx/Marquee";
 import { PosterArt } from "../../../components/fx/PosterArt";
-import { FloatingStickers } from "../../../components/fx/Stickers";
 import { Cinema } from "../../../components/fx/Cinema";
 
 const IndividualEventPage = () => {
@@ -47,7 +46,7 @@ const IndividualEventPage = () => {
 			<section className="min-h-screen pb-10">
 				{/* ------------------------------ HERO ------------------------------ */}
 				<div className="relative flex min-h-[72vh] flex-col items-center justify-center overflow-hidden px-4 pt-32 text-center">
-					{/* cinematic performance photography — the event happening */}
+					{/* cinematic performance photography - the event happening */}
 					<Cinema
 						src={`/cards/${params.slug.toLowerCase()}.jpg`}
 						a={theme.a}
@@ -75,15 +74,6 @@ const IndividualEventPage = () => {
 						}}
 						aria-hidden
 					/>
-					<FloatingStickers
-						items={[
-							{ name: "ticket", color: theme.b, left: "12%", top: "26%", size: 52, rot: -10, depth: 0.7 },
-							{ name: "mic", color: theme.a, left: "84%", top: "20%", size: 46, rot: 12, depth: 0.9 },
-							{ name: "film", color: theme.b, left: "78%", top: "68%", size: 54, rot: 0, depth: 0.5, className: "spin-slow" },
-							{ name: "antaragni", color: "var(--sun)", left: "8%", top: "72%", size: 60, rot: -15, depth: 0.8 },
-						]}
-					/>
-
 					<Reveal className="relative">
 						<Link
 							href="/events"
