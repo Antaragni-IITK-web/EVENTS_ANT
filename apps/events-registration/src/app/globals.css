@@ -432,8 +432,10 @@ body {
 	-webkit-mask: url("/logo.png") center / contain no-repeat;
 	mask: url("/logo.png") center / contain no-repeat;
 }
+/* the unlit shell has to read clearly against #0a0612 on its own - at 0% it is
+   the only thing on screen besides the counter */
 .loader-logo-ghost {
-	background: rgba(247, 240, 228, 0.1);
+	background: rgba(247, 240, 228, 0.26);
 }
 @keyframes loader-molten {
 	from { background-position: 50% 100%; }

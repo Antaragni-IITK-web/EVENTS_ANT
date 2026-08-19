@@ -43,11 +43,12 @@ export default function FestivalLoader() {
 			}
 		});
 
-		// 0. The mark fades up before the count starts
+		// 0. The mark fades up before the count starts. Keep this short - until it
+		//    lands there is nothing on screen but the counter.
 		tl.from(markRef.current, {
 			opacity: 0,
-			scale: 0.86,
-			duration: reduce ? 0.01 : 0.7,
+			scale: 0.9,
+			duration: reduce ? 0.01 : 0.4,
 			ease: "power3.out"
 		});
 
@@ -69,7 +70,7 @@ export default function FestivalLoader() {
 					}
 				}
 			},
-			reduce ? ">" : "-=0.35"
+			reduce ? ">" : "-=0.15"
 		);
 
 		// Wait for page to actually load before revealing
