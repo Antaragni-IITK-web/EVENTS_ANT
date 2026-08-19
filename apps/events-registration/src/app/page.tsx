@@ -21,7 +21,7 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
    live gradient sweeping through it, repeated outline type wallpapering the
    back, ticket-stamp date. */
 
-const TITLE = "ANTARAGNI";
+const TITLE = "ANTARAGNI’26";
 
 function Hero() {
 	const ref = useRef<HTMLDivElement>(null);
