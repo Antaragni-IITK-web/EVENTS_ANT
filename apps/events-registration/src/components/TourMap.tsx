@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useId, useState } from "react";
+import React, { useRef, useId, useState, useEffect } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -147,10 +147,49 @@ export function TourMap({ schedule, theme }: TourMapProps) {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const mapRef = useRef<SVGPathElement>(null);
 	const revealRef = useRef<SVGPathElement>(null);
-	const maskId = `tour-road-reveal-${useId().replace(/:/g, "")}`;
+	const runnerRef = useRef<SVGGElement>(null);
+	const tiltRef = useRef<HTMLDivElement>(null);
+	const uid = useId().replace(/:/g, "");
+	const maskId = `tour-road-reveal-${uid}`;
+	const routeId = `tour-road-path-${uid}`;
 
 	/* which city is showing its date */
 	const [hovered, setHovered] = useState<string | null>(null);
+
+	/* the runner is SMIL, which CSS media queries cannot switch off */
+	const [reduceMotion, setReduceMotion] = useState(false);
+	useEffect(() => {
+		setReduceMotion(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+	}, []);
+
+	/* the map leans away from the cursor, same idiom as TiltCard */
+	const onTilt = (e: React.MouseEvent) => {
+		const el = tiltRef.current;
+		const outer = containerRef.current;
+		if (!el || !outer) return;
+		if (window.matchMedia("(pointer: coarse)").matches) return;
+		if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+		const rect = outer.getBoundingClientRect();
+		const px = (e.clientX - rect.left) / rect.width - 0.5;
+		const py = (e.clientY - rect.top) / rect.height - 0.5;
+		gsap.to(el, {
+			rotateY: px * 9,
+			rotateX: -py * 9,
+			duration: 0.6,
+			ease: "power2.out",
+			transformPerspective: 1200,
+		});
+	};
+
+	const onTiltLeave = () => {
+		if (!tiltRef.current) return;
+		gsap.to(tiltRef.current, {
+			rotateY: 0,
+			rotateX: 0,
+			duration: 1,
+			ease: "elastic.out(1, 0.5)",
+		});
+	};
 
 	/* plottable stops, ordered by date; undated stops keep their CMS order and
 	   fall to the back of the tour */
@@ -220,14 +259,24 @@ export function TourMap({ schedule, theme }: TourMapProps) {
 			{ x: 0, opacity: 1, duration: 0.4, stagger: 0.1, ease: "power2.out" },
 			"-=1.2"
 		);
-	}, { scope: containerRef, dependencies: [routeD] });
+
+		// Send the runner out once there is a road for it to drive on
+		if (runnerRef.current) {
+			tl.to(runnerRef.current, { opacity: 1, duration: 0.6 }, "-=0.6");
+		}
+	}, { scope: containerRef, dependencies: [routeD, reduceMotion] });
 
 	return (
 		<div
 			ref={containerRef}
 			className="relative w-full max-w-4xl mx-auto py-12 px-4 flex justify-center items-center overflow-visible"
+			onMouseMove={onTilt}
+			onMouseLeave={onTiltLeave}
 		>
-			<div className="relative w-full aspect-square md:aspect-[4/3] max-w-[800px]">
+			<div
+				ref={tiltRef}
+				className="relative w-full aspect-square md:aspect-[4/3] max-w-[800px] will-change-transform"
+			>
 				<svg
 					viewBox="-50 0 900 850"
 					className="w-full h-full drop-shadow-[0_0_30px_rgba(255,255,255,0.1)]"
@@ -249,6 +298,9 @@ export function TourMap({ schedule, theme }: TourMapProps) {
 								className="text-white/5"
 							/>
 						</pattern>
+
+						{/* the route, referenced by the runner's animateMotion */}
+						{routeD && <path id={routeId} d={routeD} />}
 
 						{/* wipes the dashed road on along the route */}
 						{routeD && (
@@ -316,6 +368,25 @@ export function TourMap({ schedule, theme }: TourMapProps) {
 						</g>
 					)}
 
+					{/* the tour itself, running the route on a loop */}
+					{routeD && stops.length > 1 && !reduceMotion && (
+						<g ref={runnerRef} opacity="0" pointerEvents="none">
+							<circle r="11" fill={theme.a} opacity="0.22" />
+							<circle
+								r="4.5"
+								fill="#fff6e5"
+								style={{ filter: `drop-shadow(0 0 6px ${theme.a})` }}
+							/>
+							<animateMotion
+								dur={`${Math.max(9, stops.length * 1.7)}s`}
+								repeatCount="indefinite"
+								rotate="auto"
+							>
+								<mpath href={`#${routeId}`} />
+							</animateMotion>
+						</g>
+					)}
+
 					{/* Cities */}
 					{stops.map((stop) => {
 						const { item, coords } = stop;
@@ -333,29 +404,43 @@ export function TourMap({ schedule, theme }: TourMapProps) {
 								onMouseLeave={() => setHovered((h) => (h === id ? null : h))}
 								/* touch devices have no hover - tap toggles the date */
 								onClick={() => setHovered((h) => (h === id ? null : id))}
-								style={{ cursor: "pointer" }}
+								style={{
+									cursor: "pointer",
+									/* everything else steps back while one city is held */
+									opacity: hovered && !open ? 0.4 : 1,
+									transition: "opacity 220ms ease",
+								}}
 							>
 								{/* generous invisible hit area around the pin */}
 								<circle r="20" fill="transparent" pointerEvents="all" />
 
-								{/* Pulse ring */}
-								<circle
-									r="12"
-									fill={theme.a}
-									opacity="0.2"
-									className="animate-ping"
-									pointerEvents="none"
-								/>
+								{/* scales about the city centre - the parent <g> is already
+								    translated there, and SVG transform-origin is 0 0 */}
+								<g
+									style={{
+										transform: open ? "scale(1.5)" : "scale(1)",
+										transition: "transform 260ms cubic-bezier(0.34, 1.56, 0.64, 1)",
+									}}
+								>
+									{/* Pulse ring */}
+									<circle
+										r="12"
+										fill={theme.a}
+										opacity="0.2"
+										className="animate-ping"
+										pointerEvents="none"
+									/>
 
-								{/* Core Pin */}
-								<circle
-									r="6"
-									fill={theme.b}
-									stroke="#0a0612"
-									strokeWidth="2"
-									className="city-marker"
-									pointerEvents="none"
-								/>
+									{/* Core Pin */}
+									<circle
+										r="6"
+										fill={open ? theme.a : theme.b}
+										stroke="#0a0612"
+										strokeWidth="2"
+										className="city-marker"
+										pointerEvents="none"
+									/>
+								</g>
 
 								{/* Label Container - the name is always up, the date drops
 								    down out of it on hover */}
