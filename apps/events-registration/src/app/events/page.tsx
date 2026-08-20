@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useStore } from "@repo/store";
+import { firebaseGoogleSignIn } from "@repo/firebase";
 import { eventsData } from "../../data/events";
 import { eventTheme, CAT_THEME } from "../../data/themes";
 import { Marquee } from "../../components/fx/Marquee";
@@ -30,11 +33,25 @@ const CATEGORIES = Array.from(new Set(eventsData.map((e) => e.category)));
 
 export default function EventsPage() {
 	const [active, setActive] = useState("All");
+	const router = useRouter();
+	const { user } = useStore();
 
 	const visible =
 		active === "All"
 			? eventsData
 			: eventsData.filter((e) => e.category === active);
+
+	const handleRegisterClick = async () => {
+		if (user) {
+			router.push("/dashboard");
+		} else {
+			try {
+				await firebaseGoogleSignIn();
+			} catch (error) {
+				console.error("Failed to sign in:", error);
+			}
+		}
+	};
 
 	return (
 		<div className="pt-36">
@@ -142,17 +159,17 @@ export default function EventsPage() {
 				>
 					<Marquee duration={26} className="py-5">
 						{Array.from({ length: 8 }).map((_, i) => (
-							<Link
+							<button
 								key={i}
-								href="/dashboard"
-								className="font-poster mx-8 flex items-center gap-8 text-3xl uppercase text-[#1a1114]"
+								onClick={handleRegisterClick}
+								className="font-poster mx-8 flex items-center gap-8 text-3xl uppercase text-[#1a1114] hover:opacity-80 transition-opacity"
 							>
 								<span>Ready to compete?</span>
 								<span className="underline decoration-4 underline-offset-4">
 									Register now
 								</span>
 								<span>&#10022;</span>
-							</Link>
+							</button>
 						))}
 					</Marquee>
 				</div>
