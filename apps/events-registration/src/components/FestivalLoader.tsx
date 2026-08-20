@@ -91,6 +91,14 @@ export default function FestivalLoader() {
 			});
 		}
 
+		// Mark + counter fade out after ~0.5s
+		tl.to(contentRef.current, {
+			opacity: 0,
+			scale: 1.15,
+			duration: 0.5,
+			ease: "power2.in"
+		}, reduce ? "+=0.5" : undefined);
+
 		// 2. Open the tiny square hole
 		tl.to(holeRef.current, {
 			width: "5rem",
@@ -120,14 +128,6 @@ export default function FestivalLoader() {
 			duration: 1.2,
 			ease: "power4.inOut"
 		});
-
-		// Mark + counter lift away as the hole swallows the screen
-		tl.to(contentRef.current, {
-			opacity: 0,
-			scale: 1.15,
-			duration: 0.5,
-			ease: "power2.in"
-		}, "-=1.3");
 
 		// 5. Fade out entire wrapper (graceful exit)
 		tl.to(wrapperRef.current, {
