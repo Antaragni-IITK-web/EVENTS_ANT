@@ -510,9 +510,10 @@ function Legacy() {
 				{WALL.map((p, i) => {
 					const t = p.trip ? tripTheme(p.slug) : eventTheme(p.slug);
 					return (
-						<div
+						<Link
 							key={i}
-							className={`relative mx-4 h-64 w-48 shrink-0 border-2 border-white/15 shadow-[7px_7px_0_rgba(0,0,0,0.5)] md:h-80 md:w-60 ${i % 2 ? "translate-y-4 rotate-2" : "-translate-y-2 -rotate-2"
+							href={p.trip ? `/roadtrips/${p.slug}` : `/events/${p.slug}`}
+							className={`relative mx-4 h-64 w-48 shrink-0 border-2 border-white/15 shadow-[7px_7px_0_rgba(0,0,0,0.5)] md:h-80 md:w-60 block hover:scale-105 transition-transform ${i % 2 ? "translate-y-4 rotate-2" : "-translate-y-2 -rotate-2"
 								}`}
 						>
 							<span
@@ -528,7 +529,7 @@ function Legacy() {
 								index={i}
 								className="h-full w-full"
 							/>
-						</div>
+						</Link>
 					);
 				})}
 			</Marquee>
