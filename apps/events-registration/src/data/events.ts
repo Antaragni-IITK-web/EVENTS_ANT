@@ -412,6 +412,13 @@ export const competitions = [
 		link: "/debate",
 	},
 	{
+		event: "DEBATING",
+		comp: "MUN",
+		desc: "MODEL UNITED NATIONS",
+		type: "SOLO",
+		link: "/debate",
+	},
+	{
 		event: "QUIZ",
 		comp: "SPORTS QUIZ",
 		desc: "SPORTS QUIZ",
