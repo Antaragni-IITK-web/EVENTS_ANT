@@ -40,7 +40,7 @@ export const Competitions = () => {
                 { competition: competitionToRegister.comp, link: "" },
             ];
 
-            const result = await updateData("eventsUsers2025", user!.user.uid, {
+            const result = await updateData("eventsUsers2026", user!.user.uid, {
                 userComps: newComps,
             });
 

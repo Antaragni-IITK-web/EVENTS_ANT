@@ -8,6 +8,8 @@ import {
 	doc,
 	firebaseGetUser,
 	getAllDocs,
+	getNextAntaragniId,
+	getNextAntaragniTeamId,
 	queryData,
 	setData,
 	updateData,
@@ -79,15 +81,30 @@ export default function Login() {
 				teamName != "" &&
 				isTeamLeader != ""
 			) {
+				const antaragniId = await getNextAntaragniId();
+
+				if (!antaragniId) {
+					toast.error("Unable to generate Antaragni ID. Please try again.");
+					return;
+				}
+				const newTeamId =
+					teamId !== "" && teamId !== "SOLO"
+						? teamId
+						: await getNextAntaragniTeamId();
+
+				if (!newTeamId) {
+					toast.error("Unable to generate Antaragni Team ID. Please try again.");
+					return;
+				}
 				const UserData = {
-					id: `ANT.${uid.rnd()}`,
+					id: antaragniId,
 					name: name,
 					email: email,
 					phone: mobile,
 					whatsapp: whatsapp,
 					gender: gender,
 					address: address,
-					teamId: teamId !== "" ? teamId : `TM.ANT.${uid.rnd()}`,
+					teamId: newTeamId,
 					teamName: teamName,
 					college:
 						otherCollege ?
@@ -118,12 +135,12 @@ export default function Login() {
 							clubEmail: clubEmail,
 						};
 						const teamResult = await setData(
-							"eventsTeams2025",
+							"eventsTeams2026",
 							UserData.teamId,
 							teamData
 						);
 						const userResult = await setData(
-							"eventsUsers2025",
+							"eventsUsers2026",
 							user!.user.uid,
 							UserData
 						);
@@ -139,12 +156,12 @@ export default function Login() {
 							collegeCity: collegeCity,
 						};
 						const teamResult = await setData(
-							"eventsTeams2025",
+							"eventsTeams2026",
 							UserData.teamId,
 							teamData
 						);
 						const userResult = await setData(
-							"eventsUsers2025",
+							"eventsUsers2026",
 							user!.user.uid,
 							UserData
 						);
@@ -162,18 +179,18 @@ export default function Login() {
 						clubEmail: clubEmail,
 					};
 					const updateResult = await updateData(
-						"eventsTeams2025",
+						"eventsTeams2026",
 						UserData.teamId,
 						teamData
 					);
 					const registrationResult = await setData(
-						"eventsUsers2025",
+						"eventsUsers2026",
 						user!.user.uid,
 						UserData
 					);
 					success = updateResult && registrationResult;
 				} else if (isTeamLeader === "NO") {
-					success = await setData("eventsUsers2025", user!.user.uid, UserData);
+					success = await setData("eventsUsers2026", user!.user.uid, UserData);
 				} else if (isTeamLeader === "YES") {
 					toast.error("Please Fill the Club Details !");
 				}
@@ -181,7 +198,7 @@ export default function Login() {
 				if (success) {
 					toast.success("Registration Successful!");
 					setLoading(true);
-					await firebaseGetUser("eventsUsers2025", setUser, setLoading);
+					await firebaseGetUser("eventsUsers2026", setUser, setLoading);
 					router.push("/dashboard");
 				}
 			} else {
@@ -200,7 +217,7 @@ export default function Login() {
 			},
 			{
 				label: "SOLO",
-				value: `TM.ANT.${uid.rnd()}`,
+				value: "SOLO",
 			},
 		];
 		for (let i = 0; i < allTeams.length; i++) {
@@ -219,7 +236,7 @@ export default function Login() {
 
 	const getTeams = async () => {
 		try {
-			const teams = await getAllDocs("eventsTeams2025");
+			const teams = await getAllDocs("eventsTeams2026");
 			setAllTeams(teams);
 			const prevCollegeOptions = [...colleges];
 			for (let i = 0; i < teams.length; i++) {

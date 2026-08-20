@@ -30,7 +30,7 @@ export function ClientComponent({ children }: { children: ReactNode }) {
 	return (
 		<>
 			<ScrollReset />
-			<InitialState document="eventsUsers2025" />
+			<InitialState document="eventsUsers2026" />
 			{initialAnimation && <FestivalLoader />}
 			{showSessionLoader && <SessionLoader />}
 			<div className="fixed inset-0 pointer-events-none">

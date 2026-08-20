@@ -28,7 +28,7 @@ export const Team = () => {
             }
             try {
                 setIsLoading(true);
-                const data: DocumentData[] = await queryData("eventsUsers2025", "teamId", user.details.teamId);
+                const data: DocumentData[] = await queryData("eventsUsers2026", "teamId", user.details.teamId);
                 setTeam(data as TeamMember[]);
             } catch (error) {
                 console.error("Error fetching team details:", error);

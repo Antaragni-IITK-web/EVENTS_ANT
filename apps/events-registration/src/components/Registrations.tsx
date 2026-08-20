@@ -49,7 +49,7 @@ export const Registrations = () => {
 				:	comp
 			);
 
-			const result = await updateData("eventsUsers2025", user!.user.uid, {
+			const result = await updateData("eventsUsers2026", user!.user.uid, {
 				userComps: updatedComps,
 			});
 
@@ -83,7 +83,7 @@ export const Registrations = () => {
 			const updatedComps = registeredCompetitions.filter(
 				(comp) => comp.competition !== competitionToRemove.competition
 			);
-			const result = await updateData("eventsUsers2025", user!.user.uid, {
+			const result = await updateData("eventsUsers2026", user!.user.uid, {
 				userComps: updatedComps,
 			});
 			if (result) {

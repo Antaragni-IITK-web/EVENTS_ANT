@@ -11,6 +11,7 @@ import {
 	where,
 	orderBy,
 	limit,
+	runTransaction,
     WithFieldValue,
     DocumentData,
 } from "firebase/firestore";
@@ -38,6 +39,81 @@ export const setData = async <T extends WithFieldValue<DocumentData> >(
 	} catch (error) {
 		console.error("Error setting data:", error);
 		return false;
+	}
+};
+
+export const getNextAntaragniId = async () => {
+	try {
+		const counterRef = doc(db, "counters", "antaragni2026");
+
+		const nextNumber = await runTransaction(db, async (transaction) => {
+			const counterDoc = await transaction.get(counterRef);
+
+			const currentNumber = counterDoc.exists()
+				? counterDoc.data().current || 0
+				: 0;
+
+			const next = currentNumber + 1;
+
+			transaction.set(
+				counterRef,
+				{
+					current: next,
+				},
+				{ merge: true }
+			);
+
+			return next;
+		});
+
+		const randomLetters = Array.from(
+			{ length: 3 },
+			() => String.fromCharCode(65 + Math.floor(Math.random() * 26))
+		).join("");
+
+		return `ANT26.${randomLetters}${String(nextNumber).padStart(5, "0")}`;
+	} catch (error) {
+		console.error("Error generating Antaragni ID:", error);
+		return null;
+	}
+};
+
+export const getNextAntaragniTeamId = async () => {
+	try {
+		const counterRef = doc(db, "counters", "antaragniTeams2026");
+
+		const nextNumber = await runTransaction(db, async (transaction) => {
+			const counterDoc = await transaction.get(counterRef);
+
+			const currentNumber = counterDoc.exists()
+				? counterDoc.data().current || 0
+				: 0;
+
+			const next = currentNumber + 1;
+
+			transaction.set(
+				counterRef,
+				{
+					current: next,
+				},
+				{ merge: true }
+			);
+
+			return next;
+		});
+
+		const randomLetters = Array.from(
+			{ length: 3 },
+			() =>
+				String.fromCharCode(
+					65 + Math.floor(Math.random() * 26)
+				)
+		).join("");
+
+		return `TM.ANT26.${randomLetters}${String(nextNumber).padStart(5, "0")}`;
+	} catch (error) {
+		console.error("Error generating Antaragni Team ID:", error);
+		return null;
 	}
 };
 
