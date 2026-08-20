@@ -451,19 +451,21 @@ export default function RoadtripDetailPage({
 					)}
 
 					{/* ---------------------------- SPONSORS ---------------------------- */}
-					<PageSection
-						n="03"
-						title="Sponsors"
-						a={theme.a}
-						b={theme.b}
-						tag={theme.tag}
-					>
-						<div className="flex justify-center py-8">
-							<p className="font-poster text-4xl uppercase leading-none text-foreground/30 md:text-6xl">
-								Coming soon
-							</p>
-						</div>
-					</PageSection>
+					{slug.toLowerCase() !== "junoon" && (
+						<PageSection
+							n="03"
+							title="Sponsors"
+							a={theme.a}
+							b={theme.b}
+							tag={theme.tag}
+						>
+							<div className="flex justify-center py-8">
+								<p className="font-poster text-4xl uppercase leading-none text-foreground/30 md:text-6xl">
+									Coming soon
+								</p>
+							</div>
+						</PageSection>
+					)}
 
 					{/* ---------------------------- PARTNERS ---------------------------- */}
 					<PageSection
