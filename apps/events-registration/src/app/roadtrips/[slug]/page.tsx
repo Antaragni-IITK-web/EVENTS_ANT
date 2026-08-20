@@ -466,14 +466,14 @@ export default function RoadtripDetailPage({
 					</PageSection>
 
 					{/* ---------------------------- PARTNERS ---------------------------- */}
-					{partnersInfo && partnersInfo.length > 0 && (
-						<PageSection
-							n="04"
-							title="Partners"
-							a={theme.a}
-							b={theme.b}
-							tag={theme.tag}
-						>
+					<PageSection
+						n="04"
+						title="Partners"
+						a={theme.a}
+						b={theme.b}
+						tag={theme.tag}
+					>
+						{partnersInfo && partnersInfo.length > 0 && slug.toLowerCase() !== "junoon" ? (
 							<div className="flex flex-wrap justify-center gap-8">
 								{partnersInfo.map((item, idx) => (
 									<div
@@ -487,8 +487,14 @@ export default function RoadtripDetailPage({
 									</div>
 								))}
 							</div>
-						</PageSection>
-					)}
+						) : (
+							<div className="flex justify-center py-8">
+								<p className="font-poster text-4xl uppercase leading-none text-foreground/30 md:text-6xl">
+									Coming soon
+								</p>
+							</div>
+						)}
+					</PageSection>
 
 					{/* ---------------------------- CONTACTS ---------------------------- */}
 					{contactInfo && contactInfo.length > 0 && (
