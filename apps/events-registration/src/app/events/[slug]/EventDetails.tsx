@@ -26,6 +26,8 @@ interface EventData {
 	desc: inter;
 	flag: inter;
 	title: inter;
+	insta?: inter;
+	image?: { content: { url: string } };
 }
 
 /* ----------------------------------------------------------------------------
@@ -49,37 +51,59 @@ export function EventDetails({
 
 	const overview = details
 		.map((detail) => {
-			if (detail.flag.content === "overview") {
-				return detail.desc.content;
+			if (detail.flag?.content === "overview") {
+				return detail.desc?.content;
 			}
 		})
 		.join("\n");
 
 	const title = details
 		.map((detail) => {
-			if (detail.flag.content === "heading") {
-				return detail.title.content;
+			if (detail.flag?.content === "heading") {
+				return detail.title?.content;
 			}
 		})
 		.join("\n");
 
 	const competitions: Competition[] = [];
 	details.forEach((detail) => {
-		if (detail.flag.content === "comp") {
+		if (detail.flag?.content === "comp") {
 			competitions.push({
-				name: detail.title.content,
-				desc: detail.desc.content,
+				name: detail.title?.content || "",
+				desc: detail.desc?.content || "",
 			});
 		}
 	});
 
-	const contacts = details
+	const contactsData = details
+		.filter((detail) => detail.flag?.content === "contacts")
 		.map((detail) => {
-			if (detail.flag.content === "contacts") {
-				return detail.desc.content;
+			const rawDesc = detail.desc?.content || "";
+			let name = "";
+			let number = "";
+			
+			const lines = rawDesc.split('\n').map(l => l.trim()).filter(l => l);
+			for (const line of lines) {
+				if (line.startsWith('-') || line.startsWith('*')) {
+					name = line.replace(/^[-*]\s*/, '').trim();
+				} else if (line.match(/^\d{10}$/) || line.match(/^[+\d\s-]{10,}$/)) {
+					number = line.trim();
+				}
 			}
-		})
-		.join("\n");
+
+			if (!name && lines.length > 0) {
+				const possibleName = lines.find(l => !l.match(/^\d{10}$/) && !l.match(/^[+\d\s-]{10,}$/));
+				if (possibleName) name = possibleName.replace(/^[-*]\s*/, '').trim();
+			}
+
+			return {
+				name,
+				number,
+				insta: detail.insta?.content,
+				image: detail.image?.content?.url,
+				rawDesc
+			};
+		});
 
 	const showComps = slug !== "MnM";
 	const photos = eventGallery[slug] ?? [];
@@ -213,7 +237,7 @@ export function EventDetails({
 			{/* ----------------------------- CONTACTS ---------------------------- */}
 			<section id="contacts" className="scroll-mt-32 pb-10">
 				<SectionHead id="contacts" label="Contacts" />
-				<Contacts contacts={contacts} />
+				<Contacts contacts={contactsData} theme={theme} />
 			</section>
 		</div>
 	);
