@@ -9,36 +9,29 @@ if (typeof window !== "undefined") {
 	gsap.registerPlugin(ScrollTrigger);
 }
 
-const INDIA_SVG_PATH =
-	"M787.521,227.25L789.44,238.701L780.133,244.208L782.34,262.701L763.247,257.276L728.803,277.917L729.57,294.922L714.891,319.728L713.548,334.053L701.65,358.149L680.83,351.485L679.775,381.603L673.731,391.443L676.609,403.698L663.464,410.517L649.361,364.654L642.069,364.752L637.655,383.269L623.072,368.246L631.323,351.683L643.22,350.003L655.501,325.206L640.15,320.176L615.492,320.575L590.067,316.537L587.764,296.026L575.003,294.521L553.895,281.697L544.493,301.841L563.682,317.485L547.083,328.439L541.135,339.113L557.541,346.986L553.032,364.555L562.243,386.355L566.368,410.079L562.626,420.578L544.493,420.238L511.584,426.157L513.119,447.676L498.919,464.477L460.541,483.561L430.702,516.696L410.65,534.386L384.169,552.675L384.073,565.444L370.833,572.31L346.751,582.265L334.374,583.719L326.314,604.786L331.879,640.614L333.318,663.338L321.997,689.262L321.901,735.433L308.085,736.763L295.996,757.37L304.055,766.286L279.781,773.96L270.858,792.254L260.112,800L234.879,774.828L222.598,736.992L212.332,709.622L203.025,696.777L188.825,670.557L182.205,636.292L177.6,619.115L153.326,581.186L142.292,527.185L134.329,491.21L134.425,456.879L129.244,430.179L90.482,447.242L71.677,443.863L36.945,409.154L49.706,398.722L41.838,387.383L10.56,362.783L28.31,343.274L87.028,343.373L81.655,318.183L66.688,303.193L63.713,280.337L46.252,266.954L75.611,235.485L106.601,237.783L134.425,205.977L151.119,174.941L177.024,143.902L176.64,121.668L199.283,103.481L177.792,87.86L168.581,66.32L159.083,38.229L172.227,24.266L212.62,32.16L242.363,27.339L268.076,0L296.667,38.065L293.981,64.265L304.631,80.609L303.767,96.751L284.578,92.523L292.062,127.177L318.255,146.9L355.29,168.529L338.403,182.483L328.041,211.077L353.851,222.586L378.988,237.374L413.72,254.28L450.275,258.138L465.626,273.374L486.254,276.201L518.3,283.158L540.463,282.654L543.533,270.848L540.079,251.841L542.094,238.854L558.405,232.52L560.612,256.21L561.187,262.245L585.365,273.576L602.156,268.927L624.607,270.899L646.386,270.039L648.305,251.638L637.463,242.017L658.955,238.242L683.133,215.758L713.931,196.373L736.287,203.862L755.284,190.99L767.756,209.944L758.738,222.689Z";
-
-/* The seven original pins turned out to sit on a plain equirectangular
-   projection (x = 27.633*lon - 1882.5, y = -30.829*lat + 1041.4, fits all seven
-   to within 1.1px), so the rest of the tour cities are placed on that same
-   transform rather than guessed by eye. */
+/* The cities are placed according to the in.svg state centers */
 const CITY_COORDS: Record<string, { x: number; y: number; offsetX?: number; offsetY?: number; align?: "left" | "right" }> = {
-	Bangalore: { x: 262, y: 649, align: "right" },
-	Pune: { x: 160, y: 476, align: "left" },
-	Ranchi: { x: 477, y: 329, align: "right" },
-	Kolkata: { x: 560, y: 353, align: "right" },
-	Chandigarh: { x: 240, y: 101, align: "left", offsetY: -10 },
-	Delhi: { x: 253, y: 166, align: "right" },
-	Nagpur: { x: 303, y: 396, align: "left" },
-	Mumbai: { x: 132, y: 460, align: "left" },
-	Hyderabad: { x: 287, y: 512, align: "right" },
-	Chennai: { x: 336, y: 645, align: "right" },
-	Ahmedabad: { x: 124, y: 338, align: "left" },
-	Jaipur: { x: 213, y: 218, align: "left" },
-	Lucknow: { x: 356, y: 221, align: "right" },
-	Indore: { x: 215, y: 348, align: "left" },
-	Goa: { x: 167, y: 576, align: "left" },
-	Bhubaneswar: { x: 490, y: 423, align: "right" },
-	Shillong: { x: 658, y: 261, align: "right" },
-	/* Gurugram is 6px from Delhi - nudge it down so the two labels clear */
-	Gurugram: { x: 247, y: 171, align: "left", offsetY: 26 },
-	Kathmandu: { x: 477, y: 194, align: "right" },
-	Karachi: { x: -30, y: 281, align: "right" },
-	Lahore: { x: 174, y: 76, align: "right" },
+	Bangalore: { x: 302, y: 728, align: "right" },
+	Pune: { x: 280, y: 610, align: "left" },
+	Ranchi: { x: 564, y: 476, align: "right" },
+	Kolkata: { x: 637, y: 486, align: "right" },
+	Chandigarh: { x: 335, y: 255, align: "left", offsetY: -10 },
+	Delhi: { x: 344, y: 320, align: "right" },
+	Nagpur: { x: 380, y: 560, align: "left" },
+	Mumbai: { x: 260, y: 597, align: "left" },
+	Hyderabad: { x: 397, y: 642, align: "right" },
+	Chennai: { x: 380, y: 836, align: "right" },
+	Ahmedabad: { x: 199, y: 481, align: "left" },
+	Jaipur: { x: 257, y: 376, align: "left" },
+	Lucknow: { x: 439, y: 376, align: "right" },
+	Bhubaneswar: { x: 550, y: 559, align: "right" },
+	Indore: { x: 340, y: 494, align: "left" },
+	Goa: { x: 262, y: 714, align: "left" },
+	Shillong: { x: 737, y: 418, align: "right" },
+	Gurugram: { x: 339, y: 325, align: "left", offsetY: 26 },
+	Kathmandu: { x: 540, y: 280, align: "right" },
+	Karachi: { x: 40, y: 420, align: "right" },
+	Lahore: { x: 280, y: 230, align: "right" },
 };
 
 /* schedules are hand-typed in the CMS, so normalise before matching */
@@ -275,10 +268,10 @@ export function TourMap({ schedule, theme }: TourMapProps) {
 		>
 			<div
 				ref={tiltRef}
-				className="relative w-full aspect-square md:aspect-[4/3] max-w-[800px] will-change-transform"
+				className="relative w-full aspect-[1/1.1] max-w-[800px] will-change-transform -mt-8 md:-mt-16"
 			>
 				<svg
-					viewBox="-50 0 900 850"
+					viewBox="-150 -150 1050 1150"
 					className="w-full h-full drop-shadow-[0_0_30px_rgba(255,255,255,0.1)]"
 					preserveAspectRatio="xMidYMid meet"
 				>
@@ -299,18 +292,15 @@ export function TourMap({ schedule, theme }: TourMapProps) {
 							/>
 						</pattern>
 
-						{/* the route, referenced by the runner's animateMotion */}
-						{routeD && <path id={routeId} d={routeD} />}
-
-						{/* wipes the dashed road on along the route */}
+						{/* Mask to reveal the path via scroll */}
 						{routeD && (
 							<mask
 								id={maskId}
 								maskUnits="userSpaceOnUse"
-								x="-50"
-								y="0"
-								width="900"
-								height="850"
+								x="-150"
+								y="-150"
+								width="1200"
+								height="1200"
 							>
 								<path
 									ref={revealRef}
@@ -323,13 +313,17 @@ export function TourMap({ schedule, theme }: TourMapProps) {
 								/>
 							</mask>
 						)}
+
+						{/* the route, referenced by the runner's animateMotion */}
+						{routeD && <path id={routeId} d={routeD} />}
 					</defs>
-					<rect width="100%" height="100%" fill="url(#grid)" />
+
+					<rect width="1200" height="1200" x="-150" y="-150" fill="url(#grid)" />
 
 					{/* Map Outline */}
-					<path
-						ref={mapRef}
-						d={INDIA_SVG_PATH}
+					<use
+						ref={mapRef as any}
+						href="/in.svg#features"
 						fill="transparent"
 						stroke="currentColor"
 						strokeWidth="4"
@@ -338,8 +332,8 @@ export function TourMap({ schedule, theme }: TourMapProps) {
 					/>
 
 					{/* Filled background for map */}
-					<path
-						d={INDIA_SVG_PATH}
+					<use
+						href="/in.svg#features"
 						fill="currentColor"
 						className="text-white/5 mix-blend-screen"
 					/>
