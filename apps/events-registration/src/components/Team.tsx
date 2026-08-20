@@ -1,9 +1,11 @@
 "use client";
 
-import { queryData } from "@repo/firebase";
+import { queryData, updateData } from "@repo/firebase";
 import { useStore } from "@repo/store";
 import { useState, useEffect } from "react";
 import { DocumentData } from "firebase/firestore";
+import { Input } from "@repo/ui/input";
+import toast from "react-hot-toast";
 
 interface TeamMember {
     uid: string;
@@ -19,26 +21,72 @@ export const Team = () => {
     const { user } = useStore();
     const [team, setTeam] = useState<TeamMember[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    
+    const [newMemberId, setNewMemberId] = useState("");
+    const [isAdding, setIsAdding] = useState(false);
+
+    const getTeamDetails = async () => {
+        if (!user?.details.teamId) {
+            setIsLoading(false);
+            return;
+        }
+        try {
+            setIsLoading(true);
+            const data: DocumentData[] = await queryData("eventsUsers2026", "teamId", user.details.teamId);
+            setTeam(data as TeamMember[]);
+        } catch (error) {
+            console.error("Error fetching team details:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const getTeamDetails = async () => {
-            if (!user?.details.teamId) {
-                setIsLoading(false);
-                return;
-            }
-            try {
-                setIsLoading(true);
-                const data: DocumentData[] = await queryData("eventsUsers2026", "teamId", user.details.teamId);
-                setTeam(data as TeamMember[]);
-            } catch (error) {
-                console.error("Error fetching team details:", error);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
         getTeamDetails();
     }, [user]);
+
+    const handleAddMember = async () => {
+        if (!newMemberId.trim()) return;
+        
+        setIsAdding(true);
+        try {
+            const data: DocumentData[] = await queryData("eventsUsers2026", "id", newMemberId.trim().toUpperCase());
+            
+            if (!data || data.length === 0) {
+                toast.error("User not found.");
+                return;
+            }
+
+            const targetUser = data[0];
+
+            if (!targetUser) {
+                toast.error("User not found.");
+                return;
+            }
+
+            if (targetUser.data.teamId === user?.details?.teamId) {
+                toast.error("User is already a member of your team.");
+                return;
+            }
+
+            if (targetUser.data.teamName === "SOLO") {
+                await updateData("eventsUsers2026", targetUser.uid, {
+                    teamId: user!.details.teamId,
+                    teamName: user!.details.teamName,
+                });
+                toast.success("Member successfully added to your team!");
+                setNewMemberId("");
+                await getTeamDetails();
+            } else {
+                toast.error("User is already part of another team.");
+            }
+        } catch (error) {
+            console.error("Error adding member:", error);
+            toast.error("An error occurred while adding member.");
+        } finally {
+            setIsAdding(false);
+        }
+    };
 
     if (isLoading) {
         return (
@@ -93,6 +141,30 @@ export const Team = () => {
                     ))}
                 </div>
             </div>
+
+            {user?.details?.isTeamLeader === "YES" && (
+                <div className="mt-6 pt-6 border-t border-primary/10">
+                    <h4 className="font-title text-xl text-primary mb-4">Add Team Member</h4>
+                    <div className="flex flex-col sm:flex-row gap-4 items-end">
+                        <div className="w-full sm:flex-1">
+                            <Input
+                                id="newMemberId"
+                                placeholder="Enter member's Antaragni ID"
+                                value={newMemberId}
+                                onChange={(e) => setNewMemberId(e.target.value)}
+                                disabled={isAdding}
+                            />
+                        </div>
+                        <button 
+                            className="btn-festival !px-8 h-10 whitespace-nowrap" 
+                            onClick={handleAddMember}
+                            disabled={isAdding || !newMemberId.trim()}
+                        >
+                            {isAdding ? "Adding..." : "Add Member"}
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
