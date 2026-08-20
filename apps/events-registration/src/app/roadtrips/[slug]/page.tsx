@@ -380,7 +380,7 @@ export default function RoadtripDetailPage({
 							{/* Old List format (hidden non-destructively) */}
 							{false && (
 								<div className="border-t border-white/10">
-									{scheduleInfo.map((item, idx) => (
+									{scheduleInfo?.map((item, idx) => (
 										<div
 											key={idx}
 											className="group flex items-center gap-5 border-b border-white/10 px-2 py-5 transition-colors duration-300 hover:bg-white/5 md:gap-8 md:px-6"
