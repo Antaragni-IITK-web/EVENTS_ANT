@@ -8,7 +8,7 @@ import { Competitions } from "../../../components/Competitions";
 import { Contacts } from "../../../components/Contacts";
 import { Gallery } from "../../../components/Gallery";
 import { Reveal } from "../../../components/fx/Reveal";
-import { eventGallery } from "../../../data/gallery";
+
 import type { VisualTheme } from "../../../data/themes";
 
 interface inter {
@@ -106,7 +106,13 @@ export function EventDetails({
 		});
 
 	const showComps = slug !== "MnM";
-	const photos = eventGallery[slug] ?? [];
+	
+	const firebasePhotos = details
+		.filter((detail) => detail.flag?.content?.toLowerCase() === "gallery")
+		.map((detail) => detail.image?.content?.url)
+		.filter((url): url is string => Boolean(url));
+
+	const photos = firebasePhotos;
 
 	const jumpToCompetition = (competitionName: string) => {
 		setOpenCompetition(competitionName);

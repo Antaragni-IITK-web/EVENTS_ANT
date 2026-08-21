@@ -67,7 +67,7 @@ export default function RegistrationPage({ slug }: { slug: string }) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const collectionName = `${slug}25`;
+      const collectionName = `${slug}26`;
       await addDoc(collection(db, collectionName), formData);
       alert("Registration successful");
     } catch (error: any) {

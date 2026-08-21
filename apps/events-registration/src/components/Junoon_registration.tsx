@@ -113,7 +113,7 @@ export default function Junoon_Registration() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const collectionName = `junoon25`;
+      const collectionName = `junoon26`;
       await addDoc(collection(db, collectionName), formData);
       toast.success("Registration successful!");
     } catch (error: any) {

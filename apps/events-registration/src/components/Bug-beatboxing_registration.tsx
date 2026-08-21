@@ -98,7 +98,7 @@ export default function bugbeatboxing_Registration() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const collectionName = `bug-beatboxing25`;
+      const collectionName = `bug-beatboxing26`;
       await addDoc(collection(db, collectionName), formData);
       toast.success("Registration successful!");
     } catch (error: any) {

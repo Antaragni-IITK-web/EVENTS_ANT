@@ -109,7 +109,7 @@ export default function Synchro_Registration() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const collectionName = `synchro25`;
+      const collectionName = `synchro26`;
       await addDoc(collection(db, collectionName), formData);
       toast.success("Registration successful!");
     } catch (error: any) {

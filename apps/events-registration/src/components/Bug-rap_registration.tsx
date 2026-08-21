@@ -98,7 +98,7 @@ export default function bugrap_Registration() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const collectionName = `bug-rap25`;
+      const collectionName = `bug-rap26`;
       await addDoc(collection(db, collectionName), formData);
       toast.success("Registration successful!");
     } catch (error: any) {

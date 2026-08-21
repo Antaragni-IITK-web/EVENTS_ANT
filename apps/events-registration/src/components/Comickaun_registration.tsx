@@ -96,7 +96,7 @@ export default function Comickaun_Registration() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const collectionName = `comickaun25`;
+      const collectionName = `comickaun26`;
       await addDoc(collection(db, collectionName), formData);
       toast.success("Registration successful!");
     } catch (error: any) {
