@@ -159,5 +159,6 @@ export const eventGallery: Record<string, string[]> = {
    request carrying a Referer header, so it works in curl but fails in a real
    browser. lh3 serves the same bytes with or without a referrer. */
 export function driveImage(id: string, width: number) {
+	if (id.startsWith("http")) return id;
 	return `https://lh3.googleusercontent.com/d/${id}=w${width}`;
 }
