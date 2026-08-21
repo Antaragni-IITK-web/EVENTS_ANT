@@ -45,6 +45,17 @@ export const Competitions = () => {
             });
 
             if (result) {
+                try {
+                    const { doc, updateDoc, increment } = await import("firebase/firestore");
+                    const { db } = await import("@repo/firebase");
+                    let compName = competitionToRegister.comp.trim();
+                    await updateDoc(doc(db, "stats", "eventCounts26"), {
+                        [`competitionCounts.${compName}`]: increment(1)
+                    });
+                } catch(err) {
+                    console.error("Failed to update competition stats", err);
+                }
+
                 toast.success(`Successfully registered for ${competitionToRegister.comp}. Kindly navigate to the registrations tab to add your submission.`);
                 setUser({
                     ...user!,

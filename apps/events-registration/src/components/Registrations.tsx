@@ -87,6 +87,17 @@ export const Registrations = () => {
 				userComps: updatedComps,
 			});
 			if (result) {
+				try {
+					const { doc, updateDoc, increment } = await import("firebase/firestore");
+					const { db } = await import("@repo/firebase");
+					let compName = competitionToRemove.competition.trim();
+					await updateDoc(doc(db, "stats", "eventCounts26"), {
+						[`competitionCounts.${compName}`]: increment(-1)
+					});
+				} catch(err) {
+					console.error("Failed to decrement competition stats", err);
+				}
+
 				toast.success(
 					`Successfully unregistered from ${competitionToRemove.competition}`
 				);

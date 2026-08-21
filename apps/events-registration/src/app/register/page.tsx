@@ -196,6 +196,16 @@ export default function Login() {
 				}
 
 				if (success) {
+					try {
+						const { doc, updateDoc, increment } = await import("firebase/firestore");
+						const { db } = await import("@repo/firebase");
+						await updateDoc(doc(db, "stats", "eventCounts26"), {
+							totalRegistrations: increment(1)
+						});
+					} catch(err) {
+						console.error("Failed to update stats", err);
+					}
+
 					toast.success("Registration Successful!");
 					setLoading(true);
 					await firebaseGetUser("eventsUsers2026", setUser, setLoading);
