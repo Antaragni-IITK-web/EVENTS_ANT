@@ -371,7 +371,7 @@ export const competitions = [
 	},
 	{
 		event: "MUSICALS",
-		comp: "UNPLUGGED",
+		comp: "A CAPPELLA",
 		desc: "FUSION MUSICAL COMPETITION",
 		type: "GROUP",
 		link: "/musicals",
