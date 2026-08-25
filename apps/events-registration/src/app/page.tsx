@@ -160,7 +160,7 @@ function Hero() {
 			<div className="relative w-full max-w-[1500px] flex flex-col items-center text-center">
 				<p className="hero-eyebrow mb-5 flex items-center justify-center gap-3 text-sm font-bold uppercase tracking-[0.3em] text-foreground/85 md:text-lg">
 					<span className="inline-block h-3.5 w-3.5 rotate-45" style={{ background: "var(--gold)" }} />
-					North India&rsquo;s biggest college cultural festival
+					India&rsquo;s biggest college cultural festival
 				</p>
 
 				{/* the identity - ONE line: molten letters with an ink outline,
