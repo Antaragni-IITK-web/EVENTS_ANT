@@ -1,11 +1,12 @@
 import ReactMarkdown from "react-markdown";
-import { FaPhone, FaInstagram } from "react-icons/fa";
+import { FaPhone, FaInstagram, FaEnvelope } from "react-icons/fa";
 
 interface ContactData {
 	name: string;
 	number: string;
 	insta?: string;
 	image?: string;
+	email?: string;
 	rawDesc: string;
 }
 
@@ -64,6 +65,15 @@ export const Contacts = ({ contacts, theme }: ContactProps) => {
 								>
 									<FaInstagram className="text-secondary/60" />
 									<span>Instagram</span>
+								</a>
+							)}
+							{contact.email && (
+								<a
+									href={`mailto:${contact.email}`}
+									className="flex items-center justify-center gap-2 hover:text-primary transition-colors"
+								>
+									<FaEnvelope className="text-secondary/60" />
+									<span>{contact.email}</span>
 								</a>
 							)}
 						</div>

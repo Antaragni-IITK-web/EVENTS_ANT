@@ -27,6 +27,7 @@ interface EventData {
 	flag: inter;
 	title: inter;
 	insta?: inter;
+	email?: inter;
 	image?: { content: { url: string } };
 }
 
@@ -81,7 +82,7 @@ export function EventDetails({
 			const rawDesc = detail.desc?.content || "";
 			let name = "";
 			let number = "";
-			
+
 			const lines = rawDesc.split('\n').map(l => l.trim()).filter(l => l);
 			for (const line of lines) {
 				if (line.startsWith('-') || line.startsWith('*')) {
@@ -100,13 +101,14 @@ export function EventDetails({
 				name,
 				number,
 				insta: detail.insta?.content,
+				email: detail.email?.content,
 				image: detail.image?.content?.url,
 				rawDesc
 			};
 		});
 
 	const showComps = slug !== "MnM";
-	
+
 	const firebasePhotos = details
 		.filter((detail) => detail.flag?.content?.toLowerCase() === "gallery")
 		.map((detail) => detail.image?.content?.url)
