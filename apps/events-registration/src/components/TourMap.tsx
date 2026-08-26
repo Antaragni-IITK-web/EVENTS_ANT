@@ -4,6 +4,7 @@ import React, { useRef, useId, useState, useEffect } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import type { RoadtripScheduleItem } from "../data/roadtripsData2026";
 
 if (typeof window !== "undefined") {
 	gsap.registerPlugin(ScrollTrigger);
@@ -16,7 +17,9 @@ const CITY_COORDS: Record<string, { x: number; y: number; offsetX?: number; offs
 	Ranchi: { x: 564, y: 476, align: "right" },
 	Kolkata: { x: 637, y: 486, align: "right" },
 	Chandigarh: { x: 335, y: 255, align: "left", offsetY: -10 },
+	Ludhiana: { x: 315, y: 240, align: "left" },
 	Delhi: { x: 344, y: 320, align: "right" },
+	Agra: { x: 360, y: 345, align: "right" },
 	Nagpur: { x: 380, y: 560, align: "left" },
 	Mumbai: { x: 260, y: 597, align: "left" },
 	Hyderabad: { x: 397, y: 642, align: "right" },
@@ -43,6 +46,7 @@ const CITY_ALIASES: Record<string, string> = {
 	madras: "Chennai",
 	gurgaon: "Gurugram",
 	newdelhi: "Delhi",
+	ahemdabad: "Ahmedabad",
 };
 
 function resolveCity(raw: string) {
@@ -105,31 +109,7 @@ export function parseTourDate(raw: string): number | null {
 	return null;
 }
 
-/* one gently curved leg per hop, so the route reads as a road rather than a
-   zig-zag of straight rules */
-function buildRoute(points: { x: number; y: number }[]) {
-	if (points.length < 2) return "";
-	let d = `M ${points[0]!.x} ${points[0]!.y}`;
-	for (let i = 1; i < points.length; i++) {
-		const from = points[i - 1]!;
-		const to = points[i]!;
-		const dx = to.x - from.x;
-		const dy = to.y - from.y;
-		const len = Math.hypot(dx, dy) || 1;
-		/* control point pushed perpendicular to the leg, always the same side */
-		const bow = Math.min(len * 0.14, 60);
-		const cx = (from.x + to.x) / 2 + (-dy / len) * bow;
-		const cy = (from.y + to.y) / 2 + (dx / len) * bow;
-		d += ` Q ${cx.toFixed(1)} ${cy.toFixed(1)} ${to.x} ${to.y}`;
-	}
-	return d;
-}
-
-export type ScheduleItem = {
-	city: string;
-	date: string;
-	img?: string;
-};
+export type ScheduleItem = RoadtripScheduleItem;
 
 interface TourMapProps {
 	schedule: ScheduleItem[];
@@ -138,13 +118,9 @@ interface TourMapProps {
 
 export function TourMap({ schedule, theme }: TourMapProps) {
 	const containerRef = useRef<HTMLDivElement>(null);
-	const mapRef = useRef<SVGPathElement>(null);
-	const revealRef = useRef<SVGPathElement>(null);
-	const runnerRef = useRef<SVGGElement>(null);
 	const tiltRef = useRef<HTMLDivElement>(null);
-	const uid = useId().replace(/:/g, "");
-	const maskId = `tour-road-reveal-${uid}`;
-	const routeId = `tour-road-path-${uid}`;
+	const zoomGroupRef = useRef<SVGGElement>(null);
+	const mapRef = useRef<SVGPathElement>(null);
 
 	/* which city is showing its date */
 	const [hovered, setHovered] = useState<string | null>(null);
@@ -154,35 +130,6 @@ export function TourMap({ schedule, theme }: TourMapProps) {
 	useEffect(() => {
 		setReduceMotion(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
 	}, []);
-
-	/* the map leans away from the cursor, same idiom as TiltCard */
-	const onTilt = (e: React.MouseEvent) => {
-		const el = tiltRef.current;
-		const outer = containerRef.current;
-		if (!el || !outer) return;
-		if (window.matchMedia("(pointer: coarse)").matches) return;
-		if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-		const rect = outer.getBoundingClientRect();
-		const px = (e.clientX - rect.left) / rect.width - 0.5;
-		const py = (e.clientY - rect.top) / rect.height - 0.5;
-		gsap.to(el, {
-			rotateY: px * 9,
-			rotateX: -py * 9,
-			duration: 0.6,
-			ease: "power2.out",
-			transformPerspective: 1200,
-		});
-	};
-
-	const onTiltLeave = () => {
-		if (!tiltRef.current) return;
-		gsap.to(tiltRef.current, {
-			rotateY: 0,
-			rotateX: 0,
-			duration: 1,
-			ease: "elastic.out(1, 0.5)",
-		});
-	};
 
 	/* plottable stops, ordered by date; undated stops keep their CMS order and
 	   fall to the back of the tour */
@@ -200,13 +147,6 @@ export function TourMap({ schedule, theme }: TourMapProps) {
 			return a.idx - b.idx;
 		});
 
-	const routeD = buildRoute(
-		stops.map((s) => ({
-			x: s.coords.x + (s.coords.offsetX || 0),
-			y: s.coords.y + (s.coords.offsetY || 0),
-		}))
-	);
-
 	useGSAP(() => {
 		if (!containerRef.current) return;
 
@@ -217,25 +157,20 @@ export function TourMap({ schedule, theme }: TourMapProps) {
 			},
 		});
 
-		// Animate the map outline
+		// Animate the map outline (neon draw)
 		tl.fromTo(
 			mapRef.current,
 			{ strokeDasharray: 4000, strokeDashoffset: 4000, opacity: 0 },
-			{ strokeDashoffset: 0, opacity: 1, duration: 2, ease: "power2.inOut" }
+			{ strokeDashoffset: 0, opacity: 0.8, duration: 2.5, ease: "power2.inOut" }
 		);
 
-		/* Lay the road down city by city. The visible road is dashed, so the
-		   reveal rides on a solid stroke used as its mask - animating the dash
-		   offset of the road itself would just slide the dashes along. */
-		if (revealRef.current && routeD) {
-			const len = revealRef.current.getTotalLength();
-			tl.fromTo(
-				revealRef.current,
-				{ strokeDasharray: len, strokeDashoffset: len },
-				{ strokeDashoffset: 0, duration: 1.6, ease: "power2.inOut" },
-				"-=1.1"
-			);
-		}
+		// Animate the gritty map fill fading in
+		tl.fromTo(
+			".map-fill",
+			{ opacity: 0 },
+			{ opacity: 1, duration: 2, ease: "power2.out" },
+			"-=1.5"
+		);
 
 		// Pop in the cities, in tour order, riding just behind the road
 		tl.fromTo(
@@ -252,29 +187,65 @@ export function TourMap({ schedule, theme }: TourMapProps) {
 			{ x: 0, opacity: 1, duration: 0.4, stagger: 0.1, ease: "power2.out" },
 			"-=1.2"
 		);
+	}, { scope: containerRef, dependencies: [reduceMotion] });
 
-		// Send the runner out once there is a road for it to drive on
-		if (runnerRef.current) {
-			tl.to(runnerRef.current, { opacity: 1, duration: 0.6 }, "-=0.6");
+	// Interactive zooming effect on hover/click without clipping
+	useGSAP(() => {
+		if (!zoomGroupRef.current) return;
+		if (hovered) {
+			const [key] = hovered.split("-");
+			const stop = stops.find((s) => s.key === key);
+			if (stop) {
+				const { x, y, offsetX = 0, offsetY = 0 } = stop.coords;
+				const targetX = x + offsetX;
+				const targetY = y + offsetY;
+				
+				// SVG viewBox is "-150 -150 1050 1150". 
+				// Center of viewBox: Cx = 375, Cy = 425
+				const cx = 375;
+				const cy = 425;
+				const scale = 1.6;
+				
+				// Move the target coordinates to the center of the viewport
+				const dx = cx - targetX * scale;
+				const dy = cy - targetY * scale;
+
+				gsap.to(zoomGroupRef.current, {
+					x: dx,
+					y: dy,
+					scale: scale,
+					transformOrigin: "0 0",
+					duration: 0.8,
+					ease: "power3.inOut",
+				});
+			}
+		} else {
+			// Reset to original view
+			gsap.to(zoomGroupRef.current, {
+				x: 0,
+				y: 0,
+				scale: 1,
+				duration: 0.8,
+				ease: "power3.inOut",
+			});
 		}
-	}, { scope: containerRef, dependencies: [routeD, reduceMotion] });
+	}, { scope: containerRef, dependencies: [hovered, stops] });
 
 	return (
 		<div
 			ref={containerRef}
 			className="relative w-full max-w-4xl mx-auto py-12 px-4 flex justify-center items-center overflow-visible"
-			onMouseMove={onTilt}
-			onMouseLeave={onTiltLeave}
 		>
 			<div
 				ref={tiltRef}
-				className="relative w-full aspect-[1/1.1] max-w-[800px] will-change-transform -mt-8 md:-mt-16"
+				className="relative w-full aspect-[1/1.1] max-w-[800px] -mt-8 md:-mt-16"
 			>
 				<svg
 					viewBox="-150 -150 1050 1150"
-					className="w-full h-full drop-shadow-[0_0_30px_rgba(255,255,255,0.1)]"
+					className="w-full h-full drop-shadow-[0_0_30px_rgba(255,255,255,0.1)] overflow-visible"
 					preserveAspectRatio="xMidYMid meet"
 				>
+					<g ref={zoomGroupRef} className="will-change-transform">
 					{/* Grid background for brutalist vibe */}
 					<defs>
 						<pattern
@@ -291,98 +262,45 @@ export function TourMap({ schedule, theme }: TourMapProps) {
 								className="text-white/5"
 							/>
 						</pattern>
-
-						{/* Mask to reveal the path via scroll */}
-						{routeD && (
-							<mask
-								id={maskId}
-								maskUnits="userSpaceOnUse"
-								x="-150"
-								y="-150"
-								width="1200"
-								height="1200"
-							>
-								<path
-									ref={revealRef}
-									d={routeD}
-									fill="none"
-									stroke="white"
-									strokeWidth="18"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-								/>
-							</mask>
-						)}
-
-						{/* the route, referenced by the runner's animateMotion */}
-						{routeD && <path id={routeId} d={routeD} />}
 					</defs>
 
 					<rect width="1200" height="1200" x="-150" y="-150" fill="url(#grid)" />
+
+					{/* Filled background for map */}
+					<g className="map-fill" opacity="0">
+						<use
+							href="/in.svg#features"
+							fill="currentColor"
+							className="text-white/5"
+						/>
+						<use
+							href="/in.svg#features"
+							fill={theme.b}
+							opacity="0.08"
+							style={{ mixBlendMode: "color-dodge" }}
+						/>
+					</g>
 
 					{/* Map Outline */}
 					<use
 						ref={mapRef as any}
 						href="/in.svg#features"
 						fill="transparent"
-						stroke="currentColor"
-						strokeWidth="4"
-						className="text-white/20"
+						stroke={theme.a}
+						strokeWidth="2"
+						opacity="0"
+						style={{ filter: `drop-shadow(0 0 8px ${theme.a})` }}
 						vectorEffect="non-scaling-stroke"
 					/>
 
-					{/* Filled background for map */}
-					<use
-						href="/in.svg#features"
-						fill="currentColor"
-						className="text-white/5 mix-blend-screen"
-					/>
-
-					{/* The tour road: every stop joined in date order */}
-					{routeD && (
-						<g mask={`url(#${maskId})`}>
-							{/* soft under-glow so the road reads over the map fill */}
-							<path
-								d={routeD}
-								fill="none"
-								stroke={theme.a}
-								strokeWidth="7"
-								strokeLinecap="round"
-								opacity="0.18"
-							/>
-							<path
-								d={routeD}
-								fill="none"
-								stroke={theme.a}
-								strokeWidth="3"
-								strokeDasharray="12 14"
-								strokeLinecap="round"
-								className="tour-road"
-							/>
-						</g>
-					)}
-
-					{/* the tour itself, running the route on a loop */}
-					{routeD && stops.length > 1 && !reduceMotion && (
-						<g ref={runnerRef} opacity="0" pointerEvents="none">
-							<circle r="11" fill={theme.a} opacity="0.22" />
-							<circle
-								r="4.5"
-								fill="#fff6e5"
-								style={{ filter: `drop-shadow(0 0 6px ${theme.a})` }}
-							/>
-							<animateMotion
-								dur={`${Math.max(9, stops.length * 1.7)}s`}
-								repeatCount="indefinite"
-								rotate="auto"
-							>
-								<mpath href={`#${routeId}`} />
-							</animateMotion>
-						</g>
-					)}
-
 					{/* Cities */}
-					{stops.map((stop) => {
+					{[...stops].sort((a, b) => {
+						const idA = `${a.key}-${a.idx}`;
+						const idB = `${b.key}-${b.idx}`;
+						if (hovered === idA) return 1;
+						if (hovered === idB) return -1;
+						return 0;
+					}).map((stop) => {
 						const { item, coords } = stop;
 						const id = `${stop.key}-${stop.idx}`;
 						const open = hovered === id;
@@ -394,9 +312,6 @@ export function TourMap({ schedule, theme }: TourMapProps) {
 									coords.y + (coords.offsetY || 0)
 								})`}
 								className="city-marker-group"
-								onMouseEnter={() => setHovered(id)}
-								onMouseLeave={() => setHovered((h) => (h === id ? null : h))}
-								/* touch devices have no hover - tap toggles the date */
 								onClick={() => setHovered((h) => (h === id ? null : id))}
 								style={{
 									cursor: "pointer",
@@ -416,69 +331,102 @@ export function TourMap({ schedule, theme }: TourMapProps) {
 										transition: "transform 260ms cubic-bezier(0.34, 1.56, 0.64, 1)",
 									}}
 								>
-									{/* Pulse ring */}
+									{/* Crosshair Target Ring */}
 									<circle
-										r="12"
-										fill={theme.a}
-										opacity="0.2"
-										className="animate-ping"
+										r="14"
+										fill="none"
+										stroke="#fff"
+										strokeWidth="1.5"
+										strokeDasharray="4 4"
+										className="city-marker animate-[spin_6s_linear_infinite]"
+										opacity={open ? 1 : 0.6}
 										pointerEvents="none"
 									/>
+									<line x1="-18" y1="0" x2="-8" y2="0" stroke="#fff" strokeWidth="1" className="city-marker" />
+									<line x1="8" y1="0" x2="18" y2="0" stroke="#fff" strokeWidth="1" className="city-marker" />
+									<line x1="0" y1="-18" x2="0" y2="-8" stroke="#fff" strokeWidth="1" className="city-marker" />
+									<line x1="0" y1="8" x2="0" y2="18" stroke="#fff" strokeWidth="1" className="city-marker" />
 
 									{/* Core Pin */}
 									<circle
-										r="6"
-										fill={open ? theme.a : theme.b}
-										stroke="#0a0612"
-										strokeWidth="2"
+										r="4"
+										fill={open ? theme.b : "#fff"}
 										className="city-marker"
 										pointerEvents="none"
+										style={{ filter: `drop-shadow(0 0 4px #fff)` }}
 									/>
 								</g>
 
-								{/* Label Container - the name is always up, the date drops
-								    down out of it on hover */}
+								{/* Label Container - expanded into a rich data panel on hover */}
 								<foreignObject
-									x={coords.align === "left" ? -220 : 15}
-									y="-20"
-									width="200"
-									height="60"
-									className="city-label overflow-visible"
+									x={coords.align === "left" ? -320 : 20}
+									y="-40"
+									width="300"
+									height="280"
+									className="city-label overflow-visible pointer-events-none"
 								>
 									<div
-										className={`pointer-events-none flex ${
+										className={`flex h-full w-full pointer-events-auto ${
 											coords.align === "left" ? "justify-end" : "justify-start"
 										}`}
 									>
-										<div
-											className={`pointer-events-auto flex w-fit flex-col ${
-												coords.align === "left" ? "items-end" : "items-start"
-											}`}
-										>
-											<span
-												className="font-title text-xl font-black uppercase leading-none drop-shadow-md"
-												style={{ color: "white" }}
-											>
-												{item.city}
-											</span>
-											{/* kept mounted so the name never shifts when it opens */}
-											<span
-												className={`tape mt-1 inline-block !text-[9px] -rotate-1 shadow-sm transition-all duration-200 ease-out ${
-													open
-														? "translate-y-0 opacity-100"
-														: "pointer-events-none -translate-y-1 opacity-0"
-												}`}
-												style={{ background: theme.a, color: "#0a0612" }}
-												aria-hidden={!open}
-											>
-												{item.date}
-											</span>
-										</div>
+										{!open ? (
+											<div className={`flex flex-col ${coords.align === "left" ? "items-end" : "items-start"}`}>
+												<span className="font-title text-xl font-black uppercase leading-none drop-shadow-md text-white">
+													{item.city}
+												</span>
+											</div>
+										) : (
+											<div className="bg-[#0a0612]/95 backdrop-blur-md border border-white/10 p-4 rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.8)] flex flex-col gap-3 w-full">
+												<div className="flex items-start justify-between gap-2 border-b border-white/10 pb-2">
+													<span className="font-title text-2xl font-black uppercase text-white leading-tight break-words min-w-0">{item.city}</span>
+													<span className="text-[10px] font-bold px-2 py-1 rounded bg-white/5 border border-white/10 whitespace-nowrap shrink-0" style={{ color: theme.a }}>
+														{item.date}
+													</span>
+												</div>
+												{item.venue ? (
+													<>
+														<div className="text-xs text-white/70 space-y-1">
+															<p><strong className="text-white/90">Venue:</strong> {item.venue}</p>
+															{item.mnpPartner && (
+																<p><strong className="text-white/90">Partner:</strong> {item.mnpPartner}</p>
+															)}
+														</div>
+														
+														<div className="flex gap-2 mt-2">
+															{item.location && item.location.startsWith('http') && (
+																<a
+																	href={item.location}
+																	target="_blank"
+																	rel="noreferrer"
+																	className="flex-1 block text-center bg-white/5 hover:bg-white/10 border border-white/10 transition-colors py-1.5 rounded text-[10px] font-bold uppercase tracking-wider text-white"
+																>
+																	Maps
+																</a>
+															)}
+															{item.venueInsta && item.venueInsta.startsWith('http') && (
+																<a
+																	href={item.venueInsta}
+																	target="_blank"
+																	rel="noreferrer"
+																	className="flex-1 block text-center bg-white/5 hover:bg-white/10 border border-white/10 transition-colors py-1.5 rounded text-[10px] font-bold uppercase tracking-wider text-white"
+																>
+																	Insta
+																</a>
+															)}
+														</div>
+													</>
+												) : (
+													<p className="text-[11px] text-white/50 italic">Details coming soon...</p>
+												)}
+											</div>
+										)}
 									</div>
 								</foreignObject>
 							</g>
 						);
 					})}
+					</g>
 				</svg>
 			</div>
 		</div>

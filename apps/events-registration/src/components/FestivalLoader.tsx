@@ -45,9 +45,12 @@ export default function FestivalLoader() {
 
 		// 0. The mark fades up before the count starts. Keep this short - until it
 		//    lands there is nothing on screen but the counter.
-		tl.from(markRef.current, {
+		tl.fromTo(markRef.current, {
 			opacity: 0,
-			scale: 0.9,
+			scale: 0.9
+		}, {
+			opacity: 1,
+			scale: 1,
 			duration: reduce ? 0.01 : 0.4,
 			ease: "power3.out"
 		});
@@ -160,7 +163,7 @@ export default function FestivalLoader() {
             */}
 			<div
                 ref={holeRef}
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0 h-0 bg-transparent rounded-sm"
+                className="absolute top-[38%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-0 h-0 bg-transparent rounded-sm"
                 style={{ boxShadow: "0 0 0 100vmax #0a0612" }}
             />
 

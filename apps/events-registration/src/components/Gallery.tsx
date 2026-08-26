@@ -62,40 +62,38 @@ export function Gallery({
 	return (
 		<>
 			{/* the print wall */}
-			<div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:gap-6 lg:grid-cols-4">
+			<Reveal className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:gap-6 lg:grid-cols-4" stagger={0.05}>
 				{photos.map((id, i) => (
-					<Reveal key={id} delay={Math.min(i * 0.05, 0.4)}>
-						<div>
-							<button
-								type="button"
-								onClick={() => setOpen(i)}
-								data-cursor-text="VIEW"
-								aria-label={`Open photo ${i + 1} of ${photos.length}`}
-								className="group block w-full overflow-hidden border-2 border-white/15 shadow-[6px_6px_0_rgba(0,0,0,0.5)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[9px_9px_0_rgba(0,0,0,0.6)]"
-								style={{ transform: `rotate(${i % 2 ? 0.8 : -0.8}deg)` }}
-							>
-								<div className="relative aspect-[4/3] overflow-hidden bg-white/5">
-									<img
-										src={driveImage(id, GRID_WIDTH)}
-										alt={`${label} photo ${i + 1}`}
-										loading="lazy"
-										decoding="async"
-										referrerPolicy="no-referrer"
-										className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-									/>
-									{/* keep the wall on one grade, like the rest of the site */}
-									<div
-										className="pointer-events-none absolute inset-0 opacity-45 mix-blend-color transition-opacity duration-500 group-hover:opacity-0"
-										style={{
-											background: `linear-gradient(150deg, ${theme.a}, ${theme.b})`,
-										}}
-									/>
-								</div>
-							</button>
-						</div>
-					</Reveal>
+					<div key={id}>
+						<button
+							type="button"
+							onClick={() => setOpen(i)}
+							data-cursor-text="VIEW"
+							aria-label={`Open photo ${i + 1} of ${photos.length}`}
+							className="group block w-full overflow-hidden border-2 border-white/15 shadow-[6px_6px_0_rgba(0,0,0,0.5)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[9px_9px_0_rgba(0,0,0,0.6)]"
+							style={{ transform: `rotate(${i % 2 ? 0.8 : -0.8}deg)` }}
+						>
+							<div className="relative aspect-[4/3] overflow-hidden bg-white/5">
+								<img
+									src={driveImage(id, GRID_WIDTH)}
+									alt={`${label} photo ${i + 1}`}
+									loading="lazy"
+									decoding="async"
+									referrerPolicy="no-referrer"
+									className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+								/>
+								{/* keep the wall on one grade, like the rest of the site */}
+								<div
+									className="pointer-events-none absolute inset-0 opacity-45 mix-blend-color transition-opacity duration-500 group-hover:opacity-0"
+									style={{
+										background: `linear-gradient(150deg, ${theme.a}, ${theme.b})`,
+									}}
+								/>
+							</div>
+						</button>
+					</div>
 				))}
-			</div>
+			</Reveal>
 
 			{/* lightbox */}
 			{open !== null && (

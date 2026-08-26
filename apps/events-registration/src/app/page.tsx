@@ -350,8 +350,17 @@ function Portals() {
 								motif="burst"
 								className="absolute inset-0 h-full w-full transition-transform duration-700 group-hover:scale-105"
 							/>
-							<div className="absolute inset-0 bg-gradient-to-t from-[#0a0612] via-transparent to-transparent" />
-							<div className="absolute bottom-0 w-full p-7">
+							{/* Subtle looping atmospheric light overlay */}
+							<div 
+								className="absolute inset-0 z-10 pointer-events-none mix-blend-overlay opacity-40"
+								style={{
+									background: 'linear-gradient(0deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.1) 50%, transparent 100%)',
+									backgroundSize: '100% 200%',
+									animation: 'loader-molten 5s ease-in-out infinite alternate'
+								}} 
+							/>
+							<div className="absolute inset-0 bg-gradient-to-t from-[#0a0612] via-[#0a0612]/40 to-transparent" />
+							<div className="absolute bottom-0 w-full p-7 z-20">
 								<h3 className="font-poster text-7xl uppercase leading-none">
 									Roadtrips
 								</h3>

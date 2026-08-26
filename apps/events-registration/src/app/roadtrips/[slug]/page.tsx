@@ -7,6 +7,7 @@ import { useStore } from "@repo/store";
 import { doc, getSingleDoc } from "@repo/firebase";
 import { roadtrips } from "../../../data/roadtrips";
 import { tripTheme } from "../../../data/themes";
+import { roadtripsData2026 } from "../../../data/roadtripsData2026";
 import roadtripDetails from "./roadtripDetails.json";
 import { Section } from "@repo/ui/section";
 import { FaPhone, FaEnvelope, FaInstagram } from "react-icons/fa";
@@ -145,13 +146,7 @@ export default function RoadtripDetailPage({
 			email: c.email?.content,
 			image: c.image.content.url,
 		}));
-	const scheduleInfo = details
-		?.filter((d) => d.flag?.content === "schedule")
-		.map((s) => ({
-			city: s.city.content,
-			date: s.date.content,
-			img: s.image.content.url,
-		}));
+	const scheduleInfo = roadtripsData2026[slug.toLowerCase()] || [];
 	const partnersInfo = details
 		?.filter((d) => d.flag?.content === "partners")
 		.map((p) => ({ name: p.name.content, role: p.role.content }));
