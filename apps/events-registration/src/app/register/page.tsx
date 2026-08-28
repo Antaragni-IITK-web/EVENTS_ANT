@@ -87,9 +87,33 @@ export default function Login() {
 					toast.error("Unable to generate Antaragni ID. Please try again.");
 					return;
 				}
+				let targetCollege = otherCollege
+					? otherCollegeName.toUpperCase().trim()
+					: college.toUpperCase().trim();
+
+				let finalTeamId = teamId;
+				let finalTeamName = teamName;
+				let actuallyOtherTeam = otherTeam;
+
+				if (otherTeam && teamName) {
+					const currentTeams = await getAllDocs("eventsTeams2026");
+					const existing = currentTeams.find(
+						(t) =>
+							t.data.teamName?.trim().toUpperCase() ===
+								teamName.trim().toUpperCase() &&
+							t.data.college?.trim().toUpperCase() === targetCollege
+					);
+					if (existing) {
+						finalTeamId = existing.data.teamId;
+						finalTeamName = existing.data.teamName;
+						actuallyOtherTeam = false;
+						toast.success(`Found existing team! Joining as ${existing.data.teamId}`);
+					}
+				}
+
 				const newTeamId =
-					teamId !== "" && teamId !== "SOLO"
-						? teamId
+					finalTeamId !== "" && finalTeamId !== "SOLO"
+						? finalTeamId
 						: await getNextAntaragniTeamId();
 
 				if (!newTeamId) {
@@ -105,11 +129,8 @@ export default function Login() {
 					gender: gender,
 					address: address,
 					teamId: newTeamId,
-					teamName: teamName,
-					college:
-						otherCollege ?
-							otherCollegeName.toUpperCase()
-						:	college.toUpperCase(),
+					teamName: finalTeamName,
+					college: targetCollege,
 					collegeCity: collegeCity,
 					year: yearOfStudy,
 					fb: facebook,
@@ -120,7 +141,7 @@ export default function Login() {
 
 				let success = false;
 
-				if (otherTeam) {
+				if (actuallyOtherTeam) {
 					let teamData = {};
 					if (isTeamLeader === "YES" && clubName != "" && clubEmail != "") {
 						teamData = {
@@ -514,11 +535,12 @@ export default function Login() {
 						{isTeamLeader === "YES" && (
 							<>
 								<LabelInputContainer className="w-full md:!w-[calc(50%-1rem)]">
-									<Label htmlFor="clubName">Club Name</Label>
+									<Label htmlFor="clubName">Club Name*</Label>
 									<Input
 										id="clubName"
 										placeholder="e.g. Antaragni"
 										value={clubName}
+										required
 										type="text"
 										onChange={(e) => {
 											setClubName(e.target.value);
@@ -526,11 +548,12 @@ export default function Login() {
 									/>
 								</LabelInputContainer>
 								<LabelInputContainer className="w-full md:!w-[calc(50%-1rem)]">
-									<Label htmlFor="clubEmail">Club Email</Label>
+									<Label htmlFor="clubEmail">Club Email*</Label>
 									<Input
 										id="clubEmail"
 										placeholder="e.g. club@antaragni.com"
 										value={clubEmail}
+										required
 										type="text"
 										onChange={(e) => {
 											setClubEmail(e.target.value);
