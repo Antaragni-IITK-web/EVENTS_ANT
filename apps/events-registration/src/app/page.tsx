@@ -30,6 +30,7 @@ function Hero() {
 	useGSAP(
 		() => {
 			if (videoRef.current) {
+				videoRef.current.defaultMuted = true;
 				videoRef.current.play().catch(() => {});
 			}
 
@@ -92,7 +93,6 @@ function Hero() {
 					autoPlay
 					loop
 					muted
-					defaultMuted
 					playsInline
 					className="h-full w-full object-cover"
 					style={{ filter: "grayscale(100%) contrast(1.3) brightness(0.7)" }}
