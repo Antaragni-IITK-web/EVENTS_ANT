@@ -77,12 +77,12 @@ export function Cursor() {
 		<>
 			<div
 				ref={dotRef}
-				className="pointer-events-none fixed left-0 top-0 z-[100] h-2 w-2 rounded-full"
+				className="pointer-events-none fixed left-0 top-0 z-[100] h-2 w-2 rounded-full opacity-0"
 				style={{ background: "var(--lime)" }}
 			/>
 			<div
 				ref={ringRef}
-				className="pointer-events-none fixed left-0 top-0 z-[99] flex h-10 w-10 items-center justify-center rounded-full border"
+				className="pointer-events-none fixed left-0 top-0 z-[99] flex h-10 w-10 items-center justify-center rounded-full border opacity-0"
 				style={{ borderColor: "rgba(255,201,77,0.55)" }}
 			>
 				<span
