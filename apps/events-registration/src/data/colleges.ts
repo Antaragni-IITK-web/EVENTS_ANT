@@ -20,6 +20,10 @@ export const colleges: {label:string, value:string}[] = [
 		value: "AMITY",
 	},
 	{
+		label: "AMITY UNIVERSITY, NOIDA",
+		value: "AMITY UNIVERSITY, NOIDA",
+	},
+	{
 		label: "AMITY JAIPUR",
 		value: "AMITY JAIPUR",
 	},

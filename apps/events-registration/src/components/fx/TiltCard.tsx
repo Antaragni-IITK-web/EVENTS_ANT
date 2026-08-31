@@ -66,7 +66,7 @@ export function TiltCard({
 			className={className}
 			style={{ perspective: 700 }}
 		>
-			<div ref={innerRef} className="relative h-full w-full will-change-transform">
+			<div ref={innerRef} className="relative h-full w-full will-change-transform rounded-xl overflow-hidden">
 				{children}
 				{/* moving sheen */}
 				<div

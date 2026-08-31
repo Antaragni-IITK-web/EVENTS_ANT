@@ -392,11 +392,11 @@ export default function RoadtripDetailPage({
 											<span className="chip shrink-0 !text-[10px]" style={{ color: theme.a }}>
 												{item.date}
 											</span>
-											{item.img && (
+											{(item as any).img && (
 												<span className="hidden h-16 w-12 shrink-0 overflow-hidden rounded-lg border border-white/10 md:block">
 													{/* CMS-served city poster */}
 													<img
-														src={item.img}
+														src={(item as any).img}
 														alt={item.city}
 														className="h-full w-full object-cover"
 													/>

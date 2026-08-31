@@ -359,68 +359,50 @@ export function TourMap({ schedule, theme }: TourMapProps) {
 
 								{/* Label Container - expanded into a rich data panel on hover */}
 								<foreignObject
-									x={coords.align === "left" ? -320 : 20}
-									y="-40"
-									width="300"
-									height="280"
+									x="-200"
+									y="-200"
+									width="400"
+									height="400"
 									className="city-label overflow-visible pointer-events-none"
 								>
-									<div
-										className={`flex h-full w-full pointer-events-auto ${
-											coords.align === "left" ? "justify-end" : "justify-start"
-										}`}
-									>
-										{!open ? (
-											<div className={`flex flex-col ${coords.align === "left" ? "items-end" : "items-start"}`}>
-												<span className="font-title text-xl font-black uppercase leading-none drop-shadow-md text-white">
+									<div className="relative w-[400px] h-[400px] pointer-events-none">
+										<div
+											className={`absolute flex flex-col pointer-events-auto transition-all duration-300 w-[240px] md:w-[280px]
+												/* Mobile: centered above pin (using inset + mx-auto to avoid WebKit transform bugs) */
+												bottom-[215px] left-0 right-0 mx-auto items-center text-center
+												/* Desktop: left or right */
+												${coords.align === "left" 
+													? "md:bottom-auto md:top-[185px] md:right-[220px] md:left-auto md:mx-0 md:items-end md:text-right" 
+													: "md:bottom-auto md:top-[185px] md:left-[220px] md:right-auto md:mx-0 md:items-start md:text-left"}
+											`}
+										>
+											{!open ? (
+												<span className="font-title text-[28px] md:text-xl font-black uppercase leading-none drop-shadow-md text-white">
 													{item.city}
 												</span>
-											</div>
-										) : (
-											<div className="bg-[#0a0612]/95 backdrop-blur-md border border-white/10 p-4 rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.8)] flex flex-col gap-3 w-full">
-												<div className="flex items-start justify-between gap-2 border-b border-white/10 pb-2">
-													<span className="font-title text-2xl font-black uppercase text-white leading-tight break-words min-w-0">{item.city}</span>
-													<span className="text-[10px] font-bold px-2 py-1 rounded bg-white/5 border border-white/10 whitespace-nowrap shrink-0" style={{ color: theme.a }}>
+											) : (
+												<div className="bg-[#0a0612]/95 backdrop-blur-md border border-white/10 p-4 rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.8)] flex flex-col items-center justify-center gap-3 w-full text-center">
+													<span className="text-sm font-bold px-3 py-1.5 rounded bg-white/5 border border-white/10 whitespace-nowrap" style={{ color: theme.a }}>
 														{item.date}
 													</span>
+													{item.venuePost ? (
+														<a
+															href={item.venuePost}
+															target="_blank"
+															rel="noreferrer"
+															className="w-full text-center bg-white/5 hover:bg-white/10 border border-white/10 transition-colors py-2.5 rounded text-[11px] font-bold uppercase tracking-wider text-white flex items-center justify-center gap-2"
+														>
+															<svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+																<path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+															</svg>
+															View on Instagram
+														</a>
+													) : (
+														<p className="text-[11px] text-white/50 italic text-center py-2">Details coming soon...</p>
+													)}
 												</div>
-												{item.venue ? (
-													<>
-														<div className="text-xs text-white/70 space-y-1">
-															<p><strong className="text-white/90">Venue:</strong> {item.venue}</p>
-															{item.mnpPartner && (
-																<p><strong className="text-white/90">Partner:</strong> {item.mnpPartner}</p>
-															)}
-														</div>
-														
-														<div className="flex gap-2 mt-2">
-															{item.location && item.location.startsWith('http') && (
-																<a
-																	href={item.location}
-																	target="_blank"
-																	rel="noreferrer"
-																	className="flex-1 block text-center bg-white/5 hover:bg-white/10 border border-white/10 transition-colors py-1.5 rounded text-[10px] font-bold uppercase tracking-wider text-white"
-																>
-																	Maps
-																</a>
-															)}
-															{item.venueInsta && item.venueInsta.startsWith('http') && (
-																<a
-																	href={item.venueInsta}
-																	target="_blank"
-																	rel="noreferrer"
-																	className="flex-1 block text-center bg-white/5 hover:bg-white/10 border border-white/10 transition-colors py-1.5 rounded text-[10px] font-bold uppercase tracking-wider text-white"
-																>
-																	Insta
-																</a>
-															)}
-														</div>
-													</>
-												) : (
-													<p className="text-[11px] text-white/50 italic">Details coming soon...</p>
-												)}
-											</div>
-										)}
+											)}
+										</div>
 									</div>
 								</foreignObject>
 							</g>

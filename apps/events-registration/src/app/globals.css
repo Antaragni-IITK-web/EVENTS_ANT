@@ -270,24 +270,33 @@ body {
 
 /* animated gradient sweeping through display type */
 @keyframes gradient-sweep {
-	0% { background-position: 0% 50%; }
-	50% { background-position: 100% 50%; }
-	100% { background-position: 0% 50%; }
+	0% { transform: translateX(-50%); }
+	50% { transform: translateX(0%); }
+	100% { transform: translateX(-50%); }
 }
+
 .text-gradient-live {
-	background: linear-gradient(
-		100deg,
-		var(--gold),
-		var(--cream),
-		var(--ember),
-		var(--crimson),
-		var(--gold)
-	);
-	background-size: 300% 100%;
+	position: relative;
+	color: transparent;
+	/* fallback for older browsers */
+	background: linear-gradient(100deg, var(--gold), var(--cream), var(--ember), var(--crimson), var(--gold));
+	-webkit-background-clip: text;
+	background-clip: text;
+}
+
+.text-gradient-live::before {
+	content: "";
+	position: absolute;
+	top: 0; left: 0; right: 0; bottom: 0;
+	background: linear-gradient(100deg, var(--gold), var(--cream), var(--ember), var(--crimson), var(--gold));
+	background-size: 200% 100%;
+	z-index: -1;
 	-webkit-background-clip: text;
 	background-clip: text;
 	color: transparent;
 	animation: gradient-sweep 9s ease-in-out infinite;
+	pointer-events: none;
+	will-change: transform;
 }
 
 /* slow float for stickers / decorations */
@@ -307,6 +316,7 @@ body {
 @media (prefers-reduced-motion: reduce) {
 	.float-slow,
 	.spin-slow,
+	.text-gradient-live::before,
 	.text-gradient-live {
 		animation: none;
 	}
@@ -348,20 +358,25 @@ body {
 /* molten-metal sweep - cream → gold → ember → crimson → maroon;
    fire moving through the letters */
 .text-chrome {
-	background: linear-gradient(
-		105deg,
-		#fff6e5 0%,
-		#ffc94d 22%,
-		#ff8a3d 44%,
-		#d92643 66%,
-		#8c2333 84%,
-		#fff6e5 100%
-	);
-	background-size: 240% 100%;
+	position: relative;
+	color: transparent;
+	background: linear-gradient(105deg, #fff6e5 0%, #ffc94d 22%, #ff8a3d 44%, #d92643 66%, #8c2333 84%, #fff6e5 100%);
+	-webkit-background-clip: text;
+	background-clip: text;
+}
+.text-chrome::before {
+	content: "";
+	position: absolute;
+	top: 0; left: 0; right: 0; bottom: 0;
+	background: linear-gradient(105deg, #fff6e5 0%, #ffc94d 22%, #ff8a3d 44%, #d92643 66%, #8c2333 84%, #fff6e5 100%);
+	background-size: 200% 100%;
 	-webkit-background-clip: text;
 	background-clip: text;
 	color: transparent;
 	animation: gradient-sweep 13s ease-in-out infinite;
+	z-index: -1;
+	pointer-events: none;
+	will-change: transform;
 }
 
 /* the stacked copies behind the hero word */
@@ -419,12 +434,24 @@ body {
 /* ============ FESTIVAL LOADER ============ */
 
 @keyframes loader-flicker {
-	0%, 100% { filter: drop-shadow(0 0 8px rgba(255, 107, 53, 0.5)); }
-	50% { filter: drop-shadow(0 0 18px rgba(255, 138, 61, 0.85)); }
+	0%, 100% { opacity: 0.5; }
+	50% { opacity: 1; }
 }
 .loader-mark {
-	animation: loader-flicker 2.2s ease-in-out infinite;
+	position: relative;
 }
+.loader-mark::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: inherit;
+	filter: drop-shadow(0 0 18px rgba(255, 138, 61, 0.85));
+	animation: loader-flicker 2.2s ease-in-out infinite;
+	pointer-events: none;
+	z-index: -1;
+	will-change: opacity;
+}
+
 /* the real logo used as a mask - ghost shell + molten fill. The fill line is
    driven from FestivalLoader (clip-path == the counter %), not a keyframe. */
 .loader-logo-ghost,
@@ -438,8 +465,8 @@ body {
 	background: rgba(247, 240, 228, 0.26);
 }
 @keyframes loader-molten {
-	from { background-position: 50% 100%; }
-	to { background-position: 50% 0%; }
+	from { transform: translateY(10%); }
+	to { transform: translateY(0%); }
 }
 .loader-logo-fire {
 	background: linear-gradient(
@@ -456,9 +483,17 @@ body {
 	background-position: 50% 100%;
 	clip-path: inset(100% 0 0 0);
 	filter: drop-shadow(0 0 14px rgba(255, 138, 61, 0.45));
-	animation: loader-molten 2.6s ease-in-out infinite alternate;
-	will-change: clip-path;
 }
+.loader-logo-fire::before {
+	content: "";
+	position: absolute;
+	inset: -20% 0 0 0;
+	background: inherit;
+	animation: loader-molten 2.6s ease-in-out infinite alternate;
+	will-change: transform;
+	z-index: -1;
+}
+
 /* ember pool breathing behind the mark */
 @keyframes loader-halo {
 	0%, 100% { opacity: 0.45; transform: scale(1); }
@@ -574,11 +609,33 @@ body {
 	transition: transform 0.85s cubic-bezier(0.65, 0, 0.35, 1);
 	transform: translateX(130%) rotate(0.001deg);
 }
+
+@keyframes card-gradient-shift {
+	0% { background-position: 0% 50%; }
+	50% { background-position: 100% 50%; }
+	100% { background-position: 0% 50%; }
+}
+
+.card-fx::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 3;
+	pointer-events: none;
+	background: linear-gradient(120deg, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0.15) 50%, rgba(255,255,255,0.03) 100%);
+	background-size: 200% 200%;
+	mix-blend-mode: overlay;
+	animation: card-gradient-shift 8s ease-in-out infinite;
+	opacity: 0.8;
+}
+
 @media (prefers-reduced-motion: reduce) {
 	.card-fx,
 	.card-fx > img,
-	.card-fx::after {
+	.card-fx::after,
+	.card-fx::before {
 		transition: none;
+		animation: none;
 	}
 }
 
@@ -676,7 +733,9 @@ body {
 	pointer-events: none;
 	opacity: 0.08;
 	mix-blend-mode: soft-light;
-	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+	background-image: url("/noise.png");
+	background-size: 200px 200px;
+	background-repeat: repeat;
 }
 /* faint warm bloom washing the whole page - festival hall haze */
 .grain-overlay::after {
@@ -687,6 +746,8 @@ body {
 		radial-gradient(60% 50% at 50% 0%, rgba(255, 138, 61, 0.05), transparent 70%),
 		radial-gradient(50% 40% at 100% 100%, rgba(255, 95, 60, 0.04), transparent 70%);
 }
+
+
 
 /* glow card hover */
 .glow-card {

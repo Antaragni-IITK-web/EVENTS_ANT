@@ -86,17 +86,19 @@ function Hero() {
 		>
 			{/* NEW VIDEO BACKGROUND - Gritty B&W + Grain + Color Tone */}
 			<div className="absolute inset-0 pointer-events-none z-0 overflow-hidden bg-[#0a0612]">
-				{/* 1. Black & White Base Video */}
 				<video
 					ref={videoRef}
-					src="/cinema/final_video_events.mov"
 					autoPlay
 					loop
 					muted
 					playsInline
+					preload="auto"
+					poster="/cinema/final_video_events_poster.png"
 					className="h-full w-full object-cover"
 					style={{ filter: "grayscale(100%) contrast(1.3) brightness(0.7)" }}
-				/>
+				>
+					<source src="/cinema/final_video_events.mp4" type="video/mp4" />
+				</video>
 
 				{/* 2. Film Grain Overlay */}
 				<div
