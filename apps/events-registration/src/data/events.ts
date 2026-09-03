@@ -196,7 +196,7 @@ export const competitions = [
 	},
 	{
 		event: "ENGLISH LITERARY EVENTS",
-		comp: "J.A.M",
+		comp: "JAM",
 		desc: "JUST A MINUTE COMPETITION",
 		type: "SOLO",
 		link: "/ele",
@@ -233,13 +233,6 @@ export const competitions = [
 		event: "FINE ARTS",
 		comp: "JAPANESE QUILING AND ORIGAMI",
 		desc: "ORIGAMI MAKING COMPETITION",
-		type: "GROUP",
-		link: "/finearts",
-	},
-	{
-		event: "FINE ARTS",
-		comp: "MASQUE",
-		desc: "MASK MAKING COMPETITION",
 		type: "GROUP",
 		link: "/finearts",
 	},
@@ -335,8 +328,8 @@ export const competitions = [
 		link: "/hle",
 	},
 	{
-		event: "MR. & MRS. ANTARAGNI",
-		comp: "MR. & MRS. ANTARAGNI",
+		event: "MR & MRS ANTARAGNI",
+		comp: "MR & MRS ANTARAGNI",
 		desc: "BEAUTY, CONFIDENCE AND INTELLIGENCE AT THE SAME POINT",
 		type: "SOLO",
 		link: "/mnm",
