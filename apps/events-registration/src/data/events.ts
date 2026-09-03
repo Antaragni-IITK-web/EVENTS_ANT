@@ -211,7 +211,7 @@ export const competitions = [
 	{
 		event: "ENGLISH LITERARY EVENTS",
 		comp: "SCRABBLE",
-		desc: "Test your vocabulary, strategy, and wordplay as you battle your way to become the ultimate Scrabble Champion.",
+		desc: "TEST YOUR VOCABULARY, STRATEGY, AND WORDPLAY AS YOU BATTLE YOUR WAY TO BECOME THE ULTIMATE SCRABBLE CHAMPION.",
 		type: "SOLO",
 		link: "/ele",
 	},
