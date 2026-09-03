@@ -210,8 +210,8 @@ export const competitions = [
 	},
 	{
 		event: "ENGLISH LITERARY EVENTS",
-		comp: "TINY TALES",
-		desc: "A COMPETITION OF BRIEF AND AMUSING SNIPPET, USING ANY FORM OF LITERATURE (PROSE, POETRY ETC.) OF YOUR CHOICE.\r\n",
+		comp: "SCRABBLE",
+		desc: "Test your vocabulary, strategy, and wordplay as you battle your way to become the ultimate Scrabble Champion.",
 		type: "SOLO",
 		link: "/ele",
 	},
