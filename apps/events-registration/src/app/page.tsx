@@ -13,6 +13,7 @@ import { Magnetic } from "../components/fx/Magnetic";
 import { Cinema } from "../components/fx/Cinema";
 import { eventTheme, tripTheme } from "../data/themes";
 import { Contact } from "../components/Contact";
+import { CreatorSpotlightWidget } from "../components/CreatorSpotlightWidget";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -580,6 +581,7 @@ export default function Home() {
 			<Portals />
 			<About />
 			<Legacy />
+			<CreatorSpotlightWidget />
 			<Contact />
 		</>
 	);
