@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -9,6 +9,7 @@ import { Cinema } from "../../components/fx/Cinema";
 import { PosterArt } from "../../components/fx/PosterArt";
 import { Marquee } from "../../components/fx/Marquee";
 import { Reveal } from "../../components/fx/Reveal";
+import { Contacts } from "../../components/Contacts";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -23,9 +24,97 @@ const NAV = [
 	{ id: "overview", label: "Overview" },
 	{ id: "perks", label: "The Loot" },
 	{ id: "rubric", label: "Rubric" },
+	{ id: "contacts", label: "Contacts" },
 ];
 
+/* Contacts come from public/Creator's Spotlight - not the dev portal.
+   Details.csv holds the people, and each one's photo sits beside it
+   in the same folder, named after them. */
+const CONTACT_DIR = "/Creator's Spotlight";
+const CONTACT_CSV = `${CONTACT_DIR}/Details.csv`;
+const PHOTO_EXTS = ["jpg", "jpeg", "png", "webp"];
+const CONTACT_ROLE = "Organiser, Media and Publicity";
+
+interface SpotlightContact {
+	name: string;
+	number: string;
+	email?: string;
+	insta?: string;
+	linkedin?: string;
+	image?: string;
+	role: string;
+	rawDesc: string;
+}
+
+/* first extension that actually loads wins; undefined falls back to initials */
+const resolvePhoto = (name: string) =>
+	new Promise<string | undefined>((resolve) => {
+		const candidates = PHOTO_EXTS.map((ext) => `${CONTACT_DIR}/${name}.${ext}`);
+		const tryNext = (i: number) => {
+			const url = candidates[i];
+			if (!url) return resolve(undefined);
+			const probe = new window.Image();
+			probe.onload = () => resolve(encodeURI(url));
+			probe.onerror = () => tryNext(i + 1);
+			probe.src = encodeURI(url);
+		};
+		tryNext(0);
+	});
+
+const parseContactCsv = (text: string): SpotlightContact[] => {
+	const [header, ...rows] = text.trim().split(/\r?\n/);
+	if (!header) return [];
+	const cols = header.split(",").map((c) => c.trim().toLowerCase());
+
+	return rows
+		.filter((row) => row.trim())
+		.map((row) => {
+			const cells = row.split(",");
+			const cell = (key: string) => {
+				const i = cols.indexOf(key);
+				return i < 0 ? "" : (cells[i] || "").trim();
+			};
+			const name = cell("name");
+			const number = cell("phone number");
+
+			return {
+				name,
+				number,
+				email: cell("email address") || undefined,
+				insta: cell("instagram") || undefined,
+				linkedin: cell("linkedin") || undefined,
+				role: CONTACT_ROLE,
+				rawDesc: `- ${name}\n${number}`,
+			};
+		})
+		.filter((c) => c.name);
+};
+
 export default function CreatorSpotlightPage() {
+	const [contacts, setContacts] = useState<SpotlightContact[]>([]);
+
+	useEffect(() => {
+		let cancelled = false;
+
+		(async () => {
+			try {
+				const res = await fetch(encodeURI(CONTACT_CSV));
+				if (!res.ok) return;
+				const parsed = parseContactCsv(await res.text());
+				const withPhotos = await Promise.all(
+					parsed.map(async (c) => ({ ...c, image: await resolvePhoto(c.name) })),
+				);
+				if (!cancelled) setContacts(withPhotos);
+			} catch {
+				/* no contact sheet in the folder - section just stays hidden */
+			}
+		})();
+
+		return () => {
+			cancelled = true;
+		};
+	}, []);
+
 	const SectionHead = ({ id, label }: { id: string; label: string }) => (
 		<Reveal>
 			<span
@@ -264,6 +353,14 @@ export default function CreatorSpotlightPage() {
 						</div>
 					</Reveal>
 				</section>
+
+				{/* CONTACTS */}
+				{contacts.length > 0 && (
+					<section id="contacts" className="scroll-mt-32 pb-10">
+						<SectionHead id="contacts" label="Contacts" />
+						<Contacts contacts={contacts} theme={theme} />
+					</section>
+				)}
 			</div>
 		</div>
 	);
