@@ -49,7 +49,7 @@ export default function CreatorSpotlightPage() {
 	);
 
 	return (
-		<div className="min-h-screen pb-10 bg-[#060408] text-[#e8e4dc]">
+		<div className="min-h-screen pb-10">
 			
 			{/* HERO */}
 			<section className="relative flex min-h-[72vh] flex-col items-center justify-center overflow-hidden px-4 pt-32 text-center">
@@ -70,7 +70,7 @@ export default function CreatorSpotlightPage() {
 						className="h-[130%] w-auto max-w-none blur-[1px]"
 					/>
 				</div>
-				<div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,#060408_82%)]" />
+				<div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,#1c1218_82%)]" />
 				
 				<div
 					className="pointer-events-none absolute inset-0"
