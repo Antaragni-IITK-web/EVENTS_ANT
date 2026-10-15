@@ -41,14 +41,38 @@ interface SpotlightContact {
 	email?: string;
 	insta?: string;
 	linkedin?: string;
+	facebook?: string;
 	image?: string;
 	role: string;
 	rawDesc: string;
 }
 
+const DEFAULT_CONTACTS: SpotlightContact[] = [
+	{
+		name: "Suryamani",
+		role: "Organiser, Media and Publicity",
+		number: "7607222472",
+		email: "suryamanichbs@gmail.com",
+		facebook: "https://www.facebook.com/share/1GeH4J1GeQ/",
+		insta: "https://www.instagram.com/itzsuryamani/",
+		linkedin: "https://www.linkedin.com/in/suryamani-732568322/",
+		image: encodeURI(`${CONTACT_DIR}/Suryamani.jpg`),
+		rawDesc: "- Suryamani\n7607222472",
+	},
+	{
+		name: "Prathmesh Bahatre",
+		role: "MnP Organizer",
+		number: "7744837466",
+		email: "prathmeshw24@iitk.ac.in",
+		image: encodeURI(`${CONTACT_DIR}/Prathmesh Bahatre.jpeg`),
+		rawDesc: "- Prathmesh Bahatre\n7744837466",
+	},
+];
+
 /* first extension that actually loads wins; undefined falls back to initials */
 const resolvePhoto = (name: string) =>
 	new Promise<string | undefined>((resolve) => {
+		if (typeof window === "undefined") return resolve(undefined);
 		const candidates = PHOTO_EXTS.map((ext) => `${CONTACT_DIR}/${name}.${ext}`);
 		const tryNext = (i: number) => {
 			const url = candidates[i];
@@ -61,29 +85,50 @@ const resolvePhoto = (name: string) =>
 		tryNext(0);
 	});
 
+const parseCsvLine = (line: string): string[] => {
+	const values: string[] = [];
+	let current = "";
+	let inQuotes = false;
+	for (let i = 0; i < line.length; i++) {
+		const char = line[i];
+		if (char === '"') {
+			inQuotes = !inQuotes;
+		} else if (char === "," && !inQuotes) {
+			values.push(current.trim());
+			current = "";
+		} else {
+			current += char;
+		}
+	}
+	values.push(current.trim());
+	return values;
+};
+
 const parseContactCsv = (text: string): SpotlightContact[] => {
 	const [header, ...rows] = text.trim().split(/\r?\n/);
 	if (!header) return [];
-	const cols = header.split(",").map((c) => c.trim().toLowerCase());
+	const cols = parseCsvLine(header).map((c) => c.toLowerCase());
 
 	return rows
 		.filter((row) => row.trim())
 		.map((row) => {
-			const cells = row.split(",");
+			const cells = parseCsvLine(row);
 			const cell = (key: string) => {
 				const i = cols.indexOf(key);
 				return i < 0 ? "" : (cells[i] || "").trim();
 			};
 			const name = cell("name");
 			const number = cell("phone number");
+			const role = cell("role") || CONTACT_ROLE;
 
 			return {
 				name,
 				number,
+				role,
 				email: cell("email address") || undefined,
 				insta: cell("instagram") || undefined,
 				linkedin: cell("linkedin") || undefined,
-				role: CONTACT_ROLE,
+				facebook: cell("facebook") || undefined,
 				rawDesc: `- ${name}\n${number}`,
 			};
 		})
@@ -91,7 +136,7 @@ const parseContactCsv = (text: string): SpotlightContact[] => {
 };
 
 export default function CreatorSpotlightPage() {
-	const [contacts, setContacts] = useState<SpotlightContact[]>([]);
+	const [contacts, setContacts] = useState<SpotlightContact[]>(DEFAULT_CONTACTS);
 
 	useEffect(() => {
 		let cancelled = false;
@@ -102,11 +147,14 @@ export default function CreatorSpotlightPage() {
 				if (!res.ok) return;
 				const parsed = parseContactCsv(await res.text());
 				const withPhotos = await Promise.all(
-					parsed.map(async (c) => ({ ...c, image: await resolvePhoto(c.name) })),
+					parsed.map(async (c) => ({
+						...c,
+						image: (await resolvePhoto(c.name)) || encodeURI(`${CONTACT_DIR}/${c.name}.jpg`),
+					})),
 				);
-				if (!cancelled) setContacts(withPhotos);
+				if (!cancelled && withPhotos.length > 0) setContacts(withPhotos);
 			} catch {
-				/* no contact sheet in the folder - section just stays hidden */
+				/* fallback remains DEFAULT_CONTACTS */
 			}
 		})();
 

@@ -1,11 +1,12 @@
 import ReactMarkdown from "react-markdown";
-import { FaPhone, FaInstagram, FaEnvelope, FaLinkedin } from "react-icons/fa";
+import { FaPhone, FaInstagram, FaEnvelope, FaLinkedin, FaFacebook } from "react-icons/fa";
 
 interface ContactData {
 	name: string;
 	number: string;
 	insta?: string;
 	linkedin?: string;
+	facebook?: string;
 	image?: string;
 	email?: string;
 	role?: string;
@@ -83,6 +84,17 @@ export const Contacts = ({ contacts, theme }: ContactProps) => {
 								>
 									<FaLinkedin className="text-secondary/60" />
 									<span>LinkedIn</span>
+								</a>
+							)}
+							{contact.facebook && (
+								<a
+									href={contact.facebook}
+									target="_blank"
+									rel="noopener noreferrer"
+									className="flex items-center justify-center gap-2 hover:text-primary transition-colors"
+								>
+									<FaFacebook className="text-secondary/60" />
+									<span>Facebook</span>
 								</a>
 							)}
 							{contact.email && (
