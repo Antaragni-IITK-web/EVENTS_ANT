@@ -26,6 +26,8 @@ import { CardArt } from "../../../components/fx/CardArt";
 import { TiltCard } from "../../../components/fx/TiltCard";
 import { Cinema } from "../../../components/fx/Cinema";
 import { TourMap } from "../../../components/TourMap";
+import { Sponsors } from "../../../components/Sponsors";
+import { getSponsors } from "../../../data/sponsors";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -67,11 +69,13 @@ const PageSection = ({
 
 	return (
 		<section ref={sectionRef} className="relative py-16">
-			{/* per-battle stage light */}
+			{/* per-battle stage light - the ellipse has to reach transparent
+			    before every edge of the box, otherwise the section boundary
+			    shows up as a hard line across the page background */}
 			<div
 				className="pointer-events-none absolute inset-0"
 				style={{
-					background: `radial-gradient(60% 50% at 50% 0%, ${a}14 0%, transparent 60%)`,
+					background: `radial-gradient(70% 55% at 50% 45%, ${a}14 0%, transparent 60%)`,
 				}}
 				aria-hidden
 			/>
@@ -333,7 +337,9 @@ export default function RoadtripDetailPage({
 				</Marquee>
 			</div>
 
-			<div className="bg-background text-foreground py-10">
+			{/* no opaque fill here - the layout's ambient glow has to run straight
+			    through the sections, or each one reads as its own panel */}
+			<div className="text-foreground py-10">
 				<div className="container mx-auto px-4 max-w-6xl">
 					{/* ----------------------------- ABOUT ----------------------------- */}
 					<PageSection
@@ -414,7 +420,7 @@ export default function RoadtripDetailPage({
 							<div
 								className="pointer-events-none absolute inset-0"
 								style={{
-									background: `radial-gradient(60% 60% at 50% 30%, ${theme.a}1f 0%, transparent 65%)`,
+									background: `radial-gradient(70% 55% at 50% 45%, ${theme.a}1f 0%, transparent 60%)`,
 								}}
 								aria-hidden
 							/>
@@ -453,27 +459,29 @@ export default function RoadtripDetailPage({
 						b={theme.b}
 						tag={theme.tag}
 					>
-						{partnersInfo && partnersInfo.length > 0 && slug.toLowerCase() !== "junoon" ? (
-							<div className="flex flex-wrap justify-center gap-8">
-								{partnersInfo.map((item, idx) => (
-									<div
-										key={idx}
-										className="glass glow-card w-64 rounded-3xl p-6 text-center"
-									>
-										<h3 className="font-title text-2xl font-bold text-secondary">
-											{item.name}
-										</h3>
-										<p className="mt-1 text-foreground/70">{item.role}</p>
+						<Sponsors
+							sponsors={getSponsors(slug)}
+							theme={theme}
+							fallback={
+								partnersInfo &&
+								partnersInfo.length > 0 &&
+								slug.toLowerCase() !== "junoon" ? (
+									<div className="flex flex-wrap justify-center gap-8">
+										{partnersInfo.map((item, idx) => (
+											<div
+												key={idx}
+												className="glass glow-card w-64 rounded-3xl p-6 text-center"
+											>
+												<h3 className="font-title text-2xl font-bold text-secondary">
+													{item.name}
+												</h3>
+												<p className="mt-1 text-foreground/70">{item.role}</p>
+											</div>
+										))}
 									</div>
-								))}
-							</div>
-						) : (
-							<div className="flex justify-center py-8">
-								<p className="font-poster text-4xl uppercase leading-none text-foreground/30 md:text-6xl">
-									Coming soon
-								</p>
-							</div>
-						)}
+								) : undefined
+							}
+						/>
 					</PageSection>
 
 					{/* ---------------------------- CONTACTS ---------------------------- */}

@@ -6,6 +6,8 @@ import { doc } from "@repo/firebase";
 import { Guidelines } from "../../../components/Guidelines";
 import { Competitions } from "../../../components/Competitions";
 import { Contacts } from "../../../components/Contacts";
+import { Sponsors } from "../../../components/Sponsors";
+import { getSponsors } from "../../../data/sponsors";
 import { Gallery } from "../../../components/Gallery";
 import { Reveal } from "../../../components/fx/Reveal";
 
@@ -109,6 +111,9 @@ export function EventDetails({
 
 	const showComps = slug !== "MnM";
 
+	/* sponsor commitments come from the Dreamons sheet, not Firestore */
+	const sponsors = getSponsors(slug);
+
 	const firebasePhotos = details
 		.filter((detail) => detail.flag?.content?.toLowerCase() === "gallery")
 		.map((detail) => detail.image?.content?.url)
@@ -128,6 +133,7 @@ export function EventDetails({
 		...(showComps ? [{ id: "competitions", label: "Competitions" }] : []),
 		{ id: "guidelines", label: "Guidelines" },
 		...(photos.length ? [{ id: "gallery", label: "Gallery" }] : []),
+		...(sponsors.length ? [{ id: "sponsors", label: "Sponsors" }] : []),
 		{ id: "contacts", label: "Contacts" },
 	];
 
@@ -239,6 +245,14 @@ export function EventDetails({
 				<section id="gallery" className="scroll-mt-32 pb-24">
 					<SectionHead id="gallery" label="Gallery" />
 					<Gallery photos={photos} theme={theme} title={title || slug} />
+				</section>
+			)}
+
+			{/* ----------------------------- SPONSORS ---------------------------- */}
+			{sponsors.length > 0 && (
+				<section id="sponsors" className="scroll-mt-32 pb-24">
+					<SectionHead id="sponsors" label="Sponsors" />
+					<Sponsors sponsors={sponsors} theme={theme} />
 				</section>
 			)}
 
